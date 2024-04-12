@@ -1,0 +1,6 @@
+[book]
+authors = ["0xdwong"]
+language = "zh-cn"
+multilingual = false
+src = "src/zh-cn"
+title = "Rareskills solana course"
