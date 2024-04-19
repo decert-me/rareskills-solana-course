@@ -2,11 +2,11 @@
 
 ![rust function-like macros](https://static.wixstatic.com/media/706568_60a26cb76a6b4396b529e8a4837d50fc~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/706568_60a26cb76a6b4396b529e8a4837d50fc~mv2.jpg)
 
-This tutorial explains the distinction between functions and function like macros. For example, why does msg! have an exclamation point after it? This tutorial will explain this syntax.
+This tutorial explains the distinction between functions and function like macros. For example, why does `msg!` have an exclamation point after it? This tutorial will explain this syntax.
 
 As a strongly typed language, Rust cannot accept an arbitrary number of arguments to a function.
 
-For example, the Python print function can accept an arbitrary number of arguments:
+For example, the Python `print` function can accept an arbitrary number of arguments:
 
 ```
 print(1)
@@ -16,9 +16,9 @@ print(1, 2, 3)
 
 The ! denotes that the "function" is a function-like macro.
 
-Rust function-like macros are identified by the presence of a ! symbol, for example in println!(...) or msg!(...) in Solana.
+Rust function-like macros are identified by the presence of a ! symbol, for example in `println!(...)` or `msg!(...)` in Solana.
 
-In Rust, a regular function (not function-like macro) to print something is std::io::stdout().write and it only accepts a single byte string as an argument.
+In Rust, a regular function (not function-like macro) to print something is `std::io::stdout().write` and it only accepts a single byte string as an argument.
 
 *If you want to run the following code, the* [*Rust Playground*](https://play.rust-lang.org/) *is a convenient tool if you don’t want to set up a development environment.*
 
@@ -32,9 +32,9 @@ fn main() {
 }
 ```
 
-Note that write is a function, not a macro as it does not have the !.
+Note that write is a function, not a macro as it does not have the `!`.
 
-If you try to do what we did above in Python, the code won’t compile because write only accepts one argument:
+If you try to do what we did above in Python, the code won’t compile because `write` only accepts one argument:
 
 ```
 // this does not compile
@@ -80,9 +80,9 @@ fn main() {
 }
 ```
 
-If we look for a pattern in the print1, print2, print3 functions, it is simply inserting the arguments into a vector and adding a space in between them, then converting the vector back into a bytes string (a bytes slice to be precise).
+If we look for a pattern in the `print1`, `print2`, `print3` functions, it is simply inserting the arguments into a vector and adding a space in between them, then converting the vector back into a bytes string (a bytes slice to be precise).
 
-Wouldn’t it be nice if we could take a piece of code like println! and automatically expand it into a print function that takes exactly as many arguments as we need? 
+Wouldn’t it be nice if we could take a piece of code like `println!` and automatically expand it into a print function that takes exactly as many arguments as we need? 
 
 This is what a Rust macro does.
 
@@ -92,7 +92,7 @@ This helps us avoid the boredom of having to write a print function for every ki
 
 ### Expanding the macro
 
-To see an example of how the Rust compiler is expanding the println! macro, check out the [cargo expand](https://github.com/dtolnay/cargo-expand) github repo. The result is quite verbose so we will not show it here.
+To see an example of how the Rust compiler is expanding the `println!` macro, check out the [cargo expand](https://github.com/dtolnay/cargo-expand) github repo. The result is quite verbose so we will not show it here.
 
 ## It’s okay to treat macros as black boxes
 
@@ -100,7 +100,7 @@ Macros are very handy when supplied by a library, but very tedious to write by h
 
 ## Different kinds of macros in Rust
 
-The example we have given with println! is a function-like macro. Rust has other kinds of macros but the other two we care about are the *custom derive macro* and the *attribute-like macro*.
+The example we have given with `println!` is a function-like macro. Rust has other kinds of macros but the other two we care about are the *custom derive macro* and the *attribute-like macro*.
 
 Let’s look at a fresh program created by anchor:
 

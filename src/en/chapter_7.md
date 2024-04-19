@@ -4,15 +4,15 @@ Updated: Feb 19
 
 ![Rust: The Weird Parts](https://static.wixstatic.com/media/706568_0ea13ed362d34a8cab96a2198c15d40f~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/706568_0ea13ed362d34a8cab96a2198c15d40f~mv2.jpg)
 
-Readers coming from a Solidity or Javascript background may find Rust’s usage and syntax of &, mut, <_>, unwrap(), and ? to be weird (or even ugly). This chapter explains what these terms mean.
+Readers coming from a Solidity or Javascript background may find Rust’s usage and syntax of`&`, `mut`, `<_>`, `unwrap()`, and `?` to be weird (or even ugly). This chapter explains what these terms mean.
 
 Don't worry if everything doesn't sink in right away. You can always come back to this tutorial later if you forget the syntax definitions.
 
-## **Ownership & Borrowing (references** **&** **deref operator** *******):**
+## **Ownership & Borrowing (references `&` deref operator `*`):**
 
 ### Rust Copy Type
 
-To understand & and * we first need to understand the “copy type” in Rust. A copy type is a datatype that is small enough that the overhead of copying the value is trivial. The following values are copy types:
+To understand `&` and `*` we first need to understand the “copy type” in Rust. A copy type is a datatype that is small enough that the overhead of copying the value is trivial. The following values are copy types:
 
 - integers, unsigned, and floats integers
 - booleans
@@ -44,7 +44,7 @@ pub fn main() {
 // this code does not compile
 ```
 
-In the first section of code where a and b are added, only 64 bits of data need to be copied from the variables to the function (32 bits * 2 variables).
+In the first section of code where `a` and `b` are added, only 64 bits of data need to be copied from the variables to the function (32 bits * 2 variables).
 
 However in the case of the string, *we don’t always know in advance how much data we are copying*. If the string was 1 GB long, the program would lag significantly.
 
@@ -72,11 +72,11 @@ println!("{}", s1);
 println!("{}", s2);
 ```
 
-To fix the code above we have two options: use the & operator or clone s1.
+To fix the code above we have two options: use the `&` operator or clone `s1`.
 
 ### Option 1: give s2 a view of s1
 
-In the code below, note the important & prepending s1:
+In the code below, note the important `&` prepending `s1`:
 
 ```
 pub fn main() {
@@ -89,11 +89,11 @@ pub fn main() {
 }
 ```
 
-If we want another variable to “view” the value (i.e. get read-only access), we use the & operator.
+If we want another variable to “view” the value (i.e. get read-only access), we use the `&` operator.
 
-**To give another variable or function a view of an owned variable, we prepend it with** **&****.**
+**To give another variable or function a view of an owned variable, we prepend it with `&`.**
 
-It may be helpful to think of & as “view only” mode for a non-copy type. The technical word for what we are calling “view only” is **borrowing**.
+It may be helpful to think of `&` as “view only” mode for a non-copy type. The technical word for what we are calling “view only” is **borrowing**.
 
 ### Option 2: clone s1
 
@@ -110,7 +110,7 @@ fn main() {
 
 The code above will print “hello” and then “hello world” as expected.
 
-If we add another variable y that views message however, the code will no longer compile:
+If we add another variable `y` that views message however, the code will no longer compile:
 
 ```
 // Does not compile
@@ -162,7 +162,7 @@ println!("{}", s2);
 
 ## The mut keyword
 
-By default, all variables are immutable in Rust unless the mut keyword is specified.
+By default, all variables are immutable in Rust unless the `mut` keyword is specified.
 
 The following code will not compile:
 
@@ -179,7 +179,7 @@ If we try to compile the code above we will get the following error:
 
 ![Rust mutability compilation error](https://static.wixstatic.com/media/935a00_9f8e31ed1b7c4262bc1aad799e83067a~mv2.png/v1/fill/w_740,h_225,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_9f8e31ed1b7c4262bc1aad799e83067a~mv2.png)
 
-Fortunately, if you forget to include the mut keyword, the compiler is usually smart enough to point out the mistake clearly. The following code inserts the mut keyword enabling the code to compile:
+Fortunately, if you forget to include the `mut` keyword, the compiler is usually smart enough to point out the mistake clearly. The following code inserts the mut keyword enabling the code to compile:
 
 ```
 pub fn main() {
@@ -192,9 +192,9 @@ pub fn main() {
 
 ## Generics in Rust: the < > syntax
 
-Let’s consider a function that takes a value with an *arbitrary type* and returns a struct with a field foo containing that value. Rather than writing a bunch of functions for every possible type, we can use a *generic*.
+Let’s consider a function that takes a value with an *arbitrary type* and returns a struct with a field `foo` containing that value. Rather than writing a bunch of functions for every possible type, we can use a *generic*.
 
-The example struct below can be an i32 or a bool.
+The example struct below can be an `i32` or a `bool`.
 
 ```
 // derive the debug trait so we can print the struct to the console
@@ -250,7 +250,7 @@ The output of max() is not an integer due to the corner case that the vector v m
 
 To handle this corner case, Rust returns an Option instead. An Option is an enum which can contain either the expected value, or a special value that indicates “nothing was there.”
 
-To turn an Option into the underlying type, we use unwrap(). unwrap() will cause a panic if we received “nothing”, so we should only use it in situations where we want the panic to occur or we are sure we won’t get a empty value.
+To turn an Option into the underlying type, we use `unwrap()`. `unwrap()` will cause a panic if we received “nothing”, so we should only use it in situations where we want the panic to occur or we are sure we won’t get a empty value.
 
 To make the code work as expected, we can do the following:
 
@@ -291,11 +291,11 @@ Using the  *operator on non-copy types is a complicated subject. For now, all yo
 
 ## Result vs Option in Rust
 
-An option is used when we might receive something “empty.” A Result (the same Result Anchor programs have been returning) is used when we might receive an error.
+An option is used when we might receive something “empty.” A `Result` (the same `Result` Anchor programs have been returning) is used when we might receive an error.
 
 ### Result Enum
 
-The Result<T, E> enum in Rust is used when a function's operation may either succeed and return a value of type T (a generic type) or fail and return an error of type E (generic error type). It is designed to handle operations that can result in either a successful outcome or an error condition.
+The `Result<T, E>` enum in Rust is used when a function's operation may either succeed and return a value of type T (a generic type) or fail and return an error of type E (generic error type). It is designed to handle operations that can result in either a successful outcome or an error condition.
 
 ```
 enum Result<T, E> {
@@ -308,9 +308,9 @@ In Rust, the ? operator is used for the Result<T, E> enum, while the unwrap() is
 
 ## The ? operator
 
-The ? operator can only be used in functions that return a Result as it is syntactic sugar for returning either and Err or Ok.
+The ? operator can only be used in functions that return a `Result` as it is syntactic sugar for returning either and `Err` or `Ok`.
 
-The ? operator is used to extract data from the Result<T, E> enum and return the OK(T) variant if the function execution is successful or bubble up an error Err(E) if there is an error. The unwrap() method works the same way but for both Result<T, E> and Option<T> enums, however, it should be used cautiously due to its potential for crashing the program if an error occurs.
+The ? operator is used to extract data from the `Result<T, E>` enum and return the `OK(T)` variant if the function execution is successful or bubble up an error `Err(E)` if there is an error. The `unwrap()` method works the same way but for both `Result<T, E>` and `Option<T>` enums, however, it should be used cautiously due to its potential for crashing the program if an error occurs.
 
 Now, consider the following code below:
 
@@ -342,7 +342,7 @@ pub fn decode(_accounts: Context<Initialize>, encoded_data: Vec<u8>) -> Result<P
 }
 ```
 
-The try_to_vec() method encodes a struct to a byte vector and returns a Result<T, E> enum where T is the byte vector, while the unwrap() method is used to extract the value of the byte vector from OK(T). This will crash the program if the method fails to convert the struct to a byte vector.
+The `try_to_vec()` method encodes a struct to a byte vector and returns a `Result<T, E>` enum where T is the byte vector, while the `unwrap()` method is used to extract the value of the byte vector from `OK(T)`. This will crash the program if the method fails to convert the struct to a byte vector.
 
 ## Learn More with RareSkills
 

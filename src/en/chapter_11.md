@@ -21,7 +21,7 @@ We assume you already know what they do, but they are explained in the [Solidity
 
 ## block.timestamp in Solana
 
-By utilizing the unix_timestamp field within the [Clock sysvar](https://docs.solana.com/developing/runtime-facilities/sysvars), we can access the block timestamp Solana.
+By utilizing the `unix_timestamp` field within the [Clock sysvar](https://docs.solana.com/developing/runtime-facilities/sysvars), we can access the block timestamp Solana.
 
 First we initialize a new Anchor project:
 
@@ -49,11 +49,11 @@ Anchor’s prelude module contains the Clock struct, which is automatically impo
 use anchor_lang::prelude::*;
 ```
 
-Somewhat confusingly, the type returned by unix_timestamp is an i64, not a u64 meaning it supports negative numbers even though time cannot be negative. Time deltas however can be negative.
+Somewhat confusingly, the type returned by `unix_timestamp` is an `i64`, not a `u64` meaning it supports negative numbers even though time cannot be negative. Time deltas however can be negative.
 
 ### Getting the day of the week
 
-Now let’s create a program that tells us the current day of the week using the unix_timestamp from the Clock sysvar.
+Now let’s create a program that tells us the current day of the week using the `unix_timestamp` from the Clock sysvar.
 
 The [chrono](https://docs.rs/chrono/latest/chrono/) crate provides functionality for operations on dates and times in Rust.
 
@@ -96,7 +96,7 @@ pub fn get_day_of_the_week(
 }
 ```
 
-We pass the current unix timestamp we get from the Clock sysvar as an argument to the from_timestamp_opt function which returns a NaiveDateTime struct containing a date and time. Then we call the weekday method to get the current weekday based on the timestamp we passed.
+We pass the current unix timestamp we get from the Clock sysvar as an argument to the `from_timestamp_opt` function which returns a `NaiveDateTime` struct containing a date and time. Then we call the weekday method to get the current weekday based on the timestamp we passed.
 
 And update our test:
 
@@ -129,7 +129,7 @@ We include this section for completeness, but this will soon be deprecated.
 
 This section can be skipped with no consequence for the uninterested reader.
 
-Solana has a [RecentBlockhashes sysvar](https://docs.rs/solana-program/1.17.2/solana_program/sysvar/recent_blockhashes/struct.RecentBlockhashes.html) that holds active recent block hashes as well as their associated fee calculators. However, this sysvar has been [deprecated](https://docs.rs/solana-program/1.17.3/src/solana_program/sysvar/recent_blockhashes.rs.html) and will not be supported in future Solana releases. The RecentBlockhashes sysvar does not provide a get method like the Clock sysvar does. However, sysvars lacking this method can be accessed using sysvar_name::from_account_info.
+Solana has a [RecentBlockhashes sysvar](https://docs.rs/solana-program/1.17.2/solana_program/sysvar/recent_blockhashes/struct.RecentBlockhashes.html) that holds active recent block hashes as well as their associated fee calculators. However, this sysvar has been [deprecated](https://docs.rs/solana-program/1.17.3/src/solana_program/sysvar/recent_blockhashes.rs.html) and will not be supported in future Solana releases. The RecentBlockhashes sysvar does not provide a get method like the Clock sysvar does. However, sysvars lacking this method can be accessed using `sysvar_name::from_account_info`.
 
 We will also introduce some new syntax which will be explained at a later date. For now, please treat it as boilerplate:
 

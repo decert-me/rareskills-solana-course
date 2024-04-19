@@ -6,9 +6,9 @@ Updated: Feb 29
 
 In Solana, sysvars are read-only system accounts that give Solana programs access to the blockchain state as well as network information. They are similar to Ethereum global variables, which also enable smart contracts to access network or blockchain state information, but they have unique public addresses like the Ethereum precompiles.
 
-In Anchor programs, you can access sysvars in two ways: either by using the anchor’s get method wrapper, or by treating it as an account in your #[Derive(Accounts)], using its public address.
+In Anchor programs, you can access sysvars in two ways: either by using the anchor’s get method wrapper, or by treating it as an account in your `#[Derive(Accounts)]`, using its public address.
 
-Not all sysvars support the get method, and some are deprecated (information on deprecation will be specified in this guide). For those sysvars that don't have a get method, we will access them using their public address.
+Not all sysvars support the `get` method, and some are deprecated (information on deprecation will be specified in this guide). For those sysvars that don't have a `get` method, we will access them using their public address.
 
 - **Clock**: Used for time-related operations like getting the current time or slot number.
 - **EpochSchedule**: Contains information about epoch scheduling, including the epoch for a particular slot.
@@ -119,7 +119,7 @@ From the log, we can observe that the EpochSchedule sysvar contains the followin
 - **warmup** highlighted in purple is a boolean that indicates whether Solana is in the warm-up phase. During this phase, epochs start smaller and gradually increase in size. This helps the network start smoothly after a reset or during its early days.
 - **first_normal_epoch** highlighted in orange identifies the first epoch that can have its slot count, and first_normal_slot highlighted in blue is the slot that starts this epoch. In this case both are 0 (*zero*).
 
-The reason we see the first_normal_epoch and first_normal_slot being 0 is because the test validator hasn’t been running for two days. If we were to run this command on the mainnet (at time of writing), we would expect to see the first_normal_epoch being 576 and the first_normal_slot being 248,832,000.
+The reason we see the `first_normal_epoch` and `first_normal_slot` being 0 is because the test validator hasn’t been running for two days. If we were to run this command on the mainnet (at time of writing), we would expect to see the `first_normal_epoch` being 576 and the `first_normal_slot` being 248,832,000.
 
 ![Solana recent epoch](https://static.wixstatic.com/media/935a00_97b5517e14cb4e7ea783b18a25ed7e4d~mv2.png/v1/fill/w_740,h_401,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_97b5517e14cb4e7ea783b18a25ed7e4d~mv2.png)
 
@@ -175,7 +175,7 @@ We will access this sysvar using its public address
 
 **SysvarStakeHistory1111111111111111111111111**.
 
-First, we modify the Initialize account struct in our project as follows:
+First, we modify the `Initialize` account struct in our project as follows:
 
 ```
 #[derive(Accounts)]
@@ -185,9 +185,9 @@ pub struct Initialize<'info> {
 }
 ```
 
-We ask the reader to treat the new syntax as boilerplate for now. The /// CHECK: and AccountInfo will be explained in a later tutorial. For the curious, the <’info> token is a [Rust lifetime](https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/lifetimes.html).
+We ask the reader to treat the new syntax as boilerplate for now. The `/// CHECK:` and `AccountInfo` will be explained in a later tutorial. For the curious, the <`'info`> token is a [Rust lifetime](https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/lifetimes.html).
 
-Next, we add the following code to the initialize function.
+Next, we add the following code to the `initialize` function.
 
 (The reference to the sysvar account will be passed in as part of the transaction in our test. The previous examples had them built into the Anchor framework).
 
@@ -214,7 +214,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 }
 ```
 
-We are not importing the StakeHistory sysvar because we can access it through the use of the super::*; import. If this is not the case, we will import the specific sysvar.
+We are not importing the StakeHistory sysvar because we can access it through the use of the `super::*; import`. If this is not the case, we will import the specific sysvar.
 
 And update the test:
 
@@ -247,7 +247,7 @@ Now, we re-run our test:
 
 Just as mentioned earlier, it returns empty data for our local validator.
 
-We can also obtain the public key of the StakeHistory sysvar from the Anchor Typescript client by replacing ou**r** StakeHistory_PublicKey variable with anchor.web3.SYSVAR_STAKE_HISTORY_PUBKEY.
+We can also obtain the public key of the StakeHistory sysvar from the Anchor Typescript client by replacing our `StakeHistory_PublicKey` variable with anchor.web3.`SYSVAR_STAKE_HISTORY_PUBKEY`.
 
 ### RecentBlockhashes sysvar
 
@@ -272,7 +272,7 @@ pub mod sysvars {
 }
 ```
 
-Next, we add the Instruction sysvar account to the Initialize account struct:
+Next, we add the Instruction sysvar account to the `Initialize` account struct:
 
 ```
 #[derive(Accounts)]
@@ -286,7 +286,7 @@ pub struct Initialize<'info> {
 }
 ```
 
-Now, modify the initialize function to accept a number: u32 parameter and add the following code to the initialize function.
+Now, modify the initialize function to accept a `number: u32` parameter and add the following code to the initialize function.
 
 ```
 pub fn initialize(ctx: Context<Initialize>, number: u32) -> Result<()> {
@@ -313,7 +313,7 @@ pub fn initialize(ctx: Context<Initialize>, number: u32) -> Result<()> {
 }
 ```
 
-In contrast to the previous sysvar, where we used <sysvar_name>::from_account_info() to retrieve the sysvar, in this case, we utilize the load_instruction_at_checked() method from the Instruction sysvar. This method requires the instruction data index (0 in this case) and the Instruction sysvar account as parameters.
+In contrast to the previous sysvar, where we used `<sysvar_name>::from_account_info()` to retrieve the sysvar, in this case, we utilize the `load_instruction_at_checked()` method from the Instruction sysvar. This method requires the instruction data index (0 in this case) and the Instruction sysvar account as parameters.
 
 Update the test:
 

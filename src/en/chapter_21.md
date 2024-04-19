@@ -55,15 +55,15 @@ describe("balance", () => {
 });
 ```
 
-Some items in this example differ from earlier tutorials, particularly the use of UncheckedAccount.
+Some items in this example differ from earlier tutorials, particularly the use of `UncheckedAccount`.
 
 ## What is UncheckedAccount in Solana Anchor?
 
 The UncheckedAccount type tells to Anchor to not check if the account being read is owned by the program.
 
-Note that the account we passed through the Context struct is not an account that this program initialized, hence the program does not own it.
+Note that the account we passed through the `Context` struct is not an account that this program initialized, hence the program does not own it.
 
-When Anchor reads an account of type Account in the #[derive(Accounts)] it will check (behind the scenes) if that account is owned by that program. If not, the execution will halt.
+When Anchor reads an account of type `Account` in the `#[derive(Accounts)]` it will check (behind the scenes) if that account is owned by that program. If not, the execution will halt.
 
 This serves as an important safety check.
 
@@ -73,23 +73,23 @@ For example, if the program is a bank, and the account is storing how much balan
 
 To pull off this hack, however, the user would have to create the false account in a separate transaction, then pass it to the Solana program. However, the Anchor framework checks behind the scenes to see if the account is not owned by the program, and rejects reading the account.
 
-UncheckedAccount bypasses this safety check.
+`UncheckedAccount` bypasses this safety check.
 
-**Important:** AccountInfo and UncheckedAccount are aliases for each other and AccountInfo has the same security considerations.
+**Important:** `AccountInfo` and `UncheckedAccount` are aliases for each other and `AccountInfo` has the same security considerations.
 
 In our case, we are passing in accounts that are certainly not owned by the program — we want to check the balance of an *arbitrary* account. Therefore, we must be certain that no critical logic can be tampered with with this safety check removed.
 
 In our case, we are just logging the balance to the console, but most real-world use cases will have more complex logic.
 
-### What is /// CHECK:?
+### What is `/// CHECK:`?
 
 Because of the danger of using UncheckedAccount, Anchor forces you to include this comment to encourage you not to ignore the safety considerations.
 
-**Exercise:** remove the /// Check: comment and run anchor build you should see the build halt and ask you to add the comment back with an explanation for why an Unchecked Account is safe. That is, reading in an untrusted account could be dangerous, Anchor wants to make sure you are not doing anything critical with the data in the account.
+**Exercise:** remove the `/// Check`: comment and run `anchor build` you should see the build halt and ask you to add the comment back with an explanation for why an Unchecked Account is safe. That is, reading in an untrusted account could be dangerous, Anchor wants to make sure you are not doing anything critical with the data in the account.
 
-## Why is there no #[account] struct in the program?
+## Why is there no `#[account]` struct in the program?
 
-The #[account] struct tells Anchor how to deserialize an account holding data. For example, an account struct that looks like the following will inform Anchor that it should deserialize the data stored in the account into a single u64:
+The `#[account]` struct tells Anchor how to deserialize an account holding data. For example, an account struct that looks like the following will inform Anchor that it should deserialize the data stored in the account into a single `u64`:
 
 ```
 #[account]
@@ -98,7 +98,7 @@ pub struct Counter {
 }
 ```
 
-In our case however, we are not reading the data from the account — we are only reading the balance. This is similar to how this similar to how we can read the balance of an Ethereum address but not read any of it’s code. Since we do *not* want to deserialize the data, we don’t supply an #[account] struct.
+In our case however, we are not reading the data from the account — we are only reading the balance. This is similar to how this similar to how we can read the balance of an Ethereum address but not read any of it’s code. Since we do *not* want to deserialize the data, we don’t supply an `#[account]` struct.
 
 ## Not all the SOL in an account is spendable
 

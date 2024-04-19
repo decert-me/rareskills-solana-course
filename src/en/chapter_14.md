@@ -2,13 +2,13 @@
 
 ![tx.origin msg.sender onlyOwner in Solana](https://static.wixstatic.com/media/935a00_5b75852d244b42ffa7e441959fac0b18~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_5b75852d244b42ffa7e441959fac0b18~mv2.jpg)
 
-In Solidity, the msg.sender is a global variable that represents the address that called or initiated a function call on a smart contract. The global variable tx.origin is the wallet that signed the transaction.
+In Solidity, the `msg.sender` is a global variable that represents the address that called or initiated a function call on a smart contract. The global variable `tx.origin` is the wallet that signed the transaction.
 
-In Solana, there is no equivalent to msg.sender.
+In Solana, there is no equivalent to `msg.sender`.
 
-There is an equivalent to tx.origin but you should be aware that Solana transactions can have multiple signers, so we could think of it as having “multiple tx.origins”.
+There is an equivalent to `tx.origin` but you should be aware that Solana transactions can have multiple signers, so we could think of it as having “multiple tx.origins”.
 
-To get the “tx.origin” address in Solana, you need to set it up by adding Signer account to the function context and pass the caller’s account to it when calling the function.
+To get the “`tx.origin`” address in Solana, you need to set it up by adding Signer account to the function context and pass the caller’s account to it when calling the function.
 
 Let’s see an example of how we can access the transaction signer’s address in Solana:
 
@@ -39,11 +39,11 @@ pub struct Initialize<'info> {
 }
 ```
 
-From the above code snippet, the Signer<'info> is used to verify that the signer1 account in the Initialize<’info> account struct has signed the transaction.
+From the above code snippet, the `Signer<'info>` is used to verify that the `signer1` account in the `Initialize<'info>` account struct has signed the transaction.
 
-In the initialize function, the signer1 account is mutably referenced from the context and assigned to the_signer1 variable.
+In the `initialize` function, the signer1 account is mutably referenced from the context and assigned to `the_signer1` variable.
 
-Then lastly, we logged the signer1’s pubkey (address) using the msg! macro and passing in *the_signer1.key , which dereferences and access the key field or method on the actual value being pointed to by the_signer1**.**
+Then lastly, we logged the signer1’s pubkey (address) using the `msg!` macro and passing in `*the_signer1.key` , which dereferences and access the `key` field or method on the actual value being pointed to by `the_signer1`**.**
 
 Next is to write a test for the above program:
 
@@ -65,7 +65,7 @@ describe("Day14", () => {
 });
 ```
 
-In the test, we passed our wallet account as signer to the signer1 account, then called the initialize function. Following that, we logged the wallet account on the console to verify its consistency with the one in our program.
+In the test, we passed our wallet account as signer to the `signer1` account, then called the initialize function. Following that, we logged the wallet account on the console to verify its consistency with the one in our program.
 
 **Exercise:** What did you notice from the outputs in **shell_1** (commands terminal) and **shell_3** (logs terminal) after running the test?
 
@@ -102,7 +102,7 @@ pub struct Initialize<'info> {
 }
 ```
 
-The above example is somewhat the same as the single signer example, with one notable difference. In this case, we added another Signer account (signer2) to the Initialize struct and also logged both signers pubkey in the **initialize** function.
+The above example is somewhat the same as the single signer example, with one notable difference. In this case, we added another Signer account (`signer2`) to the `Initialize` struct and also logged both signers pubkey in the **initialize** function.
 
 Calling the **initialize** function with multiple signers is different, compared to a single signer. The test below shows how to invoke a function with multiple signers:
 
@@ -133,19 +133,19 @@ describe("Day14", () => {
 });
 ```
 
-So what is different about the above test? First is the signers() method, which takes in an array of signers which signs a transaction as an argument. But we only have one signer in the array, instead of two. Anchor automatically passes the wallet account in the provider as a signer, so we don’t need to add it to the signers array again.
+So what is different about the above test? First is the `signers()` method, which takes in an array of signers which signs a transaction as an argument. But we only have one signer in the array, instead of two. Anchor automatically passes the wallet account in the provider as a signer, so we don’t need to add it to the signers array again.
 
 ### Generating random addresses to test with
 
-The second change is the myKeypair variable, which stores the Keypair (*A publickey and corresponding private key for accessing an account*) that is randomly generated by the anchor.web3 module. In the test, we assigned the Keypair’s (*which is stored in the* *myKeypair* *variable*) publickey to the signer2 account, that is why it is passed as argument in the .signers([myKeypair]) method.
+The second change is the `myKeypair` variable, which stores the Keypair (*A publickey and corresponding private key for accessing an account*) that is randomly generated by the `anchor.web3` module. In the test, we assigned the Keypair’s (*which is stored in the* *`myKeypair`* *variable*) publickey to the `signer2` account, that is why it is passed as argument in the `.signers([myKeypair])` method.
 
-Run the test multiple times, you will notice that signer1 pubkey does not change but signer2 pubkey changes. This is because the wallet account assigned to the signer1 account (in the test) is from the provider, which is also the Solana wallet account in your local machine and the account assigned to signer2 is randomly generated each time you run anchor test —skip-local-validator.
+Run the test multiple times, you will notice that `signer1` pubkey does not change but `signer2` pubkey changes. This is because the wallet account assigned to the `signer1` account (in the test) is from the provider, which is also the Solana wallet account in your local machine and the account assigned to `signer2` is randomly generated each time you run anchor test `—skip-local-validator`.
 
 **Exercise:** Create another function (you can call it whatever) that requires three signers (the provider wallet account and two randomly generated accounts) and write a test for it.
 
 ## onlyOwner
 
-This is a common pattern used in Solidity to restrict a function’s access to only the owner of the contract. Using #[access_control] attribute from Anchor, we can also implement the only owner pattern, that is, restrict a function’s access in our Solana program to a PubKey (owner’s address).
+This is a common pattern used in Solidity to restrict a function’s access to only the owner of the contract. Using `#[access_control]` attribute from Anchor, we can also implement the only owner pattern, that is, restrict a function’s access in our Solana program to a PubKey (owner’s address).
 
 Here's an example of how to implement "onlyOwner" functionality in Solana:
 
@@ -194,9 +194,9 @@ pub enum OnlyOwnerError {
 }
 ```
 
-In the context of the code above, the OWNER variable stores the pubkey (address) associated with my local Solana wallet. Be sure to replace the OWNER variable with your wallet's pubkey before testing. You can easily retrieve your pubkey by running the solana address command.
+In the context of the code above, the `OWNER` variable stores the pubkey (address) associated with my local Solana wallet. Be sure to replace the OWNER variable with your wallet's pubkey before testing. You can easily retrieve your pubkey by running the `solana address` command.
 
-The #[access_control] attribute executes the given access control method before running the main instruction. When the initialize function is called, the access control method (check) is executed prior to the initialize function. The check method accepts a referenced context as argument, then it checks if the signer of the transaction equals the value of the OWNER variable. The require_keys_eq! macro ensures two pubkeys values are equal, if true, it executes the initialize function, else, it reverts with the NotOwner custom error.
+The `#[access_control]` attribute executes the given access control method before running the main instruction. When the initialize function is called, the access control method (`check`) is executed prior to the initialize function. The `check` method accepts a referenced context as argument, then it checks if the signer of the transaction equals the value of the `OWNER` variable. The` require_keys_eq!` macro ensures two pubkeys values are equal, if true, it executes the initialize function, else, it reverts with the `NotOwner` custom error.
 
 ### Testing the onlyOwner functionality — happy case
 
@@ -227,9 +227,9 @@ describe("day14", () => {
 });
 ```
 
-We called the initialize function and passed the wallet account (*local Solana wallet account*) in the provider to the signerAccount which has the Signer<’info> struct, to validate that the wallet account actually signed the transaction. Also remember that Anchor secretly signs any transaction using the wallet account in the provider.
+We called the initialize function and passed the wallet account (*local Solana wallet account*) in the provider to the `signerAccount` which has the `Signer<'info>` struct, to validate that the wallet account actually signed the transaction. Also remember that Anchor secretly signs any transaction using the wallet account in the provider.
 
-Run test anchor test --skip-local-validator , if everything was done correctly, the test should pass:
+Run test anchor test `--skip-local-validator` , if everything was done correctly, the test should pass:
 
 ![Anchor test passing](https://static.wixstatic.com/media/935a00_a6f122cf3fdf49ac98dbb04d90495aa4~mv2.png/v1/fill/w_740,h_187,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_a6f122cf3fdf49ac98dbb04d90495aa4~mv2.png)
 

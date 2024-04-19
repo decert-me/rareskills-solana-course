@@ -6,7 +6,7 @@ The IDL (Interface Definition Language) is a JSON file that describes how to int
 
 There is nothing special about the function called “initialize” — it’s a name Anchor picks. What we will learn in this tutorial is how the typescript unit tests are able to “find” the appropriate function.
 
-Let’s create a new project called anchor-function-tutorial and change the name in the initialize function to boaty_mc_boatface, keeping everything else the same.
+Let’s create a new project called `anchor-function-tutorial` and change the name in the initialize function to `boaty_mc_boatface`, keeping everything else the same.
 
 ```
 pub fn boaty_mc_boatface(ctx: Context<Initialize>) -> Result<()> {
@@ -24,7 +24,7 @@ it("Call boaty mcboatface", async () => {
 });
 ```
 
-Now run the tests with anchor test --skip-local-validator
+Now run the tests with `anchor test --skip-local-validator`
 
 It runs as expected. So how did this sorcery work?
 
@@ -32,7 +32,7 @@ It runs as expected. So how did this sorcery work?
 
 When Anchor builds a Solana program, it creates an IDL (Interface Definition Language).
 
-This is stored in target/idl/anchor_function_tutorial.json. This file is called anchor_function_tutorial.json because anchor_function_tutorial is the name of the program. Note that anchor converted the dashes to underscores!
+This is stored in `target/idl/anchor_function_tutorial.json`. This file is called `anchor_function_tutorial`.json because `anchor_function_tutorial` is the name of the program. Note that anchor converted the dashes to underscores!
 
 Let’s open it.
 
@@ -52,7 +52,7 @@ Let’s open it.
 
 The list of “instructions” is the public facing functions that the program supports, roughly equivalent to the external and public functions on an Ethereum contract. **An IDL file in Solana plays a similar role as the ABI file in Solidity, specifying how to interact with the program’s/contract’s.**
 
-We saw earlier that our function didn’t take any arguments, so that’s why the args list is empty. We’ll explain later what “accounts” is.
+We saw earlier that our function didn’t take any arguments, so that’s why the `args` list is empty. We’ll explain later what “accounts” is.
 
 One thing that stands out: functions in Rust are snake_cased, but Anchor formats them in JavaScript land as camelCased. This is to respect the conventions of the languages: Rust tends to use snake case, and JavaScript typically uses camel case.
 
@@ -62,7 +62,7 @@ When we run the test, we expect it to pass, which means the test is correctly ca
 
 ![solana test passes](https://static.wixstatic.com/media/935a00_dedb6e369b14419880e19969e2bdd4d6~mv2.png/v1/fill/w_740,h_211,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_dedb6e369b14419880e19969e2bdd4d6~mv2.png)
 
-**Exercise:** Add an argument to the boaty_mc_boatface function to receive a u64. Run anchor build again. Then open up the target/idl/anchor_function_tutorial.json file again. How does it change?
+**Exercise:** Add an argument to the boaty_mc_boatface function to receive a u64. Run `anchor build` again. Then open up the `target/idl/anchor_function_tutorial.json` file again. How does it change?
 
 Now let’s start to create a Solana program that has functions for basic addition and subtraction which print the result. Solana functions cannot return values the way Solidity does, so we will have to print them. (Solana has alternative ways of passing values we will discuss later). Let’s create two functions like so:
 
@@ -96,11 +96,11 @@ it("Should sub", async () => {
 });
 ```
 
-**Exercise:** Implement similar functions for mul, div, and mod, and write a unit test to trigger each one.
+**Exercise:** Implement similar functions for `mul`, `div`, and `mod`, and write a unit test to trigger each one.
 
-### What about the Initialize struct?
+### What about the `Initialize` struct?
 
-Now there is another sneaky thing going on here. We’ve left the Initialize struct untouched and are reusing it between functions. Again, the name does not matter. Let’s change the struct name to Empty and re-run the test.
+Now there is another sneaky thing going on here. We’ve left the `Initialize` struct untouched and are reusing it between functions. Again, the name does not matter. Let’s change the struct name to `Empty` and re-run the test.
 
 ```
 //...
@@ -117,25 +117,25 @@ Now there is another sneaky thing going on here. We’ve left the Initialize str
 pub struct Empty {}
 ```
 
-Again, the name Empty is totally arbitrary here.
+Again, the name `Empty` is totally arbitrary here.
 
-**Exercise:** Change the struct name Empty to BoatyMcBoatface and re-run the tests.
+**Exercise:** Change the struct name `Empty` to `BoatyMcBoatface` and re-run the tests.
 
-### What is #[derive(Accounts)] struct?
+### What is `#[derive(Accounts)]` struct?
 
 This # syntax is a [Rust attribute](https://doc.rust-lang.org/reference/attributes.html) defined by the Anchor framework. We will explain this further in a later tutorial. For now, we want to pay attention to the accounts key in the IDL and how it relates to the struct defined in the program.
 
 ### Accounts IDL key
 
-Below we screenshot the IDL of our program above. So we can see the relationship between the “Accounts” in that Rust Attribute #[derive(Accounts)] and the “accounts” key in the IDL:
+Below we screenshot the IDL of our program above. So we can see the relationship between the “Accounts” in that Rust Attribute `#[derive(Accounts)]` and the “accounts” key in the IDL:
 
 ![solana anchor idl](https://static.wixstatic.com/media/935a00_1a2d5c48f8ff46f1836f3a9704e8e1df~mv2.png/v1/fill/w_740,h_517,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_1a2d5c48f8ff46f1836f3a9704e8e1df~mv2.png)
 
-In our example, the accounts key in the JSON IDL above marked by the purple arrow is empty. But that is not the case for most useful Solana transactions as we will learn later.
+In our example, the `accounts` key in the JSON IDL above marked by the purple arrow is empty. But that is not the case for most useful Solana transactions as we will learn later.
 
-Because our account struct for BoatyMcBoatface is empty, the accounts list in the IDL is empty also.
+Because our account struct for `BoatyMcBoatface` is empty, the accounts list in the IDL is empty also.
 
-Now let’s see what happens when the struct is non-empty. Copy the code below and replace the contents of [lib.rs](http://lib.rs/).
+Now let’s see what happens when the struct is non-empty. Copy the code below and replace the contents of [`lib.rs`](http://lib.rs/).
 
 ```
 use anchor_lang::prelude::*;
@@ -158,7 +158,7 @@ pub struct NonEmptyAccountExample<'info> {
 }
 ```
 
-Now run anchor build - let’s see what we get back in the new IDL.
+Now run `anchor build` - let’s see what we get back in the new IDL.
 
 ```
 {
@@ -190,7 +190,7 @@ Now run anchor build - let’s see what we get back in the new IDL.
 
 Note that “accounts” is no longer empty and is populated with the fields from the struct: “signer” and “anotherSigner” (note that another_signer got transformed from snake case into camel case). The IDL has been updated to match the struct we just changed, specifically with the number of accounts we added.
 
-We’ll dive further into the “Signer” in an upcoming tutorial, but for now you can think of it as analogous to tx.origin in Ethereum.
+We’ll dive further into the “Signer” in an upcoming tutorial, but for now you can think of it as analogous to `tx.origin` in Ethereum.
 
 ### A second example of a program and an IDL.
 
@@ -224,26 +224,26 @@ pub struct NonEmptyAccountExample<'info> {
 pub struct Empty {}
 ```
 
-Now build it with anchor build
+Now build it with `anchor build`
 
-Let’s look again at the IDL file target/idl/anchor_function_tutorial.json and place these files side by side:
+Let’s look again at the IDL file `target/idl/anchor_function_tutorial.json` and place these files side by side:
 
 ![idl side by side with solana program](https://static.wixstatic.com/media/935a00_4e4349630f9f4731b99b550b35ba1fde~mv2.png/v1/fill/w_740,h_413,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_4e4349630f9f4731b99b550b35ba1fde~mv2.png)
 
 Can you see the relationship between the IDL file and the program above?
 
-The function function_a has no arguments and this shows in the IDL as an empty array under the args key.
+The function `function_a` has no arguments and this shows in the IDL as an empty array under the `args` key.
 
-It's Context takes the NonEmptyAccountExample struct. This struct NonEmptyAccountExample has two signer fields: signer and another_signer. Note that these are repeated as elements in the account key in the IDL for function_a. You can see that Anchor translated Rust's snake case to camel case in the IDL.
+It's `Context` takes the `NonEmptyAccountExample` struct. This struct `NonEmptyAccountExample` has two signer fields: `signer` and `another_signer`. Note that these are repeated as elements in the account key in the IDL for `function_a`. You can see that Anchor translated Rust's snake case to camel case in the IDL.
 
-The function function_b takes an u64 argument. Its context struct is empty, so the accounts key in IDL for function_b is an empty array.
+The function `function_b` takes an u64 argument. Its context struct is empty, so the `accounts` key in IDL for `function_b` is an empty array.
 
-In general, we expect the array of items in the IDL's accounts key to match the keys of the account struct that the function takes in its ctx argument.
+In general, we expect the array of items in the IDL's `accounts` key to match the keys of the account struct that the function takes in its `ctx` argument.
 
 ### Summary
 
 In this chapter:
 
 - We learned Solana uses an IDL (iInterface Definition Language) to show how to interact with a Solana program and what fields appear in the IDL.
-- We introduced the struct modified by #[derive(Accounts)] and how it relates to function arguments.
+- We introduced the struct modified by `#[derive(Accounts)]` and how it relates to function arguments.
 - Anchor interprets snake_case functions in Rust as camelCase functions in the Typescript tests.

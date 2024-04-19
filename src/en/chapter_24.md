@@ -54,10 +54,10 @@ pub struct MyStorage {
 
 However, there is an important change in the client code:
 
-- For testing purposes, we create a new wallet called newKeypair. This is different from the one Anchor provides by default.
+- For testing purposes, we create a new wallet called `newKeypair`. This is different from the one Anchor provides by default.
 - We airdrop that new wallet 1 SOL so it can pay for transactions.
-- Pay attention to the comment // THIS MUST BE EXPLICITLY SPECIFIED. We are passing the publicKey of that wallet for the Signer field. When we use the default signer built into Anchor, Anchor passes this in the background for us. However, when we use a different wallet, we need to provide this explictily.
-- We set the signer to be newKeypair with the .signers([newKeypair]) configuration.
+- Pay attention to the comment `// THIS MUST BE EXPLICITLY SPECIFIED`. We are passing the publicKey of that wallet for the `Signer` field. When we use the default signer built into Anchor, Anchor passes this in the background for us. However, when we use a different wallet, we need to provide this explictily.
+- We set the signer to be `newKeypair` with the `.signers([newKeypair])` configuration.
 
 We will explain after this code snippet why we are (seemingly) specifying the signer twice:
 
@@ -101,9 +101,9 @@ describe("other_write", () => {
 });
 ```
 
-It is not required that the key signer be called signer.
+It is not required that the key `signer` be called `signer`.
 
-**Exercise:** In the Rust code, change payer = signer to payer = fren and pub signer: Signer<'info>, to pub fren: Signer<'info>, and change signer: newKeypair.publicKey to fren: newKeypair.publicKey in the test. The initialization should succeed and the test should pass.
+**Exercise:** In the Rust code, change `payer = signer` to `payer = fren` and `pub signer: Signer<'info>`, to `pub fren: Signer<'info>`, and change `signer: newKeypair.publicKey` to `fren: newKeypair.publicKey` in the test. The initialization should succeed and the test should pass.
 
 ## Why does Anchor require specifying the Signer and the publicKey?
 
@@ -111,17 +111,17 @@ At first it might seem redundant that we are specifying the signer twice, but le
 
 ![Signer type in Anchor](https://static.wixstatic.com/media/935a00_e6738de42e754598bdc0b91d6b161675~mv2.png/v1/fill/w_740,h_686,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_e6738de42e754598bdc0b91d6b161675~mv2.png)
 
-In the red box, we see the fren field specified to be a Signer account. **The** **Signer** **type means Anchor will look at the signature of the transaction and make sure the signature matches the address passed here.**
+In the red box, we see the `fren` field specified to be a Signer account. **The** `Signer` **type means Anchor will look at the signature of the transaction and make sure the signature matches the address passed here.**
 
 We will see later how we can use this to validate the Signer is authorized to conduct certain a transaction.
 
-Anchor has been doing this the whole time behind the scenes, but since we passed in a Signer other than the one Anchor uses by default, we have to be explicit about what account the Signer is.
+Anchor has been doing this the whole time behind the scenes, but since we passed in a `Signer` other than the one Anchor uses by default, we have to be explicit about what account the `Signer` is.
 
 ## Error: unknown signer in Solana Anchor
 
-The unknown signer error occurs when the signer of the transaction does not match the public key passed to Signer.
+The `unknown signer` error occurs when the signer of the transaction does not match the public key passed to `Signer`.
 
-Suppose we modify the test to remove the .signers([newKeypair]) spec. Anchor will use the default signer instead, and the default signer will not match the publicKey of our newKeypair wallet:
+Suppose we modify the test to remove the `.signers([newKeypair])` spec. Anchor will use the default signer instead, and the default signer will not match the `publicKey` of our `newKeypair` wallet:
 
 ![using the default signer with an alternate keypair as the Signer](https://static.wixstatic.com/media/935a00_2b7cffddcb2a490aaea4396ee71a47a1~mv2.png/v1/fill/w_740,h_167,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_2b7cffddcb2a490aaea4396ee71a47a1~mv2.png)
 
@@ -137,9 +137,9 @@ And we will get the following Error: unknown signer:
 
 ![Error: Unknown Signer](https://static.wixstatic.com/media/935a00_6cffaab9b57f4f40ad296c048769d223~mv2.png/v1/fill/w_740,h_142,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_6cffaab9b57f4f40ad296c048769d223~mv2.png)
 
-Somewhat misleadingly, Anchor isn’t saying the signer is unknown because it wasn’t specified per se. Anchor is able to figure out that if no signer is specified, then it will use the default signer. If we remove both the .signers([newKeypair]) code *and* the fren: newKeypair.publicKey code, then Anchor will use the default signer for both the public key to check against, and the signature of the signer to verify it matches the public key.
+Somewhat misleadingly, Anchor isn’t saying the signer is unknown because it wasn’t specified per se. Anchor is able to figure out that if no signer is specified, then it will use the default signer. If we remove both the `.signers([newKeypair])` code *and* the `fren: newKeypair.publicKey` code, then Anchor will use the default signer for both the public key to check against, and the signature of the signer to verify it matches the public key.
 
-The following code will result in a successful initialization because both the Signer public key and the account that signs the transaction are the Anchor default signer.
+The following code will result in a successful initialization because both the `Signer` public key and the account that signs the transaction are the Anchor default signer.
 
 ![initialize with default signer](https://static.wixstatic.com/media/935a00_f4422a244375428b8b18b9990d7aa1d3~mv2.png/v1/fill/w_433,h_72,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f4422a244375428b8b18b9990d7aa1d3~mv2.png)
 
@@ -149,7 +149,7 @@ The following code will result in a successful initialization because both the S
 
 Below we show an Anchor program with functions to initialize an account and write to it.
 
-This will be familiar from our [Solana counter program tutorial](https://www.rareskills.io/post/solana-counter-program), but pay attention to the small addition marked by the // THIS FIELD MUST BE INCLUDED comment near the bottom:
+This will be familiar from our [Solana counter program tutorial](https://www.rareskills.io/post/solana-counter-program), but pay attention to the small addition marked by the `// THIS FIELD MUST BE INCLUDED` comment near the bottom:
 
 ```
 use anchor_lang::prelude::*;
@@ -202,7 +202,7 @@ pub struct MyStorage {
 }
 ```
 
-The following client code will create a wallet for Alice and Bob and airdrop them 1 SOL each. Alice will initialize the account MyStorage, and Bob will write to it:
+The following client code will create a wallet for Alice and Bob and airdrop them 1 SOL each. Alice will initialize the account `MyStorage`, and Bob will write to it:
 
 ```
 import * as anchor from "@coral-xyz/anchor";
@@ -344,9 +344,9 @@ pub struct Player {
 
 Note that we use the address of the signer (&(signer.as_ref().key().to_bytes())) to derive the address of the account where their points are stored. This behaves like a Solidity [mapping in Solana](https://www.rareskills.io/post/solana-solidity-mapping), where the [Solana “msg.sender / tx.origin”](https://www.rareskills.io/post/msg-sender-solana) is the key.
 
-In the initialize function, the program sets the initial points to 10 and the authority to the signer. The user does not have control over these initial values.
+In the `initialize` function, the program sets the initial points to `10` and the authority to the `signer`. The user does not have control over these initial values.
 
-The transfer_points function uses [Solana Anchor require macros and error code macros](https://www.rareskills.io/post/solana-require-macro) to ensure that 1) the Signer of the transaction is the authority of the account whose balance is getting deducted; and 2) the account has enough points balance to transfer.
+The `transfer_points` function uses [Solana Anchor require macros and error code macros](https://www.rareskills.io/post/solana-require-macro) to ensure that 1) the Signer of the transaction is the authority of the account whose balance is getting deducted; and 2) the account has enough points balance to transfer.
 
 The test codebase should be straightforward to understand. Alice and Bob initialize their accounts, then Alice transfer 5 points to Bob:
 
@@ -416,25 +416,25 @@ describe("points", () => {
 });
 ```
 
-**Exercise:** Create a keypair mallory and try to get mallory to steal points from Alice or Bob by using mallory as the signer in .signers([mallory]). Your attack should fail, but you should try anyway.
+**Exercise:** Create a keypair `mallory` and try to get `mallory` to steal points from Alice or Bob by using `mallory` as the signer in `.signers([mallory])`. Your attack should fail, but you should try anyway.
 
 ## Using Anchor Constraints to replace require! macros
 
-An alternative to writing require!(ctx.accounts.from.authority == ctx.accounts.signer.key(), Errors::SignerIsNotAuthority); is to use an Anchor constraint. The [Anchor account docs](https://docs.rs/anchor-lang/latest/anchor_lang/derive.Accounts.html) give us a list of constraints available to us.
+An alternative to writing `require!(ctx.accounts.from.authority == ctx.accounts.signer.key(), Errors::SignerIsNotAuthority);` is to use an Anchor constraint. The [Anchor account docs](https://docs.rs/anchor-lang/latest/anchor_lang/derive.Accounts.html) give us a list of constraints available to us.
 
-## Anchor has_one constraint
+## Anchor `has_one` constraint
 
-The has_one constraint assumes that there is “shared key” between #[derive(Accounts)] and #[account] and checks that both of those keys have the same value. The best way to demonstrate this is with a picture:
+The `has_one` constraint assumes that there is “shared key” between #[derive(Accounts)] and `#[account]` and checks that both of those keys have the same value. The best way to demonstrate this is with a picture:
 
 ![Anchor has_one constraint](https://static.wixstatic.com/media/935a00_bfee9678192b41db9831e3adc6016eb2~mv2.png/v1/fill/w_605,h_558,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_bfee9678192b41db9831e3adc6016eb2~mv2.png)
 
-Behind the scenes, Anchor will block the transaction if the authority account passed as part of the transaction (as the Signer) is not equal to the authority stored in the account.
+Behind the scenes, Anchor will block the transaction if the `authority` account passed as part of the transaction (as the `Signer`) is not equal to the `authority` stored in the account.
 
-In our implementation above, we used the key authority in the account and signer in the #[derive(Accounts)]. This mismatch of key names will prevent this macro from working, so the code above changes the key signer to authority. Authority is not a special keyword, merely a convention. You could, as an exercise, change all instances of authority to fren and the code will work the same.
+In our implementation above, we used the key `authority` in the account and `signer` in the `#[derive(Accounts)]`. This mismatch of key names will prevent this macro from working, so the code above changes the key `signer` to `authority`. Authority is not a special keyword, merely a convention. You could, as an exercise, change all instances of `authority` to fren and the code will work the same.
 
-## Anchor constraint constraint
+## Anchor `constraint` constraint
 
-We can also replace the macro require!(ctx.accounts.from.points >= amount, Errors::InsufficientPoints); with an Anchor constraint.
+We can also replace the macro `require!(ctx.accounts.from.points >= amount, Errors::InsufficientPoints);` with an Anchor constraint.
 
 The constraint macro allows us to place arbitrary constraints on accounts passed to the transactions and data in the account. In our case, we want to make sure the sender has enough points:
 
@@ -458,11 +458,11 @@ pub struct Player {
 }
 ```
 
-The macro is smart enough to recognize that from is based on the account passed into the from key, and that account has a points field. The amount from the transfer_points function argument must be passed via the instruction macro so the constraint macro can compare amount to the point balance in the account.
+The macro is smart enough to recognize that `from` is based on the account passed into the `from` key, and that account has a `points` field. The `amount` from the `transfer_points` function argument must be passed via the `instruction` macro so the `constraint` macro can compare `amount` to the point balance in the account.
 
 ## Adding custom error messages to Anchor constraints
 
-We can improve the readability of error messages when constraints are violated by adding custom errors, the same custom errors we passed to the require! macros using the @ notation:
+We can improve the readability of error messages when constraints are violated by adding custom errors, the same custom errors we passed to the `require!` macros using the `@` notation:
 
 ```
 #[derive(Accounts)]
@@ -484,9 +484,9 @@ pub struct Player {
 }
 ```
 
-The Errors enum was defined in the Rust code earlier that used them in the require! macros.
+The `Errors` enum was defined in the Rust code earlier that used them in the `require!` macros.
 
-**Exercise:** modify the tests to violate the has_one and constraint macro and observe the error messages.
+**Exercise:** modify the tests to violate the `has_one` and `constraint` macro and observe the error messages.
 
 ## Learn more Solana with RareSkills
 

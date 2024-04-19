@@ -56,7 +56,7 @@ In Ethereum, storage variables are directly coupled to the smart contract. Unles
 
 The way storage is “tied to” a program is via the owner field.
 
-In the image below, we see the account B is owned by the program account A. We know A is a program account because “executable” is set to true. This indicates that the data field of B will be storing data for A:
+In the image below, we see the account B is owned by the program account A. We know A is a program account because “executable” is set to `true`. This indicates that the data field of B will be storing data for A:
 
 ![program storage for Solana](https://static.wixstatic.com/media/935a00_f849336947924da0a21ccb33e978d0ed~mv2.jpg/v1/fill/w_740,h_555,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f849336947924da0a21ccb33e978d0ed~mv2.jpg)
 
@@ -90,13 +90,13 @@ But in Solana programs, particularly Anchor, **all storage, or rather account da
 
 Behind the scenes, Anchor deserializes and serializes account data into structs when we try to read or write the data.
 
-As mentioned above, we need to initialize the Solana account before we can use it, so before we implement the set() function, we need to write the initialize() function.
+As mentioned above, we need to initialize the Solana account before we can use it, so before we implement the `set()` function, we need to write the `initialize()` function.
 
 ## Account initialization boilerplate code
 
-Let’s create a new Anchor project called basic_storage.
+Let’s create a new Anchor project called `basic_storage`.
 
-Below we have written the minimal code to initialize a MyStorage struct, which only holds one number, x. (See the struct MyStorage at the bottom of the code):
+Below we have written the minimal code to initialize a `MyStorage` struct, which only holds one number, `x`. (See the struct `MyStorage` at the bottom of the code):
 
 ```
 use anchor_lang::prelude::*;
@@ -137,45 +137,45 @@ pub struct MyStorage {
 
 ### 1) The initialize function
 
-Note that there is no code in the initialize() function — in fact all it does is return Ok(()):
+Note that there is no code in the `initialize()` function — in fact all it does is return `Ok(())`:
 
 ![Solana initialize account](https://static.wixstatic.com/media/935a00_92a7cce9e0ac44ffa7a996035060b4eb~mv2.png/v1/fill/w_740,h_68,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_92a7cce9e0ac44ffa7a996035060b4eb~mv2.png)
 
-It is not mandatory that functions for initializing accounts be empty, we could have custom logic. But for our example, it is empty. It is also not mandatory that functions which initialize accounts be called initialize, but it is a helpful name.
+It is not mandatory that functions for initializing accounts be empty, we could have custom logic. But for our example, it is empty. It is also not mandatory that functions which initialize accounts be called `initialize`, but it is a helpful name.
 
 ### 2) The Initialize struct
 
-The Initialize Struct contains references to the resources needed to initialize an account:
+The `Initialize` Struct contains references to the resources needed to initialize an account:
 
-- my_storage: a struct of type MyStorage we are initializing.
-- signer: the wallet that is paying for the “gas” for storage of the struct. (Gas costs for storage are discussed later).
-- system_program: we will discuss it later in this tutorial.
+- `my_storage`: a struct of type `MyStorage` we are initializing.
+- `signer`: the wallet that is paying for the “gas” for storage of the struct. (Gas costs for storage are discussed later).
+- `system_program`: we will discuss it later in this tutorial.
 
 ![Annotated initialize struct](https://static.wixstatic.com/media/935a00_c5a51bc46f954b57b767299a8fb4817d~mv2.png/v1/fill/w_740,h_502,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_c5a51bc46f954b57b767299a8fb4817d~mv2.png)
 
-The 'info keyword is a [Rust lifetime](https://doc.rust-lang.org/rust-by-example/scope/lifetime.html). That is a large topic and is best treated as boilerplate for now.
+The `'info` keyword is a [Rust lifetime](https://doc.rust-lang.org/rust-by-example/scope/lifetime.html). That is a large topic and is best treated as boilerplate for now.
 
-We will focus on the macro above my_storage, as this is where the action for initialization is happening.
+We will focus on the macro above `my_storage`, as this is where the action for initialization is happening.
 
 ### 3) The my_storage field in the Initialize struct
 
-The attribute macro above the my_storage field (purple arrow) is how Anchor knows this transaction is intended to initialize this account (remember, an [attribute-like macro](https://www.rareskills.io/post/rust-attribute-derive-macro) starts with # and modify augments the struct with additional functionality):
+The attribute macro above the `my_storage` field (purple arrow) is how Anchor knows this transaction is intended to initialize this account (remember, an [attribute-like macro](https://www.rareskills.io/post/rust-attribute-derive-macro) starts with `#` and modify augments the struct with additional functionality):
 
 ![annotation of struct fields](https://static.wixstatic.com/media/935a00_48be1af69ce54df281456844ff5fbec7~mv2.png/v1/fill/w_740,h_541,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_48be1af69ce54df281456844ff5fbec7~mv2.png)
 
-The important keyword here is init.
+The important keyword here is `init`.
 
 When we init an account, we must supply additional information:
 
-- payer (blue box): who is paying the SOL for allocating storage. The signer is specified to be mut because their account balance will change, i.e. some SOL will be deducted from their account. Therefore, we annotate their account as “mutable.”
-- space (orange box): this indicates how much space the account will take. Rather than figuring this out ourselves, we can use the std::mem::size_of utility and use the struct we are trying to store: MyStorage (green box), as an argument. The + 8 (pink box) we discuss in the following point.
-- seeds and bump (red box): A program can own multiple accounts, it “discriminates” among the accounts with the “seed” which is used in calculating a “discriminator”. The “discriminator” takes up 8 bytes, which is why we need to allocate the additional 8 bytes in addition to the space our struct takes up. The bump can be treated as boilerplate for now.
+- `payer` (blue box): who is paying the SOL for allocating storage. The signer is specified to be `mut` because their account balance will change, i.e. some SOL will be deducted from their account. Therefore, we annotate their account as “mutable.”
+- `space` (orange box): this indicates how much space the account will take. Rather than figuring this out ourselves, we can use the `std::mem::size_of` utility and use the struct we are trying to store: `MyStorage` (green box), as an argument. The `+ 8` (pink box) we discuss in the following point.
+- `seeds` and `bump` (red box): A program can own multiple accounts, it “discriminates” among the accounts with the “seed” which is used in calculating a “discriminator”. The “discriminator” takes up 8 bytes, which is why we need to allocate the additional 8 bytes in addition to the space our struct takes up. The bump can be treated as boilerplate for now.
 
 This might seem like a lot to take in, don’t worry. I**nitializing an account can largely be treated as boilerplate for now.**
 
 ### 4) What is the system program?
 
-The system program is a program built into the Solana runtime (a bit like an [Ethereum precompile](https://www.rareskills.io/post/solidity-precompiles)) that transfers SOL from one account to another. We will revisit this in a later tutorial about transferring SOL. For now, we need to transfer SOL away from the signer, who is paying for the MyStruct storage, so the system program is always a part of initialization transactions.
+The `system program` is a program built into the Solana runtime (a bit like an [Ethereum precompile](https://www.rareskills.io/post/solidity-precompiles)) that transfers SOL from one account to another. We will revisit this in a later tutorial about transferring SOL. For now, we need to transfer SOL away from the signer, who is paying for the `MyStruct` storage, so the `system program` is always a part of initialization transactions.
 
 ### 5) MyStorage struct
 
@@ -187,7 +187,7 @@ Under the hood, this is a byte sequence. The struct in the example above:
 
 ![mystorage struct](https://static.wixstatic.com/media/935a00_cf148c488d73448c8bcac500f6c72038~mv2.png/v1/fill/w_350,h_107,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_cf148c488d73448c8bcac500f6c72038~mv2.png)
 
-gets serialized into a byte sequence and stored in the data field when written to. During write, the data field is deserialized according to that struct.
+gets serialized into a byte sequence and stored in the `data` field when written to. During write, the `data` field is deserialized according to that struct.
 
 In our example, we are only using one variable in the struct, though we could add more, or variables of another type, if we wanted to.
 
@@ -195,7 +195,7 @@ The Solana runtime does not force us to use structs to store data. From Solana�
 
 You are not required to use structs to use Solana accounts. It is possible to write sequence of bytes directly, but this is not a convenient way to store data.
 
-The #[account] macro implements all the magic transparently.
+The `#[account]` macro implements all the magic transparently.
 
 ### 6) Unit test initialization
 
@@ -226,7 +226,7 @@ Here is the output of the unit test:
 
 ![solana account initialize test passing](https://static.wixstatic.com/media/935a00_b13897889ff345e1aef2f801f1d46cef~mv2.png/v1/fill/w_740,h_136,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_b13897889ff345e1aef2f801f1d46cef~mv2.png)
 
-We will learn more about this in a following tutorial, but Solana requires us to specify in advance the accounts a transaction will interact with. Since we are interacting with the account that stores MyStruct, we need to compute its “address” in advance and pass it to the initialize() function. This is done with the following Typescript code:
+We will learn more about this in a following tutorial, but Solana requires us to specify in advance the accounts a transaction will interact with. Since we are interacting with the account that stores `MyStruct`, we need to compute its “address” in advance and pass it to the `initialize()` function. This is done with the following Typescript code:
 
 ```
 seeds = []
@@ -234,7 +234,7 @@ const [myStorage, _bump] =
     anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
 ```
 
-Note that seeds is an empty array, just like it is in the Anchor program.
+Note that `seeds` is an empty array, just like it is in the Anchor program.
 
 ### Predicting the account address in Solana is like create2 in Ethereum
 
@@ -246,14 +246,14 @@ In Ethereum, the address of a contract created using create2 is dependent on:
 
 Predicting the address of initialized accounts in Solana is very similar except that it ignores the “bytecode”. Specifically, it depends on:
 
-- the program that owns the storage account, basic_storage (which is akin to the address of the deploying contract)
-- and the seeds (which is akin to create2’s “salt”)
+- the program that owns the storage account, `basic_storage` (which is akin to the address of the deploying contract)
+- and the `seeds` (which is akin to create2’s “salt”)
 
-In all the examples in this tutorial, seeds is an empty array, but we will explore non-empty arrays in a later tutorial.
+In all the examples in this tutorial, `seeds` is an empty array, but we will explore non-empty arrays in a later tutorial.
 
 ### Don’t forget to convert my_storage to myStorage
 
-Anchor silently convert’s Rust snake case to Typescript’s camel case. When we supply .accounts({myStorage: myStorage}) in Typescript to the initialize function, it is “filling out” the my_storage key in the Initialize struct in Rust (green circle below). The system_program and Signer are quietly filled in by Anchor:
+Anchor silently convert’s Rust snake case to Typescript’s camel case. When we supply `.accounts({myStorage: myStorage})` in Typescript to the initialize function, it is “filling out” the `my_storage` key in the `Initialize` struct in Rust (green circle below). The `system_program` and `Signer` are quietly filled in by Anchor:
 
 ![snake case to camel case conversion](https://static.wixstatic.com/media/935a00_cda7e1e9f41340e695496e45de9cbbad~mv2.png/v1/fill/w_740,h_506,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_cda7e1e9f41340e695496e45de9cbbad~mv2.png)
 
@@ -288,13 +288,13 @@ describe("basic_storage", () => {
 });
 ```
 
-When we run the test, the test fails because the second call to initialize throws an error. The expected output is as follows:
+When we run the test, the test fails because the second call to `initialize` throws an error. The expected output is as follows:
 
 ![Solana account cannot be initialized twice](https://static.wixstatic.com/media/935a00_a5c4242d593a446fb842c6028b436221~mv2.png/v1/fill/w_740,h_200,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_a5c4242d593a446fb842c6028b436221~mv2.png)
 
 ## Don’t forget to reset the validator if running the test multiple times
 
-Because the solana-test-validator will still remember the account from the first unit test, you’ll want to reset the validator between tests using solana-test-validator --reset. Otherwise, you’ll get the error above.
+Because the `solana-test-validator` will still remember the account from the first unit test, you’ll want to reset the validator between tests using `solana-test-validator --reset`. Otherwise, you’ll get the error above.
 
 ## Summary of initializing accounts
 
@@ -304,7 +304,7 @@ Don’t worry, you’ll see this code sequence over and over again, and it will 
 
 We’ve only looked at initializing storage in this tutorial, in the upcoming ones we will study reading, writing, and deleting storage. There will be plenty of opportunities to get an intuitive grasp for what all the code we looked at today does.
 
-**Exercise:** modify MyStorage to hold x and y as if it were a cartesian coordinate. This means adding y to the MyStorage struct and changing them from u64 to i64. You will not need to modify other parts of the code because size_of will recalculate the size for you. Be sure to reset the validator so that the original storage account gets erased and you aren’t blocked from initializing the account again.
+**Exercise:** modify `MyStorage` to hold `x` and `y` as if it were a cartesian coordinate. This means adding `y` to the `MyStorage` struct and changing them from `u64` to `i64`. You will not need to modify other parts of the code because `size_of` will recalculate the size for you. Be sure to reset the validator so that the original storage account gets erased and you aren’t blocked from initializing the account again.
 
 ## Learn more with RareSkills
 

@@ -19,7 +19,7 @@ These function restrictions happen mostly at the compiler level, and Anchor does
 
 This does *not* mean that the account cannot be accessed at all. For example, we could craft a separate program to read in an account and somehow forward that data to the function in question.
 
-Finally, there is no such thing as a staticcall in the Solana virtual machine or runtime.
+Finally, there is no such thing as a `staticcall` in the Solana virtual machine or runtime.
 
 ## View functions aren’t necessary in Solana anyway
 
@@ -37,13 +37,13 @@ However, Solana programs can still implement the flags reentrancy guards use. Pr
 
 ## There are no custom modifiers in Rust
 
-Custom modifiers like onlyOwner or nonReentrant are a Solidity construct, and not a feature available in Rust.
+Custom modifiers like `onlyOwner` or `nonReentrant` are a Solidity construct, and not a feature available in Rust.
 
 ## Custom units are not available in Rust or Anchor
 
-Because Solidity is intertwined with Ethereum, it has handy keywords like ethers or wei to measure Ethereum. Not surprisingly, LAMPORTS_PER_SOL is not defined in Rust, but somewhat surprisingly, it is not defined in the Anchor Rust Framework either. It is available in the Solana web3 js library however.
+Because Solidity is intertwined with Ethereum, it has handy keywords like `ethers` or `wei` to measure Ethereum. Not surprisingly, `LAMPORTS_PER_SOL` is not defined in Rust, but somewhat surprisingly, it is not defined in the Anchor Rust Framework either. It is available in the Solana web3 js library however.
 
-Similarly, Solidity has days as a convenient alias for 84,600 seconds, but no such equivalent exists in Rust/Anchor.
+Similarly, Solidity has `days` as a convenient alias for 84,600 seconds, but no such equivalent exists in Rust/Anchor.
 
 ## There is no such thing as “payable” functions in Solana. Programs transfer SOL from the user, users do not transfer SOL to the program
 

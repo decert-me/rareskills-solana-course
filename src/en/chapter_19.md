@@ -4,7 +4,7 @@ Updated: Mar 1
 
 ![mappings and nested mappings in Solana](https://static.wixstatic.com/media/935a00_fcc8fb7861f344a6b54b33647dc34ef2~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_fcc8fb7861f344a6b54b33647dc34ef2~mv2.jpg)
 
-In the previous tutorials, the seeds=[] parameter was always empty. If we put data into it, it behaves like a key or keys in a Solidity mapping.
+In the previous tutorials, the `seeds=[]` parameter was always empty. If we put data into it, it behaves like a key or keys in a Solidity mapping.
 
 Consider the following example:
 
@@ -23,7 +23,7 @@ contract ExampleMapping {
 }
 ```
 
-We now create a Solana Anchor program example_map.
+We now create a Solana Anchor program `example_map`.
 
 ## Initializing a mapping: Rust
 
@@ -69,22 +69,22 @@ pub struct Val {
 
 Here’s how you can think of the map:
 
-The seeds parameter key in &key.to_le_bytes().as_ref() can be thought of as a “key” to the map similar to the Solidity construction:
+The seeds parameter `key` in `&key.to_le_bytes().as_ref()` can be thought of as a “key” to the map similar to the Solidity construction:
 
 ```
 mapping(uint256 => uint256) myMap;
 myMap[key] = val
 ```
 
-The unfamiliar parts of the code are #[instruction(key: u64)] and seeds=[&key.to_le_bytes().as_ref()].
+The unfamiliar parts of the code are `#[instruction(key: u64)]` and `seeds=[&key.to_le_bytes().as_ref()]`.
 
 ### seeds = [&key.to_le_bytes().as_ref()]
 
-The items in seeds are expected to be bytes. However, we are passing in a u64 which is not of type bytes. To convert it to bytes, we use to_le_bytes(). The “le” means “[little endian](https://www.freecodecamp.org/news/what-is-endianness-big-endian-vs-little-endian/)”. Seeds do not have to be encoded as little endian bytes, we just chose that for this example. Big endian works too as long as you are consistent. To convert to big endian, we would have used to_be_bytes().
+The items in `seeds` are expected to be bytes. However, we are passing in a `u64` which is not of type bytes. To convert it to bytes, we use `to_le_bytes()`. The “le” means “[little endian](https://www.freecodecamp.org/news/what-is-endianness-big-endian-vs-little-endian/)”. Seeds do not have to be encoded as little endian bytes, we just chose that for this example. Big endian works too as long as you are consistent. To convert to big endian, we would have used `to_be_bytes()`.
 
 ### #[instruction(key: u64)]
 
-In order to “pass” the function argument key in initialize(ctx: Context<Initialize>, key: u64) we need to use the instruction macro, otherwise our init macro has no way to “see” the key argument from initialize.
+In order to “pass” the function argument `key` in `initialize(ctx: Context<Initialize>, key: u64)` we need to use the `instruction` macro, otherwise our `init` macro has no way to “see” the `key` argument from `initialize`.
 
 ## Initializing a mapping: Typescript
 
@@ -114,7 +114,7 @@ describe("example_map", () => {
 });
 ```
 
-The code key.toArrayLike(Buffer, "le", 8) specifies that we are trying to create a bytes buffer of size 8 bytes using the value from key. We chose 8 bytes because our key is 64 bits, and 64 bits is 8 bytes. The "le" is little endian so that we match the Rust code.
+The code `key.toArrayLike(Buffer, "le", 8)` specifies that we are trying to create a bytes buffer of size 8 bytes using the value from key. We chose 8 bytes because our `key` is 64 bits, and 64 bits is `8` bytes. The "le" is little endian so that we match the Rust code.
 
 Each "value" in the mapping is a separate account and must be initialized separately.
 
@@ -141,7 +141,7 @@ pub struct Set<'info> {
 
 ## Set and read a mapping: Typescript
 
-Because we derive the account address where the value is stored in the client (Typescript), we read and write from it just like we do with accounts that have the seeds array empty. The syntax for [reading the Solana account data](https://www.rareskills.io/post/solana-read-account-data) and writing is identical to previous tutorials:
+Because we derive the account address where the value is stored in the client (Typescript), we read and write from it just like we do with accounts that have the `seeds` array empty. The syntax for [reading the Solana account data](https://www.rareskills.io/post/solana-read-account-data) and writing is identical to previous tutorials:
 
 ```
 import * as anchor from "@coral-xyz/anchor";
@@ -191,9 +191,9 @@ If you use seeds to simulate nested mappings similar to Solidity, you will face 
 
 ## Initializing a nested mapping: Rust
 
-The seeds array can hold as many items as we like, similar to a nested mapping in Solidity. It is of course subject to compute limits imposed on each of transaction. The code to do the initialization and setting are shown below.
+The `seeds` array can hold as many items as we like, similar to a nested mapping in Solidity. It is of course subject to compute limits imposed on each of transaction. The code to do the initialization and setting are shown below.
 
-We do not need any special syntax to do this, it’s just a matter of taking more function arguments and putting more items in seeds, so we will show the complete code without further explanation.
+We do not need any special syntax to do this, it’s just a matter of taking more function arguments and putting more items in `seeds`, so we will show the complete code without further explanation.
 
 ### Rust nested mapping
 
@@ -288,9 +288,9 @@ describe("example_map", () => {
 
 ## Initializing more than one map
 
-A straightforward way to accomplish having more than one map is to add another variable to the seeds array and treat it as a way to “index” the first map, second map, and so forth.
+A straightforward way to accomplish having more than one map is to add another variable to the `seeds` array and treat it as a way to “index” the first map, second map, and so forth.
 
-The following code shows an example of initializing which_map which only holds one key.
+The following code shows an example of initializing `which_map` which only holds one key.
 
 ```
 #[derive(Accounts)]

@@ -10,7 +10,7 @@ Specifically, events in Solana are intended to pass information to the frontend 
 
 ## Solana Logs and Events
 
-The program below has two events: MyEvent and MySecondEvent. Similar to how Ethereum events have “arguments”, Solana events have fields in the struct:
+The program below has two events: `MyEvent` and `MySecondEvent`. Similar to how Ethereum events have “arguments”, Solana events have fields in the struct:
 
 ```
 use anchor_lang::prelude::*;
@@ -89,9 +89,9 @@ It is not possible to scan for past logs like it is in Ethereum, they must be wa
 
 ## How logs work under the hood
 
-In the EVM, logs are emitted by running the log0, log1, log2 etc opcode. In Solana, logs are run by calling the system call sol_log_data. As an argument, it is simply a sequence of bytes:
+In the EVM, logs are emitted by running the `log0`, `log1`, `log2` etc opcode. In Solana, logs are run by calling the system call `sol_log_data`. As an argument, it is simply a sequence of bytes:
 
-https://docs.rs/solana-program/latest/src/solana_program/log.rs.html#116-124
+[https://docs.rs/solana-program/latest/src/solana_program/log.rs.html#116-124](https://docs.rs/solana-program/latest/src/solana_program/log.rs.html#116-124)
 
 Below is the function of the system call in the Solana client:
 
@@ -105,7 +105,7 @@ In Ethereum, logs are used for auditing purposes, but in Solana, logs cannot be 
 
 Events are preserved in the block explorer however. See the bottom of this transaction as an example:
 
-https://explorer.solana.com/tx/JgyHQPxL3cPLFtV4cx5i842ZgBx57R2fkNn2TZn1wsQZqVXKfijd43CEHo88C3ridK27Kw8KkMzfvDdqaS398SX
+[https://explorer.solana.com/tx/JgyHQPxL3cPLFtV4cx5i842ZgBx57R2fkNn2TZn1wsQZqVXKfijd43CEHo88C3ridK27Kw8KkMzfvDdqaS398SX](https://explorer.solana.com/tx/JgyHQPxL3cPLFtV4cx5i842ZgBx57R2fkNn2TZn1wsQZqVXKfijd43CEHo88C3ridK27Kw8KkMzfvDdqaS398SX)
 
 ## Unlike Ethereum, Solana transactions can be queried by address
 
@@ -145,4 +145,4 @@ let myAddress = "enter and address here";
 getTransactions(myAddress, 3);
 ```
 
-Note that the actual content of the transaction is retrieved using the getParsedTransaction RPC method.
+Note that the actual content of the transaction is retrieved using the `getParsedTransaction` RPC method.

@@ -8,7 +8,7 @@ This tutorial will introduce the mechanism by which Solana Anchor programs can t
 
 As such, there is no such thing as “payable” functions or “msg.value”
 
-Below we have created a new anchor project called sol_splitter and have put the Rust code to transfer SOL from the sender to a recipient.
+Below we have created a new anchor project called `sol_splitter` and have put the Rust code to transfer SOL from the sender to a recipient.
 
 Of course, it would be more efficient if the sender just sent the SOL directly rather than doing it through a program, but we want to illustrate how it is done:
 
@@ -66,35 +66,35 @@ There are a lot of things to explain here.
 
 ## Introducing the CPI: Cross Program Invocation
 
-In Ethereum, transferring ETH is done simply by specifying a value in the msg.value field. In Solana, a built-in program called the system program transfers SOL from one account to another. That’s why it kept showing up when we initialized accounts and had to pay a fee to initialize them.
+In Ethereum, transferring ETH is done simply by specifying a value in the `msg.value` field. In Solana, a built-in program called the `system program` transfers SOL from one account to another. That’s why it kept showing up when we initialized accounts and had to pay a fee to initialize them.
 
-You can roughly think of the system program as a precompile in Ethereum. Imagine it behaves sort of like an ERC-20 token built into the protocol that is used as the native currency. And it has a public function called transfer.
+You can roughly think of the system program as a precompile in Ethereum. Imagine it behaves sort of like an ERC-20 token built into the protocol that is used as the native currency. And it has a public function called `transfer`.
 
 ## Context for CPI transactions
 
-Whenever a Solana program function is called, a Context must be provided. That Context holds all the accounts that the program will interact with.
+Whenever a Solana program function is called, a `Context` must be provided. That `Context` holds all the accounts that the program will interact with.
 
-Calling the system program is no different. The system program needs a Context holding the from and to accounts. The amount that is transferred is passed as a “regular” argument — it is not part of the Context (as “amount” is not an account, it is just a value).
+Calling the system program is no different. The system program needs a `Context` holding the `from` and `to` accounts. The `amount` that is transferred is passed as a “regular” argument — it is not part of the `Context` (as “amount” is not an account, it is just a value).
 
 We can now explain the code snippet below:
 
 ![CpiContext](https://static.wixstatic.com/media/935a00_7ff8faa78c804a1ba629d33ad93420a9~mv2.png/v1/fill/w_740,h_218,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_7ff8faa78c804a1ba629d33ad93420a9~mv2.png)
 
-We are building a new CpiContext which holds what program we are going to call as the first argument (green box), and the accounts that will be included as part of that transaction (yellow box). The argument amount is not supplied here because amount is not an account.
+We are building a new `CpiContext` which holds what program we are going to call as the first argument (green box), and the accounts that will be included as part of that transaction (yellow box). The argument `amount` is not supplied here because `amount` is not an account.
 
-Now that we have our cpi_context built, we can do a cross program invocation to the system program (orange box) while specifying the amount.
+Now that we have our `cpi_context` built, we can do a cross program invocation to the system program (orange box) while specifying the amount.
 
-This returns a Result<()> type, just like the public functions on our Anchor programs do.
+This returns a `Result<()>` type, just like the public functions on our Anchor programs do.
 
 ## Do not ignore the return values of cross program invocations.
 
-To check if the cross program invocation succeeded, we just need to check the returned value is an Ok. Rust makes this straightforward with the is_ok() method:
+To check if the cross program invocation succeeded, we just need to check the returned value is an `Ok`. Rust makes this straightforward with the `is_ok()` method:
 
 ![error return of Solana CPI](https://static.wixstatic.com/media/935a00_31a6794a7b484ababb68895357fe3b27~mv2.png/v1/fill/w_740,h_312,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_31a6794a7b484ababb68895357fe3b27~mv2.png)
 
 ## Only the signer can be “from”
 
-If you call the system program with from being an account that is not a Signer, then the system program will reject the call. Without a signature, the system program can’t know if you authorized the call or not.
+If you call the system program with `from` being an account that is not a `Signer`, then the system program will reject the call. Without a signature, the system program can’t know if you authorized the call or not.
 
 Typescript code:
 
@@ -133,8 +133,8 @@ describe("sol_splitter", () => {
 
 Some items to note:
 
-- We have created a helper function printAccountBalance to show the balance before and after
-- We generated the recipient wallet using anchor.web3.Keypair.generate()
+- We have created a helper function `printAccountBalance` to show the balance before and after
+- We generated the recipient wallet using `anchor.web3.Keypair.generate()`
 - We transferred one SOL to the new account
 
 When we run the code, the expected result is as follows. The print statements are the balance before and after of the recipient’s address:
@@ -143,7 +143,7 @@ When we run the code, the expected result is as follows. The print statements ar
 
 **Exercise:** Build a Solana program that splits up the incoming SOL evenly among two recipients. You will not be able to accomplish this via function arguments, the accounts need to be in the Context struct.
 
-## Building a payment splitter: using an arbitrary number of accounts with remaining_accounts.
+## Building a payment splitter: using an arbitrary number of accounts with `remaining_accounts`.
 
 We can see it would be rather clumsy to have to specify a Context struct like if we wanted to split SOL among several accounts:
 
@@ -175,7 +175,7 @@ pub struct SendSol<'info> {
 }
 ```
 
-To solve this, Anchor adds a remaining_accounts field to Context structs.
+To solve this, Anchor adds a `remaining_accounts` field to `Context` structs.
 
 The code below illustrates how to use that feature:
 
@@ -282,7 +282,7 @@ Here is some commentary on the Rust code:
 
 ### Rust Lifetimes
 
-The function declaration of split_sol has some odd syntax introduced:
+The function declaration of `split_sol` has some odd syntax introduced:
 
 ```
 pub fn split_sol<'a, 'b, 'c, 'info>(
@@ -291,13 +291,13 @@ pub fn split_sol<'a, 'b, 'c, 'info>(
 ) -> Result<()>
 ```
 
-The 'a , 'b, and 'c are Rust lifetimes. Rust lifetimes are a complicated topic we’d rather avoid for now. But a high level explanation is that the Rust code needs assurances the resources passed into the loop for recipient in ctx.remaining_accounts will exist for the entirety of the loop.
+The `'a` , `'b`, and `'c` are Rust lifetimes. Rust lifetimes are a complicated topic we’d rather avoid for now. But a high level explanation is that the Rust code needs assurances the resources passed into the loop `for recipient in ctx.remaining_accounts` will exist for the entirety of the loop.
 
 ### ctx.remaining_accounts
 
-The loop loops through for recipient in ctx.remaining_accounts. The keyword remaining_acocunts is the Anchor mechanism for passing in an arbitrary number of accounts without having to create a bunch of keys in the Context struct.
+The loop loops through `for recipient in ctx.remaining_accounts`. The keyword `remaining_accounts` is the Anchor mechanism for passing in an arbitrary number of accounts without having to create a bunch of keys in the Context struct.
 
-In the Typescript tests, we can add remaining_accounts to the transaction like so:
+In the Typescript tests, we can add `remaining_accounts` to the transaction like so:
 
 ```
 await program.methods.splitSol(amount)

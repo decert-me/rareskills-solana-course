@@ -93,11 +93,11 @@ describe("compute_unit", () => {
 });
 ```
 
-*Note: In JavaScript, the "n" at the end of a number means it is a* ***BigInt****.*
+*Note: In JavaScript, the "n" at the end of a number means it is a `BigInt`.*
 
-Run: solana logs also if you don’t already have it running.
+Run: `solana logs` also if you don’t already have it running.
 
-When we run anchor test --skip-local-validator we get this output as the test logs and Solana validator logs:
+When we run `anchor test --skip-local-validator` we get this output as the test logs and Solana validator logs:
 
 ```
 # test logs
@@ -116,7 +116,7 @@ Log Messages:
   Program 6CCLqLGeyExCFegJDjRDirWQRRSbM5XNq3yKvmaWS2ZC success
 ```
 
-The balance difference of 5000 lamports is because we need/use only 1 signature (that of our default provider address) when sending this transaction. This is consistent with what we established above, i.e 1 * 5000 = 5000. Also notice that this costs 320 in compute units but this amount does not affect our transaction fee.
+The balance difference of `5000` lamports is because we need/use only 1 signature (that of our default provider address) when sending this transaction. This is consistent with what we established above, i.e `1 * 5000 = 5000`. Also notice that this costs 320 in compute units but this amount does not affect our transaction fee.
 
 Now, let’s add some complexity to our program and see what happens:
 
@@ -135,7 +135,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 Surely, this should make some difference to our transaction fee right?
 
-When we run anchor test --skip-local-validator we get this output as the test logs and Solana validator logs:
+When we run `anchor test --skip-local-validator` we get this output as the test logs and Solana validator logs:
 
 ```
 # test logs
@@ -221,7 +221,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 Notice the reduction in compute unit cost as the integer type reduced. This is expected as larger types take up larger space in memory than smaller types regardless of the value represented.
 
-Generating a program derived account (PDA) on-chain using find_program_address may use more compute units because this method iterates over calls to create_program_address until it finds a PDA that’s not on the ed25519 curve. To reduce the compute cost, use find_program_address() off-chain and pass the resulting bump seed to the program when possible. More on this is discussed in a later section as its out of scope for this section.
+Generating a program derived account (PDA) on-chain using `find_program_address` may use more compute units because this method iterates over calls to `create_program_address` until it finds a PDA that’s not on the ed25519 curve. To reduce the compute cost, use `find_program_address`() off-chain and pass the resulting bump seed to the program when possible. More on this is discussed in a later section as its out of scope for this section.
 
 This is not an exhaustive list but a few points to give an idea of what makes a program more computationally intensive than another.
 
@@ -249,7 +249,7 @@ This allows us to build programs for various use cases e.g (based on events list
 - tracing and profiling: collecting detailed execution flow from the userspace program to the kernel instructions
 - observability: report and analyze kernel activities
 
-The program is only executed when we need it (i.e when an event is emitted in the kernel). For example, say you want to get the name of a file and data written to it when it is written to, we listen/register/subscribe to the vfs_write() syscall event. Now, whenever that file is written to, we have that data at our disposal.
+The program is only executed when we need it (i.e when an event is emitted in the kernel). For example, say you want to get the name of a file and data written to it when it is written to, we listen/register/subscribe to the `vfs_write()` syscall event. Now, whenever that file is written to, we have that data at our disposal.
 
 ## Solana Bytecode Format (SBF)
 

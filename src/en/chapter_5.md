@@ -4,7 +4,7 @@
 
 In this tutorial we will peek behind the scenes of anchor to see how a Solana program gets deployed.
 
-Let’s look at the test file anchor creates for us when we run anchor init deploy_tutorial:
+Let’s look at the test file anchor creates for us when we run `anchor init` `deploy_tutorial`:
 
 ```
 describe("deploy_tutorial", () => {
@@ -65,7 +65,7 @@ So where exactly is the “deployment step”?
 
 Let’s do the usual setup. Create a new Anchor project called program-deploy, and make sure the validator and logs are running in other shells.
 
-Instead of running anchor test, run the following command in the terminal:
+Instead of running `anchor test`, run the following command in the terminal:
 
 ```
 anchor deploy
@@ -75,7 +75,7 @@ anchor deploy
 
 In the screenshot of the logs above, we can see the point at which the program was deployed.
 
-Now here’s the interesting part. Run anchor deploy again:
+Now here’s the interesting part. Run `anchor deploy` again:
 
 ![solana upgrade instead of deploy](https://static.wixstatic.com/media/935a00_95bc7ab0a8de400aac1f11e47471b748~mv2.png/v1/fill/w_740,h_148,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_95bc7ab0a8de400aac1f11e47471b748~mv2.png)
 

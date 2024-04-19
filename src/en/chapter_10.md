@@ -27,17 +27,17 @@ pub fn my_public_function(ctx: Context<Initialize>) -> Result<()> {
 
 Adding pub keyword prior to function declaration makes the function public.
 
-You cannot remove the pub keyword for functions inside of the module (mod) labeled #[program]. It will not compile.
+You cannot remove the `pub` keyword for functions inside of the module (mod) labeled `#[program]`. It will not compile.
 
 ## Don’t worry too much about the distinction between external and public
 
-It’s generally inconvenient for a Solana program to call it’s own public function. If there is a pub function in a Solana program, for all practical purposes you can think of it as external in the context of Solidity.
+It’s generally inconvenient for a Solana program to call it’s own public function. If there is a `pub` function in a Solana program, for all practical purposes you can think of it as external in the context of Solidity.
 
 If you want to call a public function inside the same Solana program, it's much easier to wrap the public function with an internal implementation function and call that.
 
 ## Private and Internal Functions
 
-Although you cannot declare functions without pub inside the module with the #[program] macro, you can declare functions inside the file. Consider the following code:
+Although you cannot declare functions without `pub` inside the module with the `#[program]` macro, you can declare functions inside the file. Consider the following code:
 
 ```
 use anchor_lang::prelude::*;
@@ -116,9 +116,9 @@ mod do_something {
 pub struct Initialize {}
 ```
 
-After building the program, if you navigate to the ./target/idl/func_visibility.json file, you will observe that the function defined within the some_internal_function module was not included in the built program. This indicates that the function some_internal_function is internal and can only be accessed within the program itself and any programs that import or use it.
+After building the program, if you navigate to the `./target/idl/func_visibility.json` file, you will observe that the function defined within the `some_internal_function` module was not included in the built program. This indicates that the function `some_internal_function` is internal and can only be accessed within the program itself and any programs that import or use it.
 
-From the example above, we were able to access internal_function function from within its "parent" module (func_visibility) and also from a separate module (do_something) outside the func_visibility module
+From the example above, we were able to access `internal_function` function from within its "parent" module (`func_visibility`) and also from a separate module (`do_something`) outside the `func_visibility` module
 
 ### **Private function**
 
@@ -151,9 +151,9 @@ pub mod func_visibility {
 pub struct Initialize {}
 ```
 
-The pub(in crate::func_visibility) keyword indicates that private_function function is only visible within func_visibility module.
+The `pub(in crate::func_visibility)` keyword indicates that `private_function` function is only visible within `func_visibility` module.
 
-We were able to call private_function successfully in the initialize function because the initialize function is within func_visibility module. Let's try to call private_function from outside the module:
+We were able to call `private_function` successfully in the initialize function because the initialize function is within `func_visibility` module. Let's try to call `private_function` from outside the module:
 
 ```
 use anchor_lang::prelude::*;
@@ -198,7 +198,7 @@ Build the program. What happened? We got an error:
 
 ❌ *error[E0624]: associated function `private_function` is private*
 
-This shows that private_function is not publicly accessible and can not be invoked from outside the module where it is visible. Check out [visibility and privacy](https://doc.rust-lang.org/beta/reference/visibility-and-privacy.html#pubin-path-pubcrate-pubsuper-and-pubself) in Rust docs for more the pub visibility keyword.
+This shows that `private_function` is not publicly accessible and can not be invoked from outside the module where it is visible. Check out [visibility and privacy](https://doc.rust-lang.org/beta/reference/visibility-and-privacy.html#pubin-path-pubcrate-pubsuper-and-pubself) in Rust docs for more the `pub` visibility keyword.
 
 ## **Contract Inheritance**
 
@@ -248,7 +248,7 @@ pub mod func_visibility {
 pub struct Initialize {}
 ```
 
-In the program above, we imported the calculate module that was created earlier and declared a function called add_two_numbers that adds two numbers and logs the result. The add_two_numbers function calls the add function in the calculate module, passing x and y as arguments, then stores the return value in the result variable. The msg! macro logs the two numbers that was added and the result.
+In the program above, we imported the calculate module that was created earlier and declared a function called `add_two_numbers` that adds two numbers and logs the result. The `add_two_numbers` function calls the add function in the calculate module, passing `x` and `y` as arguments, then stores the return value in the result variable. The msg! macro logs the two numbers that was added and the result.
 
 ### Modules don't have to be separate files
 
@@ -322,9 +322,9 @@ pub struct Initialize {}
 
 In Solidity, we think a lot about function visibility because it’s very critical. Here’s how to think about it in Rust:
 
-- **Public / External Functions**: These are functions accessible both within and outside the program. In Solana, all functions declared are, by default, public. Everything in the #[program] block must be declared pub.
+- **Public / External Functions**: These are functions accessible both within and outside the program. In Solana, all functions declared are, by default, public. Everything in the `#[program]` block must be declared `pub`.
 - **Internal Functions**: These are functions accessible within the program itself and programs that inherit it. Functions inside a nested pub mod block are not included in the built program, but still, they can be accessed within or outside the parent module.
-- **Private Functions**: These are functions that are not publicly accessible and cannot be invoked from outside their module. Achieving private visibility in Rust/Solana involves defining a function within a specific module with the pub(in crate::<module>) keyword, which makes the function visible within just the module it was defined in.
+- **Private Functions**: These are functions that are not publicly accessible and cannot be invoked from outside their module. Achieving private visibility in Rust/Solana involves defining a function within a specific module with the `pub`(in crate::<module>) keyword, which makes the function visible within just the module it was defined in.
 
 Solidity achieves contract inheritance through classes, a feature that Rust, the language used in Solana, does not have. Nevertheless, you can still organize your code using Rust modules.
 

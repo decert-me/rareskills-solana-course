@@ -13,13 +13,13 @@ function foobar(uint256 x) public {
 }
 ```
 
-In the code above, the transaction will revert if foobar is passed a value of 100 or greater.
+In the code above, the transaction will revert if `foobar` is passed a value of 100 or greater.
 
 How do we do this in Solana, or specifically, in the Anchor framework?
 
 Anchor has equivalents for Solidity’s custom error and require statements. Their [documentation](https://www.anchor-lang.com/docs/errors) on the subject is quite good, but we will also explain how to halt transactions when the function arguments are not what we want them to be.
 
-The Solana program below has a function limit_range which will only accept values 10 to 100 inclusive:
+The Solana program below has a function `limit_range` which will only accept values 10 to 100 inclusive:
 
 ```
 use anchor_lang::prelude::*;
@@ -160,7 +160,7 @@ Before you run this, what do you think the new error code will be?
 
 ## Using require statements
 
-There is a require! macro, which is conceptually the same as require from Solidity, which we can use to consolidate our code. Switching from if checks (which take three lines) to require! calls, our earlier code translates to the following:
+There is a `require`! macro, which is conceptually the same as `require` from Solidity, which we can use to consolidate our code. Switching from `if` checks (which take three lines) to `require!` calls, our earlier code translates to the following:
 
 ```
 pub fn limit_range(ctx: Context<LimitRange>, a: u64) -> Result<()> {
@@ -172,7 +172,7 @@ pub fn limit_range(ctx: Context<LimitRange>, a: u64) -> Result<()> {
 }
 ```
 
-In Ethereum, we know nothing gets logged if a function reverts, even if the revert happens after the log. For example, a call to tryToLog in the contract below would not log anything, because the function reverts:
+In Ethereum, we know nothing gets logged if a function reverts, even if the revert happens after the log. For example, a call to `tryToLog` in the contract below would not log anything, because the function reverts:
 
 ```
 contract DoesNotLog {
@@ -185,7 +185,7 @@ contract DoesNotLog {
 }
 ```
 
-**Exercise:** What happens if you put a msg! macro before the return error statements in a Solana program function? What happens if you replace return err! with Ok(())? Below we have a function that logs something with msg! then returns an error. See if the contents of the msg! macro get logged.
+**Exercise:** What happens if you put a msg! macro before the return error statements in a Solana program function? What happens if you replace `return err!` with `Ok(())`? Below we have a function that logs something with `msg!` then returns an error. See if the contents of the `msg!` macro get logged.
 
 ```
 pub fn func(ctx: Context<ReturnError>) -> Result<()> {
@@ -205,29 +205,29 @@ pub enum Day4Error {
 
 **Under the hood, the require! macro is no different from returning an error, it’s just synactic sugar.**
 
-The expected result is that “Will this print?” will print when you return Ok(()) and not print when you return an error.
+The expected result is that “Will this print?” will print when you return `Ok(())` and not print when you return an error.
 
 ## Differences between Solana and Solidity with regards to errors
 
 In Solidity, the require statement halts the execution with the revert op code. Solana does not halt execution but simply returns a different value. This is analogous to how linux returns 0 or 1 on success. If a 0 is returned (equivalent of returning Ok(())), everything went smoothly.
 
-Therefore, Solana programs should always return something — either an Ok(()) or an Error.
+Therefore, Solana programs should always return something — either an `Ok(())` or an `Error`.
 
-In Anchor, errors are an enum with the #[error_code] attribute.
+In Anchor, errors are an enum with the `#[error_code]` attribute.
 
-Note how all the functions in Solana have a return type of Result<()>. A [result](https://doc.rust-lang.org/std/result/) is a type that could either be an Ok(()) or an error.
+Note how all the functions in Solana have a return type of `Result<()>`. A [result](https://doc.rust-lang.org/std/result/) is a type that could either be an Ok(()) or an error.
 
 ## Question and Answers
 
-### Why does Ok(()) not have a semicolon at the end?
+### Why does `Ok(())` not have a semicolon at the end?
 
 If you add it, your code won’t compile. If the final statement in Rust does not have a semicolon, then the value on that line is returned.
 
-### Why does Ok(()) have an extra set of parenthesis?
+### Why does `Ok(())` have an extra set of parenthesis?
 
 The () means “unit” in Rust, which you can think of as being a void in C or a Nothing in Haskell. Here, Ok is an enum which contains a unit type. That is what get returns. Functions that don’t return things implicitly return the unit type in Rust. An Ok(()) with no semicolon is syntactically equivalent to return Ok(());. Note the semicolon at the end.
 
-### How come the if statements above are missing parenthesis?
+### How come the `if statements` above are missing parenthesis?
 
 Those are optional in Rust.
 

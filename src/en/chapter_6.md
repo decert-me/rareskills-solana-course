@@ -8,7 +8,7 @@ This tutorial goes over the most commonly used syntax in Solidity and demonstrat
 
 If you want a high level overview of the differences of [Rust vs Solidity](https://www.rareskills.io/post/solidity-vs-rust) please see the linked tutorial. This tutorial assumes you already know Solidity, so please see our free [Solidity tutorial](https://www.rareskills.io/learn-solidity) if you are unfamiliar with Solidity.
 
-Create a new Solana Anchor project called tryrust and set up the environment.
+Create a new Solana Anchor project called `tryrust` and set up the environment.
 
 ## Conditional statements
 
@@ -35,7 +35,7 @@ function ageChecker(uint256 age)
 }
 ```
 
-In Solana, add a new function called age_checker in [lib.rs](http://lib.rs/):
+In Solana, add a new function called `age_checker` in [lib.rs](http://lib.rs/):
 
 ```
 pub fn age_checker(ctx: Context<Initialize>,
@@ -49,7 +49,7 @@ pub fn age_checker(ctx: Context<Initialize>,
  }
 ```
 
-Note that the condition age >= 18 does not have parenthesis — those are optional for if statements.
+Note that the condition `age >= 18` does not have parenthesis — those are optional for if statements.
 
 To test, add another it block in ./tests/tryrust.ts:
 
@@ -89,7 +89,7 @@ pub fn age_checker(ctx: Context<Initialize>,
 
 Note that in the Ternary Operator example in Rust the if/else block ends with a semi colon as this is being assigned to a variable.
 
-Also notice that the inner values do not have a semicolon at the end because it is being returned as the return value to the variable, similar to how you don’t put a semicolon after Ok(()) as it’s an expression and not a statement.
+Also notice that the inner values do not have a semicolon at the end because it is being returned as the return value to the variable, similar to how you don’t put a semicolon after `Ok(())` as it’s an expression and not a statement.
 
 Program logs out true if age is even, else false:
 
@@ -159,7 +159,7 @@ function loopOverSmth() public {
 }
 ```
 
-Here is the equivalent in Solana using step_by:
+Here is the equivalent in Solana using `step_by`:
 
 ```
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
@@ -231,7 +231,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 }
 ```
 
-The dynamic_array variable must be declared as mutable (mut) to allow mutating (push, pop, override at an index, etc).
+The `dynamic_array` variable must be declared as mutable (`mut`) to allow mutating (push, pop, override at an index, etc).
 
 Program should log this after running the test:
 

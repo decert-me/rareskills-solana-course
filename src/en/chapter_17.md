@@ -63,39 +63,39 @@ pub struct MyStorage {
 }
 ```
 
-**Exercise:** Modify the test to call set() with the argument 170. This is the value for x in MyStorage that we are trying to persist. You need to call  set() after initialize(). Don't forget to make 170 a bignumber.
+**Exercise:** Modify the test to call `set()` with the argument `170`. This is the value for `x` in `MyStorage` that we are trying to persist. You need to call  `set()` after `initialize()`. Don't forget to make `170` a bignumber.
 
 ## The set() function explained
 
-Below, we have slightly reordered the code to show the set() function, the Set struct, and the MyStorage struct close together:
+Below, we have slightly reordered the code to show the `set()` function, the `Set` struct, and the `MyStorage` struct close together:
 
 ![img](https://static.wixstatic.com/media/935a00_c11d3593c0004a659db5921808157f34~mv2.png/v1/fill/w_740,h_357,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c11d3593c0004a659db5921808157f34~mv2.png)
 
-We now explain how [ctx.accounts.my](http://ctx.accounts.my/)_storage.x = new_x works:
+We now explain how `ctx.accounts.my_storage.x = new_x` works:
 
 - The accounts field (top blue box) in ctx gives us access to all the keys in the Set struct. This is not how you list the keys of a struct in Rust. accounts ability to refer to keys in the Set struct is magically inserted due to the #[derive(Accounts)] macro (lower blue box).
 - The account my_storage (orange box) is set to be mut or mutable (green box) because we intend to change a value in it, x (red box)
-- The key my_storage (orange box) give us a reference to the MyStorage account (yellow box) by passing MyStorage as a generics parameter to Account. The fact that we used a key my_storage and a storage struct MyStorage is for readability, they don’t need to be camel-cased variations of each other. What “ties them together” is illustrated with the yellow boxes and yellow arrow.
+- The key `my_storage` (orange box) give us a reference to the `MyStorage` account (yellow box) by passing `MyStorage` as a generics parameter to Account. The fact that we used a key `my_storage` and a storage struct `MyStorage` is for readability, they don’t need to be camel-cased variations of each other. What “ties them together” is illustrated with the yellow boxes and yellow arrow.
 
 Essentially, when set() is called, the caller (Typescript client) passes the myStorage account to set(). Inside this account is the address of the storage. Behind the scenes, set will load the storage, write the new value of x, serialize the struct, then store it back.
 
 ## The Context struct Set
 
-The Context struct for set() is considerably simpler than initialize because it only needs one resource: a mutable reference to the MyStorage account.
+The `Context` struct for `set()` is considerably simpler than `initialize` because it only needs one resource: a mutable reference to the `MyStorage` account.
 
 ![img](https://static.wixstatic.com/media/935a00_38ac522d9abb4caea0b70248e7524656~mv2.png/v1/fill/w_740,h_146,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_38ac522d9abb4caea0b70248e7524656~mv2.png)
 
-Recall, a Solana transaction must specify in advance which accounts it will access. The struct for the set() function specifies it will be mutably (mut) accessing the my_storage account.
+Recall, a Solana transaction must specify in advance which accounts it will access. The struct for the `set()` function specifies it will be mutably (`mut`) accessing the `my_storage` account.
 
-The seeds = [] and bump are used to derive the address of the account we will be modifying. Although the user is passing in the account for us, Anchor validates that the user is passing an account this program really owns by re-deriving the address and comparing it to what the user provided.
+The `seeds = []` and `bump` are used to derive the address of the account we will be modifying. Although the user is passing in the account for us, Anchor validates that the user is passing an account this program really owns by re-deriving the address and comparing it to what the user provided.
 
-The term bump can be treated as boilerplate for now. But for the curious, it is used to ensure that the account is not a cryptographically valid public key. This is how the runtime knows this will be used as data storage for programs.
+The term `bump` can be treated as boilerplate for now. But for the curious, it is used to ensure that the account is not a cryptographically valid public key. This is how the runtime knows this will be used as data storage for programs.
 
-Even though our Solana program could derive the address of the storage account on its own, the user still needs to provide the account myStorage anyway. This is required by the Solana runtime for reasons we will discuss in an upcoming tutorial.
+Even though our Solana program could derive the address of the storage account on its own, the user still needs to provide the account `myStorage` anyway. This is required by the Solana runtime for reasons we will discuss in an upcoming tutorial.
 
 ## An alternative way to write the set function
 
-If we were writing several variables to the account, it would be rather clumsy to keep writing [ctx.accounts.my](http://ctx.accounts.my/)_storage over and over like so:
+If we were writing several variables to the account, it would be rather clumsy to keep writing `ctx.accounts.my_storage` over and over like so:
 
 ```
 ctx.accounts.my_storage.x = new_x;
@@ -103,7 +103,7 @@ ctx.accounts.my_storage.y = new_y;
 ctx.accounts.my_storage.z = new_z;
 ```
 
-Instead, we can use a “mutable reference” (&mut) from Rust that gives us a “handle” on the value for us to manipulate. Consider the following rewrite of our set() function:
+Instead, we can use a “mutable reference” (`&mut`) from Rust that gives us a “handle” on the value for us to manipulate. Consider the following rewrite of our `set()` function:
 
 ```
 pub fn set(ctx: Context<Set>, new_x: u64) -> Result<()> {
@@ -131,7 +131,7 @@ The output is as follows:
 
 ![img](https://static.wixstatic.com/media/935a00_98f723c0f9a644cbb551cea8775b924b~mv2.png/v1/fill/w_740,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_98f723c0f9a644cbb551cea8775b924b~mv2.png)
 
-The first 8 bytes (green box) are the discriminator. Our test stored the number 170 in the struct, this has a hex representation of aa which is shown in the red box.
+The first 8 bytes (green box) are the discriminator. Our test stored the number `170` in the struct, this has a hex representation of `aa` which is shown in the red box.
 
 Of course, the command line is not the mechanism we want to use to view account data on the frontend, or if we want our program to view another program’s account. This will be discussed in the following tutorial.
 
@@ -139,7 +139,7 @@ Of course, the command line is not the mechanism we want to use to view account 
 
 Reading our own storage value inside the Rust program however, is straightforward.
 
-We add the following function to pub mod basic_storage:
+We add the following function to `pub mod basic_storage`:
 
 ```
 pub fn print_x(ctx: Context<PrintX>) -> Result<()> {
@@ -149,7 +149,7 @@ pub fn print_x(ctx: Context<PrintX>) -> Result<()> {
 }
 ```
 
-and then we add the following struct for PrintX
+and then we add the following struct for `PrintX`
 
 ```
 #[derive(Accounts)]
@@ -158,7 +158,7 @@ pub struct PrintX<'info> {
 }
 ```
 
-Note that my_storage does not have the #[account(mut)] macro because we don’t need it to be mutable, we are just reading it.
+Note that `my_storage` does not have the `#[account(mut)]` macro because we don’t need it to be mutable, we are just reading it.
 
 We then add the following line to our test:
 
@@ -166,6 +166,6 @@ We then add the following line to our test:
 await program.methods.printX().accounts({myStorage: myStorage}).rpc();
 ```
 
-If you are running the solana logs in the background, you should see the number get printed.
+If you are running the `solana logs` in the background, you should see the number get printed.
 
-**Exercise:** Write an increment function that reads x and stores x + 1 back in x.
+**Exercise:** Write an increment function that reads `x` and stores `x + 1` back in `x`.

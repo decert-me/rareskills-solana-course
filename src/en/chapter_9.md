@@ -8,9 +8,9 @@ Attribute-like and custom derive macros in Rust are used to take a block of Rust
 
 To understand attribute-like and custom derive macros in Rust, we first need to briefly cover implementation structs in Rust.
 
-## Implementations for structs: impl
+## Implementations for structs: `impl`
 
-The following struct should be straightforward to understand. What gets interesting is when we create functions that operate on a particular struct. The way we do this is with impl:
+The following struct should be straightforward to understand. What gets interesting is when we create functions that operate on a particular struct. The way we do this is with `impl`:
 
 ```
 struct Person {
@@ -19,9 +19,9 @@ struct Person {
 }
 ```
 
-Associated functions and methods are implemented for structs inside the impl block.
+Associated functions and methods are implemented for structs inside the `impl` block.
 
-Associated functions can be compared to the scenario in Solidity where a library is created for interacting with a struct. When we define using lib for MyStruct, it allows us to use the syntax myStruct.associatedFunction(). This gives the function access to myStruct via the Self keyword.
+Associated functions can be compared to the scenario in Solidity where a library is created for interacting with a struct. When we define `using lib for MyStruct`, it allows us to use the syntax `myStruct.associatedFunction()`. This gives the function access to `myStruct` via the `Self` keyword.
 
 We recommend using the [Rust Playground](https://play.rust-lang.org/) but for more complex examples, you may have to set up your IDE.
 
@@ -142,9 +142,9 @@ To get an intuition for what the attribute-like macros is doing, we will create 
 
 To gain a better understanding of how Rust attributes and macros work, we will create an [attribute-like macro](https://doc.rust-lang.org/book/ch19-06-macros.html) that:
 
-1. takes a struct which does **not** have the fields foo and bar, of type i32
+1. takes a struct which does **not** have the fields `foo` and `bar`, of type `i32`
 2. inserts those fields into the struct
-3. creates an impl with a function called double_foo which returns returns twice the integer value of whatever foo is holding.
+3. creates an `impl` with a function called `double_foo` which returns returns twice the integer value of whatever foo is holding.
 
 ### Setup
 
@@ -204,8 +204,8 @@ fn main() {
 
 Some observations:
 
-- The struct MyStruct does *not* have the fields foo in it.
-- The function double_foo is not defined anywhere in the code above, it is assumed to exist.
+- The struct MyStruct does *not* have the fields `foo` in it.
+- The function `double_foo` is not defined anywhere in the code above, it is assumed to exist.
 
 Now let’s create the attribute-like macro which will modify the MyStruct behind the scenes.
 
@@ -325,11 +325,11 @@ When you try to compile it with cargo run src/main.rs you will get the following
 
 It may seem odd, because the struct clearly has those fields. However, the attribute-like macro removed them!
 
-## The #[derive(…)] macro
+## The `#[derive(…)]` macro
 
-The #[derive(…)] macro is much less powerful than the attribute-like macro. For our purposes, a derive macro *augments* a struct, it does not alter it. (This is not a precise definition, but it is sufficient for now).
+The `#[derive(…)]` macro is much less powerful than the attribute-like macro. For our purposes, a derive macro *augments* a struct, it does not alter it. (This is not a precise definition, but it is sufficient for now).
 
-A derive macro can, among other things, attach an impl to a struct.
+A derive macro can, among other things, attach an `impl` to a struct.
 
 For example, if we try to do the following:
 
@@ -346,7 +346,7 @@ pub fn main() {
 
 The code will not compile because structs are not “printable.”
 
-To make them printable, they need an impl with a function fmt which returns a string representation of the struct.
+To make them printable, they need an `impl` with a function `fmt` which returns a string representation of the struct.
 
 If we do the following instead:
 
@@ -368,11 +368,11 @@ We expect it to print:
 Foo { bar: 3 }
 ```
 
-The derive attribute “augmented” Foo in such a way that println! could create a string representation for it.
+The derive attribute “augmented” Foo in such a way that `println!` could create a string representation for it.
 
 ## Summary
 
-An impl is a group of functions that operate on a struct. They are “attached” to the struct by using the same name as the struct. A trait enforces that an impl implements certain functions. In our example, we attached the the trait Speed to impl Car using the syntax impl Speed for Car.
+An `impl` is a group of functions that operate on a struct. They are “attached” to the struct by using the same name as the struct. A trait enforces that an impl implements certain functions. In our example, we attached the the trait Speed to `impl` Car using the syntax `impl` Speed for Car.
 
 An attribute-like macro takes in a struct and can completely rewrite it.
 
@@ -384,13 +384,13 @@ Let’s look at the program anchor creates during anchor init again:
 
 ![img](https://static.wixstatic.com/media/935a00_7626044154134115afa260e9896b370d~mv2.png/v1/fill/w_740,h_310,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_7626044154134115afa260e9896b370d~mv2.png)
 
-The attribute #[program] is modifying the module behind the scenes. For example, it implements a router that automatically directs incoming blockchain instructions to the appropriate functions within the module.
+The attribute `#[program]` is modifying the module behind the scenes. For example, it implements a router that automatically directs incoming blockchain instructions to the appropriate functions within the module.
 
 The struct Initialize {} is augmented with additional functionality to be used in the Solana framework.
 
 ## Summary
 
-Macros a very large topic. Our intent here is to give you a sense of what is happening when you see #[program] or #[derive(Accounts)]. Don’t be discouraged if it feels foreign. **You do not need to be able to write macros to write Solana programs**. 
+Macros a very large topic. Our intent here is to give you a sense of what is happening when you see `#[program]` or `#[derive(Accounts)]`. Don’t be discouraged if it feels foreign. **You do not need to be able to write macros to write Solana programs**. 
 
 Having an idea of what they do however will hopefully make the programs you see less mysterious.
 

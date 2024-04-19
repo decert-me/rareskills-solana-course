@@ -4,13 +4,13 @@
 
 This tutorial shows how to read account data directly from the Solana web3 Javascript client so that a web app could read it on the frontend.
 
-In the previous tutorial we used solana account <account address> to read the data we wrote, but this won’t work if we are building a dApp on a website.
+In the previous tutorial we used `solana account <account address>` to read the data we wrote, but this won’t work if we are building a dApp on a website.
 
 Instead, we must calculate the address of the storage account, read the data, and deserialize the data from the Solana web3 client.
 
-Imagine in Ethereum we wanted to avoid using public variables or view functions, but still wanted to show their values on the frontend. To view the value in storage variables without making them public or adding a view function, we would instead use the getStorageAt(contract_address, slot) API. We are going to do something similar in Solana, except that instead of passing in the (contract_address, slot) pair, we just pass in the address of the program and derive the address of its storage account(s).
+Imagine in Ethereum we wanted to avoid using public variables or view functions, but still wanted to show their values on the frontend. To view the value in storage variables without making them public or adding a view function, we would instead use the `getStorageAt(contract_address, slot)` API. We are going to do something similar in Solana, except that instead of passing in the `(contract_address, slot)` pair, we just pass in the address of the program and derive the address of its storage account(s).
 
-Here is the Rust code from the previous tutorial. It initializes MyStorage and writes to x using the set function. We will not modify it in this tutorial:
+Here is the Rust code from the previous tutorial. It initializes `MyStorage` and writes to `x` using the `set` function. We will not modify it in this tutorial:
 
 ```
 use anchor_lang::prelude::*;
@@ -63,8 +63,8 @@ pub struct MyStorage {
 The following is the Typescript unit test that:
 
 1) initializes the account
-2) writes 170 to storage
-3) reads the value back using the fetch function:
+2) writes `170` to storage
+3) reads the value back using the `fetch` function:
 
 ```
 import * as anchor from "@coral-xyz/anchor";
@@ -101,9 +101,9 @@ let myStorageStruct = await program.account.myStorage.fetch(myStorage);
 console.log("The value of x is:", myStorageStruct.x.toString());
 ```
 
-Anchor is automatically calculating the address of the MyStorage account, reading it in, and formatting it as a Typescript object.
+Anchor is automatically calculating the address of the `MyStorage` account, reading it in, and formatting it as a Typescript object.
 
-To understand how Anchor is magically converting the Rust struct into a Typescript struct, let’s take a look at the IDL in target/idl/basic_storage.json. Towards the bottom of the JSON, we can see a definition of the struct our program is creating:
+To understand how Anchor is magically converting the Rust struct into a Typescript struct, let’s take a look at the IDL in `target/idl/basic_storage.json`. Towards the bottom of the JSON, we can see a definition of the struct our program is creating:
 
 ![img](https://static.wixstatic.com/media/935a00_3b121a3b1adb4f899a82e125607c64c5~mv2.png/v1/fill/w_350,h_289,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_3b121a3b1adb4f899a82e125607c64c5~mv2.png)
 
@@ -111,13 +111,13 @@ To understand how Anchor is magically converting the Rust struct into a Typescri
 
 That is, if you pick a random account on Solana and use the code above, the deserialization will almost certainly fail. Later in this article we will read the account in a more “raw” manner.
 
-The function fetch is not magical. So how do we do this for an account we did not create?
+The function `fetch` is not magical. So how do we do this for an account we did not create?
 
 ## Fetching data from accounts created by Anchor Solana programs
 
 If we know the IDL of another program that was created with Anchor, we can conveniently read its account data.
 
-Let’s anchor init another program in another shell, then have it initialize an account, and then set a single boolean variable in that struct to true. We’ll call this other account other_program and the struct that stores its boolean as TrueOrFalse:
+Let’s `anchor init` another program in another shell, then have it initialize an account, and then set a single boolean variable in that struct to `true`. We’ll call this `other account` other_program and the struct that stores its boolean as `TrueOrFalse`:
 
 ```
 use anchor_lang::prelude::*;
@@ -186,11 +186,11 @@ describe("other_program", () => {
 });
 ```
 
-Run the tests in another shell against a local validator. Take note of the programId that gets printed out. We will need it to derive the address of other_program ’s account.
+Run the tests in another shell against a local validator. Take note of the `programId` that gets printed out. We will need it to derive the address of `other_program` ’s account.
 
 ### read program
 
-In another shell, anchor init another program. We’ll call it read. We are only going to use the Typescript code to read the TrueOrFalse struct of other_program, no Rust is used. This simulates reading from another program’s storage account.
+In another shell, anchor init another program. We’ll call it `read`. We are only going to use the Typescript code to read the `TrueOrFalse` struct of `other_program`, no Rust is used. This simulates reading from another program’s storage account.
 
 The layout of our directory is as follows:
 
@@ -200,11 +200,11 @@ parent_dir/
 ∟ read/
 ```
 
-The following code will read the TrueOrFalse struct from other_program. Ensure that
+The following code will read the `TrueOrFalse` struct from `other_program`. Ensure that
 
-- the otherProgramAddress matches the one from printed above
-- ensure that you are reading the other_program.json IDL from the right file location
-- make sure to run the tests with --skip-local-validator to ensure that this code reads the account the other program created
+- the `otherProgramAddress` matches the one from printed above
+- ensure that you are reading the `other_program`.json IDL from the right file location
+- make sure to run the tests with `--skip-local-validator` to ensure that this code reads the account the other program created
 
 ```
 import * as anchor from "@coral-xyz/anchor";
@@ -246,7 +246,7 @@ In the following section we show how to read data without the Anchor magic.
 
 Unfortunately, the documentation for Solana’s Typescript client is very limited and the library has been updated enough times to deprecate tutorials on the subject.
 
-Your best bet for trying to find the Solana web3 Typescript function you need is to look at the [HTTP JSON RPC Methods](https://docs.solana.com/api/http) and look for one that seems promising. In our case, getAccountInfo looks promising (blue arrow).
+Your best bet for trying to find the Solana web3 Typescript function you need is to look at the [HTTP JSON RPC Methods](https://docs.solana.com/api/http) and look for one that seems promising. In our case, `getAccountInfo` looks promising (blue arrow).
 
 ![img](https://static.wixstatic.com/media/935a00_d93044e34e724b31b7998bc55176a053~mv2.png/v1/fill/w_740,h_419,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_d93044e34e724b31b7998bc55176a053~mv2.png)
 
@@ -258,7 +258,7 @@ Below we show the expected output of running the test again:
 
 ![img](https://static.wixstatic.com/media/935a00_7c3968c4f5cd4968849e1d30b5d24263~mv2.png/v1/fill/w_740,h_293,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_7c3968c4f5cd4968849e1d30b5d24263~mv2.png)
 
-The green box around the hex aa byte shows we have successfully retrieved the decimal 170 value we stored in the set() function.
+The green box around the hex `aa` byte shows we have successfully retrieved the decimal 170 value we stored in the set() function.
 
 The next step is to parse the data buffer, which is not something we will cover here.
 

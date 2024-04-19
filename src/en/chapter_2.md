@@ -73,7 +73,7 @@ pub fn initialize(ctx: Context<Initialize>,
 }
 ```
 
-Now we need to change the test in ./tests/day2.ts
+Now we need to change the test in `./tests/day2.ts`
 
 ```
 it("Is initialized!", async () => {
@@ -84,7 +84,7 @@ it("Is initialized!", async () => {
 });
 ```
 
-Now re-run anchor test --skip-local-validator.
+Now re-run `anchor test --skip-local-validator`.
 
 When we look in the logs, we should see something like the following
 
@@ -121,7 +121,7 @@ When we run the test, we see the new log
 
 ### Array of numbers
 
-Next we add a function (and test) to illustrate passing an array of numbers. In Rust, a “vector”, or Vec is what Solidity calls an “array.”
+Next we add a function (and test) to illustrate passing an array of numbers. In Rust, a “vector”, or `Vec` is what Solidity calls an “array.”
 
 ```
 pub fn initialize(ctx: Context<Initialize>,
@@ -181,20 +181,20 @@ Arithmetic overflow was a common attack vector in Solidity until version 0.8.0 b
 
 ### Method 1: overflow-checks = true in Cargo.toml
 
-If the key overflow-checks is set to true in the Cargo.toml file, then Rust will add overflow checks at the compiler level. See the screenshot of Cargo.toml next:
+If the key `overflow-checks` is set to `true` in the Cargo.toml file, then Rust will add overflow checks at the compiler level. See the screenshot of Cargo.toml next:
 
 ![cargo.toml overflow-checks = true](https://static.wixstatic.com/media/935a00_f7addf4ad1314e70acc2dc025aa2631d~mv2.png/v1/fill/w_350,h_317,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f7addf4ad1314e70acc2dc025aa2631d~mv2.png)
 
 If the Cargo.toml file is configured in this manner, you don’t need to worry about overflow.
 
-However, adding overflow checks increases the compute cost of the transaction (we will revisit this shortly). So under some circumstances where compute cost is an issue, you may wish to set overflow-checks to false. To strategically check for overflows, you can use the Rust checked_* operators in Rust.
+However, adding overflow checks increases the compute cost of the transaction (we will revisit this shortly). So under some circumstances where compute cost is an issue, you may wish to set `overflow-checks` to `false`. To strategically check for overflows, you can use the Rust `checked_*` operators in Rust.
 
-### Method 2: using checked_* operators.
+### Method 2: using `checked_*` operators.
 
 Let’s look at how overflow checks are applied to arithmetic operations within Rust itself. Consider the snippet of Rust below.
 
-- On line 1, we do arithmetic using the usual + operator, which overflows silently.
-- On line 2, we use .checked_add, which will throw an error if an overflow happens. Note that we have .checked_* available for other operations, like checked_sub and checked_mul.
+- On line 1, we do arithmetic using the usual `+` operator, which overflows silently.
+- On line 2, we use `.checked_add`, which will throw an error if an overflow happens. Note that we have `.checked_*` available for other operations, like `checked_sub` and `checked_mul`.
 
 ```
 let x: u64 = y + z; // will silently overflow
@@ -203,17 +203,17 @@ let xSafe: u64 = y.checked_add(z).unwrap(); // will panic if overflow happens
 // checked_sub, checked_mul, etc are also available
 ```
 
-**Exercise 1:** Set overflow-checks = true create a test case where you underflow a u64 by doing 0 - 1. You will need to pass those numbers in as arguments or the code won’t compile. What happens?
+**Exercise 1:** Set `overflow-checks = true` create a test case where you underflow a `u64` by doing `0 - 1`. You will need to pass those numbers in as arguments or the code won’t compile. What happens?
 
 You’ll see the transaction fails (with a rather cryptic error message shown below) when the test runs. That’s because Anchor turned on overflow protection:
 
 ![program error from arithemtic overflow](https://static.wixstatic.com/media/935a00_2ed0f5f6e2bb4d858e556662dbe458a2~mv2.png/v1/fill/w_740,h_272,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_2ed0f5f6e2bb4d858e556662dbe458a2~mv2.png)
 
-**Exercise 2:** Now change overflow-checks to false, then run the test again. You should see an underflow value of 18446744073709551615.
+**Exercise 2:** Now change `overflow-checks` to `false`, then run the test again. You should see an underflow value of 18446744073709551615.
 
 **Exercise 3:** With overflow protection disabled in Cargo.toml, do **let result = a.checked_sub(b).unwrap();** with a = 0 and b = 1. What happens?
 
-Should you just leave overflow-checks = true in the Cargo.toml file for your Anchor project? Generally, yes. But if you are doing some intensive calculations, you might want to set overflow-checks to false and strategically defend against overflows in key junctures to save compute cost, which we will demonstrate next.
+Should you just leave `overflow-checks = true` in the Cargo.toml file for your Anchor project? Generally, yes. But if you are doing some intensive calculations, you might want to set `overflow-checks` to false and strategically defend against overflows in key junctures to save compute cost, which we will demonstrate next.
 
 ## Solana compute units 101
 
@@ -259,7 +259,7 @@ There is also .checked_pow if you are concerned about overflow.
 
 One nice thing about using Rust for smart contracts is that we don’t have to import libraries like Solmate or Solady to do math. Rust is a pretty sophisticated language with a lot of operations built in, and if we need some piece of code, we can look outside the Solana ecosystem for a Rust crate (this is what libraries are called in Rust) to do the job.
 
-Let’s take the cube root of 50. The cube root function for floats is built into the Rust language with the function cbrt().
+Let’s take the cube root of 50. The cube root function for floats is built into the Rust language with the function `cbrt()`.
 
 ```
 // note that we changed `a` to f32 (float 32)

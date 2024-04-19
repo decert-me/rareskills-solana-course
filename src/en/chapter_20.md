@@ -14,7 +14,7 @@ Although rent is computed on a “per byte” basis, accounts with zero data are
 
 However, you do want to be able to anticipate how much storage will cost so you can design your application properly.
 
-If you want a quick estimate, running solana rent <number of bytes> in the command line will give you a quick answer:
+If you want a quick estimate, running `solana rent <number of bytes>` in the command line will give you a quick answer:
 
 ![solana rent 32](https://static.wixstatic.com/media/935a00_f4d109b3ccca403aaa4474180b6044be~mv2.png/v1/fill/w_350,h_67,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_f4d109b3ccca403aaa4474180b6044be~mv2.png)
 
@@ -26,11 +26,11 @@ Let’s see how this fee is calculated.
 
 The [Anchor Rent Module](https://docs.rs/solana-program/latest/solana_program/rent/index.html) gives us some constants related to rent:
 
-- ACCOUNT_STORAGE_OVERHEAD: this constant has a value of 128 (bytes) and as the name suggests, an empty account has 128 bytes of overhead.
-- DEFAULT_EXEMPTION_THRESHOLD: this constant has a value of 2.0 (float 64) and refers to the fact that paying two years of rent in advance makes the account exempt from paying further rent.
-- DEFAULT_LAMPORTS_PER_BYTE_YEAR: this constant has a value of 3,480 meaning each byte requires 3,480 lamports per year. Since we are required to pay two years worth, each byte will cost us 6,960 lamports.
+- `ACCOUNT_STORAGE_OVERHEAD`: this constant has a value of 128 (bytes) and as the name suggests, an empty account has 128 bytes of overhead.
+- `DEFAULT_EXEMPTION_THRESHOLD`: this constant has a value of 2.0 (float 64) and refers to the fact that paying two years of rent in advance makes the account exempt from paying further rent.
+- `DEFAULT_LAMPORTS_PER_BYTE_YEAR`: this constant has a value of 3,480 meaning each byte requires 3,480 lamports per year. Since we are required to pay two years worth, each byte will cost us 6,960 lamports.
 
-The following rust program prints out how much an empty account will cost us. Note that the result matches the screenshot of the solana rent 0 above:
+The following rust program prints out how much an empty account will cost us. Note that the result matches the screenshot of the `solana rent 0` above:
 
 ```
 use anchor_lang::prelude::*;
@@ -109,7 +109,7 @@ Remember, the translation from bytes to crypto are constants set in the protocol
 
 ## Accounts with balances below the 2 year rent except threshold are reduced until the account is deleted
 
-A rather humorous Reddit thread of a user with a wallet account slowly getting “drained” can be read here: https://www.reddit.com/r/solana/comments/qwin1h/my_sol_balance_in_the_wallet_is_decreasing/
+A rather humorous Reddit thread of a user with a wallet account slowly getting “drained” can be read here: [https://www.reddit.com/r/solana/comments/qwin1h/my_sol_balance_in_the_wallet_is_decreasing/](https://www.reddit.com/r/solana/comments/qwin1h/my_sol_balance_in_the_wallet_is_decreasing/)
 
 The reason for this is the wallet was below the rent exception threshold, and the Solana runtime is slowly reducing the account balance to pay for the rent.
 
@@ -119,13 +119,13 @@ If a wallet ends up getting deleted due to having the balance below the rent exe
 
 When we initialize an account, we cannot initialize more than 10,240 bytes in size.
 
-**Exercise:** create a basic storage initialization program and set space=10241. This is 1 byte higher than the limit. You should see an error like the following:
+**Exercise:** create a basic storage initialization program and set `space=10241`. This is 1 byte higher than the limit. You should see an error like the following:
 
 ![solana account cannot be initialized due to exceeding size limitations](https://static.wixstatic.com/media/935a00_1292e88b8b014ff58682fbd586115fc7~mv2.png/v1/fill/w_740,h_158,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_1292e88b8b014ff58682fbd586115fc7~mv2.png)
 
 ## Changing the size of an account
 
-If you need to increase the size of the account, we can use the realloc macro. This may be handy if the account is storing a vector and needs more space. An example is in the increase_account_size function and IncreaseAccountSize context struct which increases the size by 1,000 bytes (see the ALL CAPS comment in the code below):
+If you need to increase the size of the account, we can use the `realloc` macro. This may be handy if the account is storing a vector and needs more space. An example is in the `increase_account_size` function and `IncreaseAccountSize` context struct which increases the size by 1,000 bytes (see the ALL CAPS comment in the code below):
 
 ```
 use anchor_lang::prelude::*;
@@ -187,9 +187,9 @@ pub struct MyStorage {
 }
 ```
 
-When increasing the size of the account, be sure to set realloc::zero = false (in the code above) if you do not want the account data erased. If you want the account data to be set to all zeros, use realloc::zero = true. You do not need to change the test. The macro will handle this behind the scenes for you.
+When increasing the size of the account, be sure to set `realloc::zero = false` (in the code above) if you do not want the account data erased. If you want the account data to be set to all zeros, use `realloc::zero = true`. You do not need to change the test. The macro will handle this behind the scenes for you.
 
-**Exercise:** Initialize an account in the test, then call the increase_account_size function. View the account size with solana account <addr>. In the command line. You will need to do this with the local validator so the account persists.
+**Exercise:** Initialize an account in the test, then call the `increase_account_size` function. View the account size with `solana account <addr>`. In the command line. You will need to do this with the local validator so the account persists.
 
 ## Maximum Solana account size
 
@@ -197,7 +197,7 @@ The maximum account size increase per realloc is 10240. The maximum size an acco
 
 ## Anticipating the cost of deploying a program
 
-The bulk of the cost of deploying a Solana program comes from paying rent for storing the bytecode. The bytecode is stored in a separate account from the address returned from anchor deploy.
+The bulk of the cost of deploying a Solana program comes from paying rent for storing the bytecode. The bytecode is stored in a separate account from the address returned from `anchor deploy`.
 
 The screenshot below shows how to obtain this information:
 
