@@ -6,7 +6,7 @@ The owner of an account in Solana is able to reduce the SOL balance, write data 
 
 Here is the summary of account ownership in Solana:
 
-1) The system program owns wallets and keypair accounts that haven’t been assigned ownership to a program (initialized).
+1) The `system program` owns wallets and keypair accounts that haven’t been assigned ownership to a program (initialized).
 2) The BPFLoader owns programs.
 3) A program owns [Solana PDA](https://www.rareskills.io/post/solana-pda)s. It can also own keypair accounts if ownership has been transferred to the program (this is what happens during initialization).
 
@@ -26,7 +26,7 @@ This includes reducing the lamport data (you do not need to be the owner to incr
 
 Although you “own” your wallet in some metaphysical sense, you do not directly have the ability to write data into it or reduce the lamport balance because, from Solana runtime perspective, you are not the owner.
 
-The reason you are able to spend SOL in your wallet is because you possess the private key that generated the address, or public key. When the system program recognizes that you have produced a valid signature for the public key, then it will recognize your request to spend the lamports in the account as legitimate, then spend them according to your instructions.
+The reason you are able to spend SOL in your wallet is because you possess the private key that generated the address, or public key. When the `system program` recognizes that you have produced a valid signature for the public key, then it will recognize your request to spend the lamports in the account as legitimate, then spend them according to your instructions.
 
 However, the system program does not offer a mechanism for a signer to directly write data to the account.
 
@@ -40,7 +40,7 @@ We will explore initialization more closely when we discuss the re-initializatio
 
 To illustrate this, consider the following program that initializes a PDA and a keypair account. The Typescript test will console log the owner before and after the initialization transaction.
 
-If we try to ascertain the owner of an address that does not exist, we get a null.
+If we try to ascertain the owner of an address that does not exist, we get a `null`.
 
 Here is the Rust code:
 
@@ -152,11 +152,11 @@ describe("owner", () => {
 
 The tests works as follows:
 
-1) It predicts the address of the PDA and queries the owner. It gets null.
-2) It calls initializePDA then queries the owner. It gets the address of the program.
+1) It predicts the address of the PDA and queries the owner. It gets `null`.
+2) It calls `initializePDA` then queries the owner. It gets the address of the program.
 3) It generates a keypair account and queries the owner. It gets null.
 4) It airdrops SOL to the keypair account. Now the owner is the system program, just like a normal wallet.
-5) It calls initializeKeypair then queries the owner. It gets the address of the program.
+5) It calls `initializeKeypair` then queries the owner. It gets the address of the program.
 
 The test result screenshot is below:
 
@@ -164,7 +164,7 @@ The test result screenshot is below:
 
 This is how the program is able to write data to accounts: it owns them. During initialization, the program takes ownership over the account.
 
-**Exercise:** Modify the test to print out the address of the keypair and the pda. Then use the Solana CLI to inspect who the owner is for those accounts. It should match what the test prints. Make sure the solana-test-validator is running in the backgorund so you can use the CLI.
+**Exercise:** Modify the test to print out the address of the keypair and the pda. Then use the Solana CLI to inspect who the owner is for those accounts. It should match what the test prints. Make sure the `solana-test-validator` is running in the backgorund so you can use the CLI.
 
 ## The BPFLoaderUpgradeable owns programs
 
@@ -286,14 +286,14 @@ describe("change_owner", () => {
 
 Here are some things we want to call attention to:
 
-- After transferring the account, the data must be erased in the same transaction. Otherwise, we could insert data into owned accounts of other programs. This is the account_info.realloc(0, false); code. The false means don’t zero out the data, but it makes no difference because there is no data anymore.
+- After transferring the account, the data must be erased in the same transaction. Otherwise, we could insert data into owned accounts of other programs. This is the `account_info.realloc(0, false);` code. The `false` means don’t zero out the data, but it makes no difference because there is no data anymore.
 - Transferring account ownership does not permanently remove the account, it can be initialized again as the tests show.
 
 Now that we clearly understand that programs own PDAs and keypair accounts initialized by them, the interesting and useful thing we can do is transfer SOL out of them.
 
 ## Transferring SOL out of a PDA: Crowdfund example
 
-Below we show the code for a barebones crowdfunding app. The function of interest is the withdraw function where the program transfer lamports out of the PDA and to the withrdawer.
+Below we show the code for a barebones crowdfunding app. The function of interest is the `withdraw` function where the program transfer lamports out of the PDA and to the withrdawer.
 
 ```
 use anchor_lang::prelude::*;
@@ -378,8 +378,8 @@ In this case, the program owns the PDA, and therefore can directly deduct lampor
 
 Some other items in the code worth calling attention to:
 
-- We hardcoded who can withdraw from the PDA using the constraint #[account(mut, address = Pubkey::from_str("5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj").unwrap())]. This checks that the address for that account matches the one in the string. For this code to work, we also needed to import use std::str::FromStr;. To test this code, change the address in the string to yours from solana address.
-- With Anchor 0.29, we can use the syntax ctx.accounts.pda.sub_lamports(amount)?; and ctx.accounts.signer.add_lamports(amount)?;. For earlier versions of Anchor, use [**ctx.accounts.pda.to**](http://ctx.accounts.pda.to/)**_account_info().try_borrow_mut_lamports()? -= amount;** **and** [ctx.accounts.signer.to](http://ctx.accounts.signer.to/)_account_info().try_borrow_mut_lamports()? += amount;.
+- We hardcoded who can withdraw from the PDA using the constraint `#[account(mut, address = Pubkey::from_str("5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj").unwrap())].` This checks that the address for that account matches the one in the string. For this code to work, we also needed to import `use std::str::FromStr;`. To test this code, change the address in the string to yours from `solana address`.
+- With Anchor 0.29, we can use the syntax `ctx.accounts.pda.sub_lamports(amount)?;` and `ctx.accounts.signer.add_lamports(amount)?;`. For earlier versions of Anchor, use [**ctx.accounts.pda.to**](http://ctx.accounts.pda.to/)**_account_info().try_borrow_mut_lamports()? -= amount;** **and** [ctx.accounts.signer.to](http://ctx.accounts.signer.to/)_account_info().try_borrow_mut_lamports()? += amount;.
 - You don’t need to own the account you are transferring lamports to.
 
 Here is the accompanying Typescript code:

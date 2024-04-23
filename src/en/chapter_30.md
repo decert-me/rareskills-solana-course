@@ -2,9 +2,9 @@
 
 ![Solana close acocunt](https://static.wixstatic.com/media/935a00_74aadefdf66141ac8156b6fb8a78cbfd~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_74aadefdf66141ac8156b6fb8a78cbfd~mv2.jpg)
 
-In the Anchor framework for Solana, close is the opposite of init ([initializing an account in Anchor](https://www.rareskills.io/post/solana-initialize-account)) — it reduces the lamport balance to zero, sending the lamports to a target address, and changes the owner of the account to be the system program.
+In the Anchor framework for Solana, `close` is the opposite of `init` ([initializing an account in Anchor](https://www.rareskills.io/post/solana-initialize-account)) — it reduces the lamport balance to zero, sending the lamports to a target address, and changes the owner of the account to be the system program.
 
-Here is an example of using the close instruction in Rust:
+Here is an example of using the `close` instruction in Rust:
 
 ```
 use anchor_lang::prelude::*;
@@ -53,9 +53,9 @@ pub struct ThePda {
 
 ### Solana returns rent for closing accounts
 
-The close = signer macro specifies that the signer in the transaction will receive the rent that was set aside to pay for storage (though another address could be specified of course). This is similar to how selfdestruct in Ethereum (prior to the Decun upgrade) refunded users for clearing space. The amount of SOL that can be earned from closing an account is proportional to how large the account was.
+The `close = signer` macro specifies that the signer in the transaction will receive the rent that was set aside to pay for storage (though another address could be specified of course). This is similar to how selfdestruct in Ethereum (prior to the Decun upgrade) refunded users for clearing space. The amount of SOL that can be earned from closing an account is proportional to how large the account was.
 
-Here is the Typescript to call initialize followed by delete:
+Here is the Typescript to call `initialize` followed by `delete`:
 
 ```
 import * as anchor from "@coral-xyz/anchor";
@@ -80,7 +80,7 @@ describe("close_program", () => {
 });
 ```
 
-The close = signer instruction says to send the rent lamports to the signer, but you can specify whichever address you prefer.
+The `close = signer` instruction says to send the rent lamports to the signer, but you can specify whichever address you prefer.
 
 **The above construction allows anyone to close the account**, you probably want to add some kind of access control in a real application!
 
@@ -102,7 +102,7 @@ In version 0.25 of Anchor, the close sequence was different.
 
 Similar to the current implementation, it would first send all the lamports to the destination address.
 
-However, instead of erasing the data and transferring it to the system program, close would write a special 8 byte sequence called the CLOSE_ACCOUNT_DISCRIMINATOR. ([original code](https://github.com/coral-xyz/anchor/blob/v0.25.0/lang/src/lib.rs#L273)):
+However, instead of erasing the data and transferring it to the system program, `close` would write a special 8 byte sequence called the `CLOSE_ACCOUNT_DISCRIMINATOR`. ([original code](https://github.com/coral-xyz/anchor/blob/v0.25.0/lang/src/lib.rs#L273)):
 
 ![Anchor account discriminator](https://static.wixstatic.com/media/935a00_24b182dead824479901e064b4ae16dda~mv2.png/v1/fill/w_740,h_42,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_24b182dead824479901e064b4ae16dda~mv2.png)
 
@@ -112,7 +112,7 @@ Eventually, the runtime would erase the account because it had zero lamports.
 
 When Anchor initializes an account, it computes the discriminator and stores that in the first 8 bytes of the account. The account discriminator is the first 8 bytes of the SHA256 of the Rust identifier of the struct.
 
-When a user asks the program to load an account via pub the_pda: Account<'info, ThePda>, the program will compute the first 8 bytes of the SHA256 of the ThePda identifier. Then it will load ThePda data and compare the discriminator stored there to the one it computed. If they do not match, then Anchor will not deserialize the account.
+When a user asks the program to load an account via `pub the_pda: Account<'info, ThePda>`, the program will compute the first 8 bytes of the SHA256 of the `ThePda` identifier. Then it will load `ThePda` data and compare the discriminator stored there to the one it computed. If they do not match, then Anchor will not deserialize the account.
 
 The intent here is to prevent an attacker from crafting a malicious account which will deserialize into unexpected results when parsed “through the wrong struct.”
 

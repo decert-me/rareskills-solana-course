@@ -4,9 +4,9 @@
 
 In previous tutorials, we’ve had to initialize an account in a separate transaction before we can write data to it. We may wish to be able to initialize an account and write data to it in one transaction to simplify things for the user.
 
-Anchor provides a handy macro called init_if_needed which, as the name suggests, will initialize the account if it does not exist.
+Anchor provides a handy macro called `init_if_needed` which, as the name suggests, will initialize the account if it does not exist.
 
-The example counter below does not need a separate initialize transaction, it will start adding “1” to the counter storage right away.
+The example counter below does not need a separate initialize transaction, it will start adding “1” to the `counter` storage right away.
 
 Rust:
 
@@ -74,11 +74,11 @@ describe("init_if_needed", () => {
 });
 ```
 
-When we try to build this program with anchor build, we will get the following error:
+When we try to build this program with `anchor build`, we will get the following error:
 
-![anchor init_if_needed warning](https://static.wixstatic.com/media/935a00_c444fda7ad5a4771ac4444d8993eb1f7~mv2.png/v1/fill/w_740,h_108,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c444fda7ad5a4771ac4444d8993eb1f7~mv2.png)
+![anchor `init_if_needed` warning](https://static.wixstatic.com/media/935a00_c444fda7ad5a4771ac4444d8993eb1f7~mv2.png/v1/fill/w_740,h_108,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c444fda7ad5a4771ac4444d8993eb1f7~mv2.png)
 
-To make the error init_if_needed requires that anchor-lang be imported with the init-if-needed cargo feature enabled go away, we can open the Cargo.toml file in programs/<anchor_project_name> and add the following line:
+To make the error `init_if_needed requires that anchor-lang be imported with the init-if-needed cargo feature enabled` go away, we can open the `Cargo.toml` file in `programs/<anchor_project_name>` and add the following line:
 
 ```
 [dependencies]
@@ -97,7 +97,7 @@ From Anchor’s perspective, if the account has a non-zero lamport balance OR th
 
 An account owned by the system program or with zero lamport balance can be initialized again.
 
-To illustrate this, we have a Solana program with the typical initialize function (which uses init, not init_if_needed). It also has a drain_lamports function and a give_to_system_program function, both of which do what their names suggest:
+To illustrate this, we have a Solana program with the typical `initialize` function (which uses `init`, not `init_if_needed`). It also has a `drain_lamports` function and a `give_to_system_program` function, both of which do what their names suggest:
 
 ```
 use anchor_lang::prelude::*;
@@ -195,7 +195,7 @@ The sequence is as follows:
 1. We initialize the PDA
 2. We transfer ownership of the PDA to the system program
 3. We call initialize again, and it succeeds
-4. We empty the lamports from the my_pda account
+4. We empty the lamports from the `my_pda` account
 5. With zero lamport balance, the Solana runtime considers the account non-existent as it will be scheduled for deletion as it is no longer rent exempt.
 6. We call initialize again, and it succeeds. **We have successfully reinitialized the account after following this sequence.**
 
@@ -209,13 +209,13 @@ Is your intent by doing either of those actions to restart the counter or end th
 
 Anchor wants you to think through your intent with this, which is why it makes you jump through the extra hoop of enabling a feature flag in Cargo.toml.
 
-If you are okay with the counter getting reset back at some point and counting back up, reinitialization is not an issue. But if the counter should never reset to zero under any circumstance, then it would probably be better for you to implement the initialization function separately and add a safeguard to make sure it can only be called once in it’s lifetime (for example, storing a boolean flag in a separate account).
+If you are okay with the counter getting reset back at some point and counting back up, reinitialization is not an issue. But if the counter should never reset to zero under any circumstance, then it would probably be better for you to implement the `initialization` function separately and add a safeguard to make sure it can only be called once in it’s lifetime (for example, storing a boolean flag in a separate account).
 
-Of course, your program might not necessarily have the mechanism to transfer the account to the system program or withdraw lamports from the account. But Anchor has no way of knowing this, so it always throws out the warning about init_if_needed because it cannot determine whether the account can go back into an initializable state.
+Of course, your program might not necessarily have the mechanism to transfer the account to the system program or withdraw lamports from the account. But Anchor has no way of knowing this, so it always throws out the warning about `init_if_needed` because it cannot determine whether the account can go back into an initializable state.
 
 ## Having two initialization paths could lead to an off-by-one error or other surprising behavior
 
-In our counter example with init_if_needed, the counter is never equal to zero because the first initialization transaction also increments the value from zero to one.
+In our counter example with `init_if_needed`, the counter is never equal to zero because the first initialization transaction also increments the value from zero to one.
 
 If we *also* had a regular initialization function that did not increment the counter, then the counter would be initialized and have a value of zero. If some business logic never expects to see a counter with a value of zero, then unexpected behavior may happen.
 
@@ -223,9 +223,9 @@ If we *also* had a regular initialization function that did not increment the co
 
 ## “Initialization” does not always mean “init” in Anchor
 
-Somewhat confusingly, some use the term “initialize” to mean “writing data the account for the first time” in a more general sense than Anchor’s init macro.
+Somewhat confusingly, some use the term “initialize” to mean “writing data the account for the first time” in a more general sense than Anchor’s `init` macro.
 
-If we look at the example program from [Soldev](https://www.soldev.app/course/reinitialization-attacks), we see that the init macro isn’t used:
+If we look at the example program from [Soldev](https://www.soldev.app/course/reinitialization-attacks), we see that the `init` macro isn’t used:
 
 ![soldev screenshopt reinitialization](https://static.wixstatic.com/media/935a00_ddf79fa835384feeab537745b953b160~mv2.png/v1/fill/w_740,h_529,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_ddf79fa835384feeab537745b953b160~mv2.png)
 
@@ -233,11 +233,11 @@ The code is directly reading in the account on line 11, then setting the fields.
 
 Instead, the nomenclature for “initialize” here is “write to the account for the first time”.
 
-The “reinitialization attack” here is a different variety from what the Anchor frame is warning about. Specifically, “initialize” can be called several times. Anchor’s init macro checks that the lamport balance is nonzero and that the program already owns the account, which would prevent multiple calls to initialize. The init macro can see the account already has lamports or is owned by the program. However, the code above has no such checks.
+The “reinitialization attack” here is a different variety from what the Anchor frame is warning about. Specifically, “initialize” can be called several times. Anchor’s `init` macro checks that the lamport balance is nonzero and that the program already owns the account, which would prevent multiple calls to `initialize`. The init macro can see the account already has lamports or is owned by the program. However, the code above has no such checks.
 
 It is worth going through their tutorial to see this variety of a reinitialization attack.
 
-Note that this uses an older version of Anchor. The AccountInfo is another term for UncheckedAccount, so you will need to add a /// Check: comment above it.
+Note that this uses an older version of Anchor. The `AccountInfo` is another term for `UncheckedAccount`, so you will need to add a `/// Check:` comment above it.
 
 ## Erasing the account discriminator will not make the account reinitializable
 
@@ -288,20 +288,20 @@ pub struct Initialize<'info> {
 pub struct MyPDA {}
 ```
 
-It is important that we erase the data using an UncheckedAccount as .realloc(0, false) is not a method available on a regular Account.
+It is important that we erase the data using an `UncheckedAccount` as `.realloc(0, false)` is not a method available on a regular `Account`.
 
-This operation will erase the account discriminator, so it will not be readable via Account anymore.
+This operation will erase the account discriminator, so it will not be readable via `Account` anymore.
 
-**Exercise:** initialize the account, call erase then try to initialize the account again. It will fail because even though the account has no data, it is still owned by the program and has a non-zero lamport balance.
+**Exercise:** initialize the account, call `erase` then try to initialize the account again. It will fail because even though the account has no data, it is still owned by the program and has a non-zero lamport balance.
 
 ## Summary
 
-The init_if_needed macro can be convenient to avoid needing two transactions to interact with a new storage account. The Anchor framework blocks it by default to force us to consider the following possible undesirable situations:
+The `init_if_needed` macro can be convenient to avoid needing two transactions to interact with a new storage account. The Anchor framework blocks it by default to force us to consider the following possible undesirable situations:
 
 - If there is a method to reduce the lamport balance to zero or transfer ownership to the system program, then the account can be re-initialized. This may or may not be a problem depending on the business requirements.
-- If the program has both an init macro and a init_if_needed macro, the developer must ensure that having two codepaths doesn’t result in unexpected state.
+- If the program has both an `init` macro and a `init_if_needed` macro, the developer must ensure that having two codepaths doesn’t result in unexpected state.
 - Even after the data in an account is completely erased, the account is still initialized.
-- If the program has a function that “blindly” writes to an account, then data in that account could get overwritten. This usually requires loading in the account via AccountInfo or its alias UncheckedAccount.
+- If the program has a function that “blindly” writes to an account, then data in that account could get overwritten. This usually requires loading in the account via `AccountInfo` or its alias `UncheckedAccount`.
 
 ## Learn More with RareSkills
 

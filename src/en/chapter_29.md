@@ -21,7 +21,7 @@ All accounts in Solana have the following fields, which are mostly self-explanat
 - rent_epoch (can be ignored for rent-exempt accounts)
 - data
 
-We can see these by running solana account <our wallet address> in the terminal (with the Solana validator running in the background):
+We can see these by running `solana account <our wallet address>` in the terminal (with the Solana validator running in the background):
 
 ![system program as owner](https://static.wixstatic.com/media/935a00_c3fb0f0ed572444bb560f20bfd0b209f~mv2.png/v1/fill/w_740,h_153,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c3fb0f0ed572444bb560f20bfd0b209f~mv2.png)
 
@@ -50,7 +50,7 @@ console.log(`program: ${program.programId.toBase58()}`);
 console.log(`storage account: ${myStorage.toBase58()}`);
 ```
 
-Then run solana account <storage account> on the account that got initialized. You should see the owner being the program.
+Then run `solana account <storage account>` on the account that got initialized. You should see the owner being the program.
 
 Here is a screenshot of the exercise being run:
 
@@ -78,19 +78,19 @@ pub struct Player {
 
 Solana uses a similar mechanism to remember who deployed a program. In our tutorial on [Anchor deploy](https://www.rareskills.io/post/solana-anchor-deploy), we noted that the wallet that deployed a program is also able to upgrade it.
 
-“Upgrading” a program is the same as writing new data to it — i.e. new bytecode. Only the owner of the program can write to it (this program is BPFLoaderUpgradeable as we will see soon).
+“Upgrading” a program is the same as writing new data to it — i.e. new bytecode. Only the owner of the program can write to it (this program is `BPFLoaderUpgradeable` as we will see soon).
 
 Therefore, how does Solana know how to give upgrade privileges to the wallet that deployed a certain program?
 
 ## Viewing the authority of a program from the command line
 
-Before we deploy the program, let’s see what wallet anchor is using by running solana address in the terminal:
+Before we deploy the program, let’s see what wallet anchor is using by running `solana address` in the terminal:
 
 ![solana address cli to get address](https://static.wixstatic.com/media/935a00_fd920364f617483ebf078041d398632d~mv2.png/v1/fill/w_740,h_63,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_fd920364f617483ebf078041d398632d~mv2.png)
 
-Take note that our address is 5jmi...rrTj. Now let’s create a program.
+Take note that our address is `5jmi...rrTj`. Now let’s create a program.
 
-Be sure solana-test-validator and solana logs are running in the background, then deploy the Solana program:
+Be sure `solana-test-validator` and `solana logs` are running in the background, then deploy the Solana program:
 
 ```
 anchor init owner_authority
@@ -103,7 +103,7 @@ When we look at the logs, we see the address of the program we just deployed:
 
 ![deployed program address](https://static.wixstatic.com/media/935a00_14c5c0492e7e402eb9ce562040210f46~mv2.png/v1/fill/w_740,h_160,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_14c5c0492e7e402eb9ce562040210f46~mv2.png)
 
-Remember, everything is an account on Solana, including programs. Now let’s inspect this account using the solana account 6Ye7CgrwJxH3b4EeWKh54NM8e6ZekPcqREgkrn7Yy3Tg. We get the following result:
+Remember, everything is an account on Solana, including programs. Now let’s inspect this account using the `solana account 6Ye7CgrwJxH3b4EeWKh54NM8e6ZekPcqREgkrn7Yy3Tg`. We get the following result:
 
 ![printing program metadata](https://static.wixstatic.com/media/935a00_d164ca02317949f1b748bbdeef4a3a9a~mv2.png/v1/fill/w_740,h_173,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_d164ca02317949f1b748bbdeef4a3a9a~mv2.png)
 
@@ -111,11 +111,11 @@ Remember, everything is an account on Solana, including programs. Now let’s in
 
 Here, the “owner” is BPFLoaderUpgradeable111…111, which is the owner of all Solana programs.
 
-Now let’s run solana program show 6Ye7CgrwJxH3b4EeWKh54NM8e6ZekPcqREgkrn7Yy3Tg, where 6Ye7...y3TG is the address of our program:
+Now let’s run `solana program show 6Ye7CgrwJxH3b4EeWKh54NM8e6ZekPcqREgkrn7Yy3Tg`, where `6Ye7...y3TG` is the address of our program:
 
 ![solana program show](https://static.wixstatic.com/media/935a00_b6ad9392e391401ab078a25f438bf5b1~mv2.png/v1/fill/w_740,h_139,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_b6ad9392e391401ab078a25f438bf5b1~mv2.png)
 
-In the green box above, we see our wallet address — the one used to deploy the program and what we printed out earlier with solana address:
+In the green box above, we see our wallet address — the one used to deploy the program and what we printed out earlier with `solana address`:
 
 ![showing our address in the CLI again](https://static.wixstatic.com/media/935a00_6647b07f8ae446b780eff0f4dc63cbda~mv2.png/v1/fill/w_740,h_63,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_6647b07f8ae446b780eff0f4dc63cbda~mv2.png)
 
@@ -123,13 +123,13 @@ But this leads us to an important question…
 
 ## Where does Solana store the “authority” for the program, which is currently our wallet?
 
-It isn’t a field in an account, so it must be in the data field of some Solana account. The “authority” is stored in the ProgramData Address where the bytecode of the program is stored:
+It isn’t a field in an account, so it must be in the `data` field of some Solana account. The “authority” is stored in the `ProgramData` Address where the bytecode of the program is stored:
 
 ![ProgramData address](https://static.wixstatic.com/media/935a00_2e253c4d60e74867a2241b1bee25d42a~mv2.png/v1/fill/w_740,h_139,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_2e253c4d60e74867a2241b1bee25d42a~mv2.png)
 
 ## Hex encoding of our wallet (the authority)
 
-Before we proceed, it will be helpful to convert the base58 encoding of the ProgramData Address to a hex representation. The code to accomplish this is provided at the end of the article, but for now we ask the reader to accept that the hex representation of our Solana wallet address 5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj is:
+Before we proceed, it will be helpful to convert the base58 encoding of the `ProgramData Address` to a hex representation. The code to accomplish this is provided at the end of the article, but for now we ask the reader to accept that the hex representation of our Solana wallet address `5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj` is:
 
 ```
 4663b48dfe92ac464658e512f74a8ee0ffa99fffe89fb90e8d0101a0c3c7767a
@@ -137,7 +137,7 @@ Before we proceed, it will be helpful to convert the base58 encoding of the Prog
 
 ## Viewing the data in the ProgramData Address account where the executable is stored
 
-We can view the ProgramData Address account with solana account, but we will also send it to a temporary file to avoid dumping too much data to the terminal.
+We can view the `ProgramData Address` account with `solana account`, but we will also send it to a temporary file to avoid dumping too much data to the terminal.
 
 ```
 solana account FkYygT7X7qjifdxfBVWXTHpj87THJGmtmKUyU4SamfQm > tempfile
@@ -145,7 +145,7 @@ solana account FkYygT7X7qjifdxfBVWXTHpj87THJGmtmKUyU4SamfQm > tempfile
 head -n 10 tempfile
 ```
 
-The output from the above commands shows our wallet (in hex) embedded into the data. Observe that the yellow underlined hex code matches the hex encoding of our wallet (the authority):
+The output from the above commands shows our wallet (in hex) embedded into the `data`. Observe that the yellow underlined hex code matches the hex encoding of our wallet (the authority):
 
 ![hex encoding of our address](https://static.wixstatic.com/media/935a00_20455248359040bea0b891312710c3e9~mv2.png/v1/fill/w_740,h_170,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_20455248359040bea0b891312710c3e9~mv2.png)
 
@@ -157,11 +157,11 @@ This should be implied from the above sequence of commands, but it is worth stat
 
 ## Summary
 
-Only the owner of a program can change its data. The owner of Solana programs is the BPFLoaderUpgradeable system program, so by default, the wallet that deployed the program cannot change the data (bytecode) stored in an account.
+Only the owner of a program can change its data. The owner of Solana programs is the `BPFLoaderUpgradeable` system program, so by default, the wallet that deployed the program cannot change the data (bytecode) stored in an account.
 
 To enable upgrading programs, the Solana runtime embeds the wallet of the deployer into the bytecode of the program. It refers to this field as the “authority.”
 
-When the deploying wallet tries to upgrade the bytecode, the Solana runtime will check if the transaction signer is the authority. If the transaction signer matches the authority, then the BPFLoaderUpgradeable will update the bytecode of the program on behalf of the authority.
+When the deploying wallet tries to upgrade the bytecode, the Solana runtime will check if the transaction signer is the authority. If the transaction signer matches the authority, then the `BPFLoaderUpgradeable` will update the bytecode of the program on behalf of the `authority`.
 
 ## Addendum: converting base 58 to hex
 

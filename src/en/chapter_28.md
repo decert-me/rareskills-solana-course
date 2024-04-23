@@ -6,7 +6,7 @@
 
 In Ethereum, we use the multicall pattern if we want to batch multiple transactions together atomically. If one fails, the rest fails.
 
-Solana has this built into the runtime, so we don’t need to implement a multicall. In the example below, we initialize an account and write to it in one transaction — without using init_if_needed.
+Solana has this built into the runtime, so we don’t need to implement a multicall. In the example below, we initialize an account and write to it in one transaction — without using `init_if_needed`.
 
 ```
 import * as anchor from "@coral-xyz/anchor";
@@ -90,8 +90,8 @@ pub struct PDA {
 
 Some comments on the code above:
 
-- When passing a u32 value or smaller to Rust, we do not need to use a Javascript bignumber.
-- Instead of doing await program.methods.initialize().accounts({pda: pda}).rpc() we do await program.methods.initialize().accounts({pda: pda}).transaction() to create a transaction.
+- When passing a `u32` value or smaller to Rust, we do not need to use a Javascript bignumber.
+- Instead of doing `await program.methods.initialize().accounts({pda: pda}).rpc()` we do `await program.methods.initialize().accounts({pda: pda}).transaction()` to create a transaction.
 
 ## Solana Transaction Size Limit
 
@@ -101,9 +101,9 @@ The implication of this is that you will not be able to batch an “unlimited”
 
 ## Demonstrating atomicity of batched transactions
 
-Let’s alter our set function in Rust to always fail. This will help us see that the initialize transaction gets rolled back if one of the subsequent batched transactions fails.
+Let’s alter our `set` function in Rust to always fail. This will help us see that the `initialize` transaction gets rolled back if one of the subsequent batched transactions fails.
 
-The following Rust program always returns an error when set is called:
+The following Rust program always returns an error when `set` is called:
 
 ```
 use anchor_lang::prelude::*;
@@ -189,7 +189,7 @@ When we run the test, then query the local validator for the pda account, we see
 
 ## “Init if needed” on the frontend
 
-You can simulate the behavior of init_if_needed using frontend code while having a separate initialize function. From the user’s perspective however, this will all get smoothed out as they don’t have to issue multiple transactions when using an account for the first time.
+You can simulate the behavior of `init_if_needed` using frontend code while having a separate `initialize` function. From the user’s perspective however, this will all get smoothed out as they don’t have to issue multiple transactions when using an account for the first time.
 
 To determine if an account needs to be initialized, we check if it has zero lamports or is owned by the system program. Here is how we can do so in Typescript:
 
@@ -231,7 +231,7 @@ describe("batch", () => {
 });
 ```
 
-We also need to modify our Rust code to ***not*** forcibly fail on the set operation.
+We also need to modify our Rust code to ***not*** forcibly fail on the `set` operation.
 
 ```
 use anchor_lang::prelude::*;
@@ -288,7 +288,7 @@ Second test run:
 
 ## How does Solana deploy programs over 1232 bytes large?
 
-If you create a new Solana program and run anchor deploy (or anchor test) you will see in the logs there are numerous transactions to the BFPLoaderUpgradeable:
+If you create a new Solana program and run `anchor deploy` (or `anchor test`) you will see in the logs there are numerous transactions to the `BFPLoaderUpgradeable`:
 
 ![anchor deploy logs with many transactions](https://static.wixstatic.com/media/935a00_141abab0799c428fa6f76dbd4c3e2e23~mv2.png/v1/fill/w_740,h_1100,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/935a00_141abab0799c428fa6f76dbd4c3e2e23~mv2.png)
 
@@ -300,7 +300,7 @@ solana logs > logs.txt
 grep "Transaction executed" logs.txt | wc -l
 ```
 
-This will roughly match what temporarily appears after the anchor test or anchor deploy command:
+This will roughly match what temporarily appears after the `anchor test` or `anchor deploy` command:
 
 ![transaction count to deploy program](https://static.wixstatic.com/media/935a00_a9a3a99d6c67406c88349188b82d8711~mv2.png/v1/fill/w_740,h_109,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_a9a3a99d6c67406c88349188b82d8711~mv2.png)
 

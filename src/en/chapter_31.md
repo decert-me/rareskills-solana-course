@@ -1,6 +1,6 @@
 # #[derive(Accounts)] in Anchor: different kinds of accounts
 
-\#[Derive(Accounts)] in Solana Anchor is an attribute-like macro for structs that holds references to all the accounts the function will access during its execution.
+`\#[Derive(Accounts)]` in Solana Anchor is an attribute-like macro for structs that holds references to all the accounts the function will access during its execution.
 
 ## In Solana, every account the transaction will access must be specified in advance
 
@@ -10,7 +10,7 @@ For Solana to know that Alice and Bob's transaction cannot be parallelized, both
 
 Since both Alice and Bob specify a (storage) account, the Solana runtime can infer that both transactions conflict. One must be chosen (presumably, the one that paid the higher priority fee), and the other will end up failing.
 
-This is why each function has it's own separate #[derive(Accounts)] struct. Each field in the struct is an account that the program intends to (but is not required to) access during execution.
+This is why each function has it's own separate `#[derive(Accounts)]` struct. Each field in the struct is an account that the program intends to (but is not required to) access during execution.
 
 Some Ethereum developers may notice the similarity with this requirement and [EIP 2930 access list transactions](https://www.rareskills.io/post/eip-2930-optional-access-list-ethereum).
 
@@ -20,9 +20,9 @@ The type of account signals to Anchor how you intend to interact with the accoun
 
 In our code to initialize storage, we saw three different “kinds” of accounts:
 
-- Account
-- Signer
-- Program
+- `Account`
+- `Signer`
+- `Program`
 
 Here is the code again:
 
@@ -30,23 +30,23 @@ Here is the code again:
 
 And when we read an account balance, we saw a fourth type:
 
-- UncheckedAccount
+- `UncheckedAccount`
 
 Here is the code we used:
 
 ![Image of code for ReadBalance struct with the fourth type of account box highlighted; UncheckedAccount.](https://static.wixstatic.com/media/706568_70999862b3e046069fb16caf2c0a9f74~mv2.png/v1/fill/w_740,h_213,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_70999862b3e046069fb16caf2c0a9f74~mv2.png)
 
-Each of the items we highlighted with the green boxes are imported via the anchor_lang::prelude::*;**;** at the top of the files.
+Each of the items we highlighted with the green boxes are imported via the `anchor_lang::prelude::*;**;**` at the top of the files.
 
-The purpose of Account, UncheckedAccount, Signer, and Program are to perform some kind of a check on the account passed in before proceeding, and also to expose functions for interacting with those accounts.
+The purpose of `Account`, `UncheckedAccount`, `Signer`, and `Program` are to perform some kind of a check on the account passed in before proceeding, and also to expose functions for interacting with those accounts.
 
 We will further explain each of these four types in the following sections.
 
 ## Account
 
-The Account type will check that the owner of the account being loaded is actually owned by the program. If the owner does not match, then it won’t load. This serves as an important safety measure to not accidentally read in data the program did not create.
+The `Account` type will check that the owner of the account being loaded is actually owned by the program. If the owner does not match, then it won’t load. This serves as an important safety measure to not accidentally read in data the program did not create.
 
-In the following example, we create a keypair account and try to pass it to foo. Because the account is not owned by the program, the transaction fails.
+In the following example, we create a keypair account and try to pass it to `foo`. Because the account is not owned by the program, the transaction fails.
 
 Rust:
 
@@ -128,15 +128,15 @@ Here is the output from executing the tests:
 
 ![Image of Error message displayed after attempting to pass a keypair account that is not owned by the program.](https://static.wixstatic.com/media/706568_ed29ef540894498c9da3913dd241351a~mv2.png/v1/fill/w_740,h_257,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/706568_ed29ef540894498c9da3913dd241351a~mv2.png)
 
-If we add an init macro to Account, then it will try to transfer ownership from the system program to this program. However, the code above does not have an init macro.
+If we add an `init` macro to `Account`, then it will try to transfer ownership from the system program to this program. However, the code above does not have an `init` macro.
 
-More about the Account type can be found in the docs: https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html
+More about the `Account` type can be found in the docs: [https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html](https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html)
 
 ## UncheckedAccount or AccountInfo
 
-UncheckedAccount is an alias for AccountInfo. This does not check for ownership, so care must be taken as it will accept arbitrary accounts.
+`UncheckedAccount` is an alias for `AccountInfo`. This does not check for ownership, so care must be taken as it will accept arbitrary accounts.
 
-Here is an example of using UncheckedAccount to read the data of an account it does not own.
+Here is an example of using `UncheckedAccount` to read the data of an account it does not own.
 
 ```
 use anchor_lang::prelude::*;
@@ -214,11 +214,11 @@ We needed to use this account type when we were passing in an arbitrary address,
 
 ## Signer
 
-This type will check that the Signer account signed the transaction; it checks that the signature matches the public key of the account.
+This type will check that the `Signer` account signed the transaction; it checks that the signature matches the public key of the account.
 
 Because a signer is also an account, you can read the Signer’s balance or data (if any) stored in the account, though it’s primary purpose is to validate signatures.
 
-According to the docs (https://docs.rs/anchor-lang/latest/anchor_lang/accounts/signer/struct.Signer.html), Signer is a type validating that the account signed the transaction. No other ownership or type checks are done. If this is used, one should not try to access the underlying account data.
+According to the docs ([https://docs.rs/anchor-lang/latest/anchor_lang/accounts/signer/struct.Signer.html](https://docs.rs/anchor-lang/latest/anchor_lang/accounts/signer/struct.Signer.html)), `Signer` is a type validating that the account signed the transaction. No other ownership or type checks are done. If this is used, one should not try to access the underlying account data.
 
 Rust example:
 
