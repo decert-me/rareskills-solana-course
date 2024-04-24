@@ -1,8 +1,11 @@
+<img src="./assets/0-1.svg" alt="" width="337" height="63">
+<img src="./assets/solana.svg" alt="Solana" width="337" height="45">
+
 # 由 Rareskills 提供的 Solana 课程
 
-这个 Solana 课程旨在帮助具有以太坊或 EVM 开发的初学者或中级背景的工程师快速掌握 Solana 程序开发。
+本 Solana 课程旨在帮助具有以太坊或 EVM 开发的初学者或中级背景的工程师快速掌握 Solana 程序开发。
 
-[跳转到课程](#solana-course)
+[跳转到课程](#solana-课程)
 
 
 初学者在学习区块链编程时面临的困难是他们必须学习一种新的计算模型、学习一种新的语言和学习一个新的开发框架。
@@ -15,13 +18,15 @@
 
 与其直接解释所有的不同之处，本教程试图将关键信息压缩到以下范式中：
 
-<img src="/src/assets/1.svg" alt="Alt text" width="100" height="100">
+<img src="./assets/0-2.svg" alt="" width="10" height="120">
+<img src="./assets/0-3.svg" alt="" width="100" height="120">
 
 “我知道如何在以太坊中做 X，我如何在 Solana 中做 X？
 
 并在某些情况下，
 
-<img src="/src/assets/1.svg" alt="Alt text" width="100" height="100">
+<img src="./assets/0-4.svg" alt="" width="10" height="120">
+<img src="./assets/0-3.svg" alt="" width="100" height="120">
 
 “我无法在 Solana 中做 X，为什么？”
 
@@ -37,19 +42,22 @@
 
 Solana 的架构确实有很大不同，但它基本上与以太坊做的事情相同：
 
-![区块链节点图标](https://static.wixstatic.com/media/a133f4_870a6a75603e40a7b8aaa7f73dc313bc~mv2.png/v1/fill/w_152,h_120,al_c,q_95,enc_auto/a133f4_870a6a75603e40a7b8aaa7f73dc313bc~mv2.png)
+<img src="./assets/0-2.svg" alt="" width="10" height="120">
+<img src="https://static.wixstatic.com/media/a133f4_870a6a75603e40a7b8aaa7f73dc313bc~mv2.png/v1/fill/w_152,h_120,al_c,q_95,enc_auto/a133f4_870a6a75603e40a7b8aaa7f73dc313bc~mv2.png" alt="区块链节点图标" width="152" height="120">
 
-它是一个分布式状态机，根据签名交易进行状态转换，执行的成本是用生态系统的原生代币支付（以太坊为 ETH，Solana 为 SOL）。
+它是一个分布式状态机，根据签名交易进行状态转换，执行的成本是用生态系统的原生代币支付（以太坊为 ETH，Solana 为 SOL）。  
 
-![solana 和 以太坊 logo](https://static.wixstatic.com/media/a133f4_af6a587fc43444a08974ca01cf7ca265~mv2.png/v1/fill/w_152,h_120,al_c,q_95,enc_auto/solethbooth.png)
+
+<img src="./assets/0-2.svg" alt="" width="10" height="120">
+<img src="https://static.wixstatic.com/media/a133f4_af6a587fc43444a08974ca01cf7ca265~mv2.png/v1/fill/w_152,h_120,al_c,q_95,enc_auto/solethbooth.png" alt="solana 和 以太坊 logo" width="152" height="120">
 
 我们的目标是利用你对 EVM 的知识，作为你 Solana 开发之旅的跳板。
 
-考虑这个类比：
 
-如果一个前端 Web 开发人员和一个后端 API/数据库工程师都决定学习移动应用开发，大多数工程师会说前端 Web 开发人员比后端工程师有更大的优势，即使 Web 开发和移动开发并不是同一个领域，即使开发经验可能非常相似，使用一些工具链。
+> 考虑这个类比：   
+    如果一个前端 Web 开发人员和一个后端 API/数据库工程师都决定学习移动应用开发，大多数工程师会说前端 Web 开发人员比后端工程师有更大的优势，即使 Web 开发和移动开发并不是同一个领域，即使开发经验可能非常相似，使用一些工具链。
 
-根据这种推理，我们在 RareSkills 认为，一个称职的 EVM 智能合约工程师应该能够比一个以前没有编写过区块链的工程师更快地掌握 Solana。
+根据这种推理，我们 RareSkills 认为，一个称职的 EVM 智能合约工程师应该能够比一个以前没有编写过区块链的工程师更快地掌握 Solana。
 
 这门课程旨在利用这种优势。
 
@@ -67,7 +75,7 @@ Solana 的架构确实有很大不同，但它基本上与以太坊做的事情�
 
 ### 一个积极的学习之旅
 
-我们在整个教程中都包含了练习，用粗体字 **练习** 标记。 这些将是你���刚获得的知识的实际应用。 **你应该做这些练习！积极的学习总是胜过被动阅读。**
+我们在整个教程中都包含了练习，用粗体字**练习**标记。 这些将是你刚刚学到的知识的实际应用。。 **你应该做这些练习！积极的学习总是胜过被动阅读。**
 
 ### 我们期望你熟悉 Solidity
 
@@ -101,81 +109,84 @@ Rust 是一种庞大的语言，其语法足以超过大多数其他流行语言
 
 我们要感谢 [Faybian Byrd](https://www.linkedin.com/in/faybianbyrd/)、Devtooligan、Abhi Gulati，他们仔细审查并提供了对这项工作的反馈。
 
+
+<img src="./assets/0-5.svg" alt="" width="550" height="36">
+
 ## Solana 课程
 
 ### 模块 1 | 入门主题
 ---
 #### 第 1 天 [Hello World（以及解决 Solana 安装问题）](./chapter_1.md) 
 
-#### 第 2 天 [函数参数、数学和算术溢出](./chapter_2.md) {/try-react}
+#### 第 2 天 [函数参数、数学和算术溢出](./chapter_2.md)
 
-#### 第 3 天 [锚定函数魔法和接口定义语言](./chapter_3.md) {/try-react}
+#### 第 3 天 [Anchor 函数魔法和接口定义语言](./chapter_3.md)
 
-#### 第 4 天 [Solana 回滚、错误和基本访问控制](./chapter_4.md) {/try-react}
+#### 第 4 天 [Solana 回滚、错误和基本访问控制](./chapter_4.md)
 
-#### 第 5 天 [构造函数在哪里？关于锚定部署](./chapter_5.md) {/try-react}
+#### 第 5 天 [构造函数在哪里？关于 anchor 部署](./chapter_5.md)
 
 
 ### 模块 2 | 你需要了解的最低限度的 Rust
 
-第 8-10 天并不重要，它们只是解释了大多数读者可能不熟悉的一些语法。但是，你可以编写 Solana 程序并跟随其中，将不寻常的语法视为样板。随意略过那些天。
+第 8-10 天并不重要，它们只是解释了大多数读者可能不熟悉的一些语法。但是，你可以编写 Solana 程序并跟随其中，将不寻常的语法视为样板。可以随意略过那几天（的课程）。
 
-#### 第 6 天 [将 Solidity 翻译为 Rust 和 Solana](./chapter_6.md) {/try-react}
+#### 第 6 天 [将 Solidity 翻译为 Rust 和 Solana](./chapter_6.md)
 
-#### 第 7 天 [Rust 的不寻常语法](./chapter_7.md) {/try-react}
+#### 第 7 天 [Rust 的不寻常语法](./chapter_7.md)
 
-#### 第 8 天 [理解 Rust 中类似函数的宏](./chapter_8.md) {/try-react}
+#### 第 8 天 [理解 Rust 中类似函数的宏](./chapter_8.md)
 
-#### 第 9 天 [Rust 结构体和类似属性以及自定义派生宏](./chapter_9.md) {/try-react}
+#### 第 9 天 [Rust 结构体和类似属性以及自定义派生宏](./chapter_9.md)
 
-#### 第 10 天 [将 Solidity 函数可见性和合约继承翻译为 Solana](./chapter_10.md) {/try-react}
+#### 第 10 天 [将 Solidity 函数可见性和合约继承翻译为 Solana](./chapter_10.md)
 
 
 ### 模块 3 | Solana 中的重要系统级信息
 
-#### 第 11 天 [Solana 中的区块变量：block.timestamp 和 block.number 等](./chapter_11.md) {/try-react}
+#### 第 11 天 [Solana 中的区块变量：block.timestamp 和 block.number 等](./chapter_11.md)
 
-#### 第 12 天 [超越区块：sysvars](./chapter_12.md) {/try-react}
+#### 第 12 天 [超越区块：sysvars](./chapter_12.md)
 
-#### 第 13 天 [Solana 日志、事件和交易历史](./chapter_13.md) {/try-react}
+#### 第 13 天 [Solana 日志、事件和交易历史](./chapter_13.md)
 
-#### 第 14 天 [tx.origin、msg.sender 和 onlyOwner 在 Solana 中](./chapter_14.md) {/try-react}
+#### 第 14 天 [Solana 中的 tx.origin、msg.sender 和 onlyOwner ](./chapter_14.md)
 
-#### 第 15 天 [交易费用和计算单位](./chapter_15.md) {/try-react}
+#### 第 15 天 [交易费用和计算单位](./chapter_15.md)
 
 
 ### 模块 4 | Solana 中的账户和存储
 
-账户是 Solana 开发中最复杂的主题之一，因为它们比以太坊存储变量要灵活得多，因此我们会慢慢介绍它们。每个教程都会逐渐强化概念，所以如果所有新信息不立即牢记也不要担心。
+账户是 Solana 开发中最复杂的主题之一，因为它们比以太坊存储变量要灵活得多，因此我们会慢慢介绍它们。每个教程都会逐渐强化概念，所以如果所有新信息没有立即牢记也不用担心。
 
-#### 第 16 天 [Solana 中的账户](./chapter_16.md) {/try-react}
+#### 第 16 天 [Solana 中的账户](./chapter_16.md)
 
-#### 第 17 天 [写入存储](./chapter_17.md) {/try-react}
+#### 第 17 天 [写入存储](./chapter_17.md)
 
-#### 第 18 天 [从 Typescript 读取账户 —— 替代公共变量和查看函数](./chapter_18.md) {/try-react}
+#### 第 18 天 [从 Typescript 读取账户 —— 替代公共变量和查看函数](./chapter_18.md)
 
-#### 第 19 天 [在 Solana 中创建映射和嵌套映射](./chapter_19.md) {/try-react}
+#### 第 19 天 [在 Solana 中创建映射和嵌套映射](./chapter_19.md)
 
-#### 第 20 天 [存储成本、最大存储大小和账户调整大小](./chapter_20.md) {/try-react}
+#### 第 20 天 [存储成本、最大存储大小和账户调整大小](./chapter_20.md)
 
-#### 第 21 天 [在 Rust 中读取账户余额：address(account).balance 在 Solana 中](./chapter_21.md) {/try-react}
+#### 第 21 天 [在 Rust 中读取账户余额：Solana 中的 address(account).balance](./chapter_21.md)
 
-#### 第 22 天 [更多区别：修饰符、view pure、payable 和 fallback 在 Solana 中](./chapter_22.md) {/try-react}
+#### 第 22 天 [更多区别：Solana 中的修饰符、view pure、payable 和 fallback](./chapter_22.md)
 
-#### 第 23 天 [构建支付分配器：“可支付”和“msg.value”在 Solana 中](./chapter_23.md) {/try-react}
+#### 第 23 天 [构建支付分配器：Solana 中的“payable”和“msg.value”](./chapter_23.md)
 
-#### 第 24 天 [授权各种钱包写入账户：“恶作剧 tx.origin”](./chapter_24.md) {/try-react}
+#### 第 24 天 [授权各种钱包写入账户：“Pranking tx.origin”](./chapter_24.md)
 
-#### 第 25 天 [PDA vs Keypair 账户](./chapter_25.md) {/try-react}
+#### 第 25 天 [PDA vs Keypair 账户](./chapter_25.md)
 
-#### 第 26 天 [理解 Solana 中的账户所有权：将 SOL 转出 PDA](./chapter_26.md) {/try-react}
+#### 第 26 天 [理解 Solana 中的账户所有权：将 SOL 转出 PDA](./chapter_26.md)
 
-#### 第 27 天 [init_if_needed 和重新初始化攻击](./chapter_27.md) {/try-react}
+#### 第 27 天 [init_if_needed 和重新初始化攻击](./chapter_27.md)
 
-#### 第 28 天 [Solana 中的 Multicall：批处理交易](./chapter_28.md) {/try-react}
+#### 第 28 天 [Solana 中的 Multicall：批处理交易](./chapter_28.md)
 
-#### 第 29 天 [所有者 vs 权威](./chapter_29.md) {/try-react}
+#### 第 29 天 [所有者 vs 权威](./chapter_29.md)
 
-#### 第 30 天 [删除账户和关闭程序](./chapter_30.md) {/try-react}
+#### 第 30 天 [删除账户和关闭程序](./chapter_30.md)
 
-#### 第 31 天 [#[derive(Accounts)]中的账户类型](./chapter_31.md) {/try-react}
+#### 第 31 天 [#[derive(Accounts)]中的账户类型](./chapter_31.md)
