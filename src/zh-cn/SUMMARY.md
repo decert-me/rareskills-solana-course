@@ -1,6 +1,6 @@
 # 摘要
 
-- [序言](./chapter_0.md)
+[序言](./chapter_0.md)
 - [第 1 天](./chapter_1.md)
 - [第 2 天](./chapter_2.md)
 - [第 3 天](./chapter_3.md)
