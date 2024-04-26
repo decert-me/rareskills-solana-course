@@ -1,10 +1,10 @@
-# Solana 你好世界（安装和故障排除）
+# Solana Hello World（安装和故障排除）
 
 更新日期：2 月 9 日
 
 ![Solana Hello World](https://static.wixstatic.com/media/935a00_8b1bf6c7a2ec4a7a991c2334a103577c~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_8b1bf6c7a2ec4a7a991c2334a103577c~mv2.jpg)
 
-这是一个 Solana 你好世界教程。我们将为你介绍安装 Solana 和解决可能出现的问题的步骤。
+这是一个 Solana Hello World 教程。我们将为你介绍安装 Solana 和解决可能出现的问题的步骤。
 
 **如果遇到问题，请查看本文末尾的故障排除部分。**
 
@@ -47,7 +47,7 @@ avm install latest
 avm use latest
 ```
 
-## 初始化并构建一个 Anchor 程序（你好世界）
+## 初始化并构建一个 Anchor 程序（hello world）
 
 **Mac 用户：** 我们建议将你的程序命名为`day_1`而不是`day1`，因为 Anchor 似乎有时会在 Mac 机器上悄悄插入下划线。
 
@@ -198,7 +198,7 @@ avm use 0.29.0
 sh -c "$(curl -sSfL https://release.solana.com/1.16.25/install)"
 ```
 
-### 错误：包`solana-program v1.18.0`无法构建
+### error: package \`solana-program v1.18.0\` cannot be built
 
 ```
 error: package `solana-program v1.18.0` cannot be built because it requires rustc 1.72.0 or newer, while the currently active rustc version is 1.68.0-dev
@@ -210,7 +210,7 @@ cargo update -p solana-program@1.18.0 --precise ver
 
 ![solana 版本安装问题](https://static.wixstatic.com/media/935a00_c534515dbb7c4362a9ad831b30579ad2~mv2.png/v1/fill/w_740,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c534515dbb7c4362a9ad831b30579ad2~mv2.png)
 
-### 错误[E0658]：使用不稳定的库特性'build_hasher_simple_hash_one'
+### error[E0658]：use of unstable library feature 'build_hasher_simple_hash_one'
 
 如果你遇到以下错误：
 
@@ -227,26 +227,26 @@ error[E0658]: use of unstable library feature 'build_hasher_simple_hash_one'
 = help: add #![feature(build_hasher_simple_hash_one)] to the crate attributes to enable
 ```
 
-运行以下命令：`cargo update -p ahash@0.8.7 --precise 0.8.6` Credit: https://solana.stackexchange.com/questions/8800/cant-build-hello-world
+运行以下命令：`cargo update -p ahash@0.8.7 --precise 0.8.6` 资料来源：https://solana.stackexchange.com/questions/8800/cant-build-hello-world
 
-### 错误：部署程序失败：处理指令 1 时出错：自定义程序错误：0x1
+### Error: Deploying program failed: Error processing Instruction 1: custom program error: 0x1
 
 ```
-错误：部署程序失败：处理指令 1 时出错：自定义程序错误：0x1
-存在问题：输出 { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }。
+Error: Deploying program failed: Error processing Instruction 1: custom program error: 0x1
+There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }.
 ```
 
 如果遇到此错误，则你的密钥未同步。运行`anchor keys sync`。
 
-### 错误：无法发送交易：交易模拟失败：尝试加载不存在的程序
+### Error: failed to send transaction: Transaction simulation failed: Attempt to load a program that does not exist
 
 你的密钥未同步。运行`anchor keys sync`。
 
-### 错误：你配置的 rpc 端口：8899 已被使用
+### Error: Your configured rpc port: 8899 is already in use
 
 你在后台运行验证器的情况下运行了`anchor test`而没有`--skip-local-validator`。要么关闭验证器并运行`anchor test`，要么在运行验证器的情况下运行`anchor test --skip-local-validator`。跳过本地验证器意味着跳过为项目创建的临时验证器，而不是在后台运行的验证器。
 
-### 错误：帐户 J7t...zjK 的资金不足以支出
+### Error: Account J7t...zjK has insufficient funds for spend
 
 运行以下命令向你的开发地址空投 100 SOL
 
@@ -254,25 +254,25 @@ error[E0658]: use of unstable library feature 'build_hasher_simple_hash_one'
 solana airdrop 100 J7t...zjK
 ```
 
-### 错误：RPC 请求错误：集群版本查询失败
+### Error: RPC request error: cluster version query failed
 
 ```
-错误：RPC 请求错误：集群版本查询失败：发送请求时出错的错误（http://localhost:8899/）：尝试连接时出错：tcp 连接错误：连接被拒绝（os 错误 61）
-存在问题：输出 { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }。
+Error: RPC request error: cluster version query failed: error sending request for url (http://localhost:8899/): error trying to connect: tcp connect error: Connection refused (os error 61)
+There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }.
 ```
 
 这意味着`solana-test-validator`未在后台运行。在另一个 shell 中运行`solana-test-validator`。
 
-### 线程'main'在'调用`Option::unwrap()`时恐慌'None'值'
+### thread 'main' panicked at 'called \`Option::unwrap()\` on a \`None\` value'
 
 ```
-线程'main'在'调用`Option::unwrap()`时恐慌'None'值'，/Users/username/.cargo/git/checkouts/anchor-50c4b9c8b5e0501f/347c225/lang/syn/src/idl/file.rs:214:73
-注意：使用`RUST_BACKTRACE=1`环境变量显示回溯
+thread 'main' panicked at 'called `Option::unwrap()` on a `None` value', /Users/username/.cargo/git/checkouts/anchor-50c4b9c8b5e0501f/347c225/lang/syn/src/idl/file.rs:214:73
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 很可能你尚未运行`anchor build`。
 
-### 我使用 Mac，出现错误：无法启动验证器：无法在 test-ledger 上创建分类帐：块存储错误
+### 我使用 Mac，出现错误：failed to start validator: Failed to create ledger at test-ledger: blockstore error
 
 按照此 [Stack Exchange 线程](https://solana.stackexchange.com/questions/4499/cant-start-solana-test-validator-on-macos-13-0-1/4761#4761)中的说明操作。
 
@@ -285,9 +285,9 @@ brew install corepack
 brew link --overwrite corepack
 ```
 
-Credit: [https://stackoverflow.com/questions/70082424/command-not-found-corepack-when-installing-yarn-on-node-v17-0-1](https://stackoverflow.com/questions/70082424/command-not-found-corepack-when-installing-yarn-on-node-v17-0-1)
+资料来源：[https://stackoverflow.com/questions/70082424/command-not-found-corepack-when-installing-yarn-on-node-v17-0-1](https://stackoverflow.com/questions/70082424/command-not-found-corepack-when-installing-yarn-on-node-v17-0-1)
 
-### 错误：不是一个目录：
+### error: not a directory:
 
 ```
 BPF SDK: /Users/rareskills/.local/share/solana/install/releases/stable-43daa37937907c10099e30af10a5a0b43e2dd2fe/solana-release/bin/sdk/bpf
@@ -298,7 +298,7 @@ error: not a directory:
 
 清除缓存：运行`rm -rf ~/.cache/solana/*`
 
-### 错误：target/idl/day_1.json 不存在。你是否运行了`anchor build`？
+### Error: target/idl/day_1.json doesn't exist. Did you run \`anchor build\`?
 
 创建一个名为 day_1 而不是 day1 的新项目。Anchor 似乎在某些机器上悄悄插入下划线。
 
