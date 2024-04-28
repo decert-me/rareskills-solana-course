@@ -38,7 +38,7 @@ pub struct MyEvent {
 
 #[event]
 pub struct MySecondEvent {
-		pub value: u64,
+    pub value: u64,
     pub message: String,
 }
 ```
