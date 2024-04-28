@@ -55,9 +55,9 @@ use anchor_lang::prelude::*;
 
 现在让我们创建一个程序，使用 Clock sysvar 中的`unix_timestamp`告诉我们当前是星期几。
 
-[Rust 中的 chrono](https://docs.rs/chrono/latest/chrono/)库提供了对日期和时间进行操作的功能。
+[Rust 中的 chrono](https://docs.rs/chrono/latest/chrono/) 库提供了对日期和时间进行操作的功能。
 
-在程序目录./sysvar/Cargo.toml 中将 chrono 库添加为依赖项：
+在程序目录 ./sysvar/Cargo.toml 中将 chrono 库添加为依赖项：
 
 ```
 [dependencies]
@@ -111,15 +111,15 @@ it("Get day of the week", async () => {
 
 ![img](https://static.wixstatic.com/media/935a00_85c168cb57ae40b592c769bbebf27b2c~mv2.png/v1/fill/w_740,h_116,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_85c168cb57ae40b592c769bbebf27b2c~mv2.png)
 
-注意“星期几是：Wed”日志。
+注意“Week day is: Wed”日志。
 
 ## Solana 中的 block.number
 
-Solana 有一个“槽号”概念，与“块号”密切相关但并非相同。关于它们之间的区别将在接下来的教程中介绍，因此我们推迟对如何获取“块号”的完整讨论。
+Solana 有一个“槽号（slot number）”概念，与“区块号”密切相关但并非相同。关于它们之间的区别将在接下来的教程中介绍，因此我们推迟对如何获取“区块号”的完整讨论。
 
 ## block.coinbase
 
-在以太坊中，“块 Coinbase”代表成功挖掘工作量证明（PoW）区块的矿工地址。另一方面，Solana 使用基于领导者的共识机制，结合了 Proof of History（PoH）和 Proof of Stake（PoS），消除了挖矿的概念。相反，通过一种称为[领导者计划](https://docs.solana.com/cluster/leader-rotation)的系统，任命一个区块或槽领导者在特定时间间隔内验证交易并提出区块。这个计划确定了谁将在特定时间成为区块生产者。
+在以太坊中，“Block Coinbase”代表成功挖掘工作量证明（PoW）区块的矿工地址。另一方面，Solana 使用基于领导者的共识机制，结合了 Proof of History（PoH）和 Proof of Stake（PoS），消除了挖矿的概念。相反，通过一种称为[领导者计划](https://docs.solana.com/cluster/leader-rotation)的系统，任命一个区块或槽领导者在特定时间间隔内验证交易并提出区块。这个计划确定了谁将在特定时间成为区块生产者。
 
 然而，目前在 Solana 程序中没有特定的方法来访问区块领导者的地址。
 
@@ -206,7 +206,7 @@ describe("sysvar", () => {
 
 我们可以看到最新的区块哈希。请注意，因为我们部署到本地节点，所以我们得到的区块哈希是我们本地节点的，而不是 Solana 主网的。
 
-在时间结构方面，Solana 在一个固定的时间线上运行，将时间划分为槽，每个槽是分配给领导者提出区块的时间段。这些槽进一步组织成预定义的时期，领导者计划在这些时期内保持不变。
+在时间结构方面，Solana 在一个固定的时间线上运行，将时间划分为槽（slot），每个槽是分配给领导者提出区块的时间段。这些槽被进一步组织成纪元（epoch）, 纪元是预先定义的时间段，在此期间领导者调度保持不变。
 
 ## block.gaslimit
 
