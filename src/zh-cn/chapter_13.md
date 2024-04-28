@@ -4,7 +4,7 @@
 
 ![img](https://static.wixstatic.com/media/935a00_5dfc6f5062894ef7be199e2084106222~mv2.jpg)
 
-Solana 程序可以发出类似于 [Ethereum 发出事件](https://www.rareskills.io/post/ethereum-events)的事件，尽管我们将讨论一些不同之处。
+Solana 程序可以发出类似于 [Ethereum 触发事件](https://www.rareskills.io/post/ethereum-events)的事件，尽管我们将讨论一些不同之处。
 
 具体来说，Solana 中的事件旨在将信息传递给前端，而不是记录过去的交易。要获取过去的历史记录，可以通过地址查询 Solana 交易。
 
@@ -38,7 +38,7 @@ pub struct MyEvent {
 
 #[event]
 pub struct MySecondEvent {
-		pub value: u64,
+    pub value: u64,
     pub message: String,
 }
 ```
@@ -47,7 +47,7 @@ pub struct MySecondEvent {
 
 ![Solana IDL 上的事件定义](https://static.wixstatic.com/media/935a00_3b8137e010d540178284188e9925d7ad~mv2.png/v1/fill/w_350,h_484,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_3b8137e010d540178284188e9925d7ad~mv2.png)
 
-在 Solana 中，没有“索引”或“非索引”信息的概念，就像在 Ethereum 中一样（尽管上面的截图中有一个“索引”字段，但它没有用）。
+在 Solana 中，没有“索引”或“非索引”信息的概念，就像在 Ethereum 中一样（尽管上面的截图中有一个“index”字段，但它没有用）。
 
 与 Ethereum 不同，我们不能直接查询一系列区块号的过去事件。我们只能在事件发生时监听事件。（稍后我们将看到 Solana 审计过去交易的方法）。以下代码显示了如何在 Solana 中监听事件：
 
@@ -111,7 +111,7 @@ describe("emit", () => {
 
 在 Ethereum 中，没有直接的方法来查询发送到智能合约的交易或来自特定钱包的交易。
 
-我们可以使用 [eth_getTransactionCount](https://ethereum.org/developers/docs/apis/json-rpc#eth_gettransactioncount) 来*计算*从地址发送的交易数量。我们可以使用交易哈希和 [eth_getTransactionByHash](https://ethereum.org/developers/docs/apis/json-rpc#eth_gettransactionbyhash) 来获取特定交易。我们可以使用 [eth_getBlockByNumber](https://ethereum.org/developers/docs/apis/json-rpc#eth_getblockbynumber) 或[eth_getBlockByHash](https://ethereum.org/developers/docs/apis/json-rpc#eth_getblockbyhash)来获取特定区块中的交易。
+我们可以使用 [eth_getTransactionCount](https://ethereum.org/developers/docs/apis/json-rpc#eth_gettransactioncount) 来*计算*从地址发送的交易数量。我们可以使用交易哈希和 [eth_getTransactionByHash](https://ethereum.org/developers/docs/apis/json-rpc#eth_gettransactionbyhash) 来获取特定交易。我们可以使用 [eth_getBlockByNumber](https://ethereum.org/developers/docs/apis/json-rpc#eth_getblockbynumber) 或 [eth_getBlockByHash](https://ethereum.org/developers/docs/apis/json-rpc#eth_getblockbyhash) 来获取特定区块中的交易。
 
 但是，无法按地址获取所有交易。这必须通过间接方式，解析自钱包活跃或智能合约部署以来的每个区块来完成。
 
