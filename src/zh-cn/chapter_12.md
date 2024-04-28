@@ -4,27 +4,27 @@
 
 ![Solana 系统变量](https://static.wixstatic.com/media/935a00_b49fad623fe34f7598cfaf32c96e45f1~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_b49fad623fe34f7598cfaf32c96e45f1~mv2.jpg)
 
-在 Solana 中，sysvars 是只读系统账户，为 Solana 程序提供访问区块链状态和网络信息的权限。它们类似于以太坊的全局变量，也使智能合约能够访问网络或区块链状态信息，但它们具有类似以太坊预编译合约的唯一公共地址。
+在 Solana 中，sysvars 是只读系统账户，为 Solana 程序提供访问区块链状态和网络信息的权限。它们类似于以太坊的全局变量，也使智能合约能够访问网络或区块链状态信息，但它们具有类似以太坊预编译合约的唯一公钥地址。
 
-在 Anchor 程序中，你可以通过两种方式访问 sysvars：一种是使用 anchor 的 get 方法包装器，另一种是将其视为帐户在你的`#[Derive(Accounts)]`中，使用其公共地址。
+在 Anchor 程序中，你可以通过两种方式访问 sysvars：一种是使用 anchor 的 get 方法包装器，另一种是将其视为帐户在你的`#[Derive(Accounts)]`中，使用其公钥地址。
 
-并非所有 sysvars 都支持`get`方法，有些已被弃用（有关弃用信息将在本指南中指定）。对于那些没有`get`方法的 sysvars，我们将使用它们的公共地址进行访问。
+并非所有 sysvars 都支持`get`方法，有些已被弃用（有关弃用信息将在本指南中指定）。对于那些没有`get`方法的 sysvars，我们将使用它们的公钥地址进行访问。
 
-- **Clock**：用于执行与时间相关的操作，如获取当前时间或插槽号。
-- **EpochSchedule**：包含有关时期调度的信息，包括特定插槽的时期。
+- **Clock**：用于执行与时间相关的操作，如获取当前时间或插槽（slot）号。
+- **EpochSchedule**：包含有关纪元（epoch）调度的信息，包括特定插槽的纪元。
 - **Rent**：包含租金率和信息，如保持帐户免于租金的最低余额要求。
 - **Fees**：包含当前插槽的费用计算器。费用计算器提供有关 Solana 交易中每个签名支付多少 lamports 的信息。
-- **EpochRewards**：EpochRewards sysvar 保存了 Solana 中的时期奖励分配记录，包括区块奖励和质押奖励。
+- **EpochRewards**：EpochRewards sysvar 保存了 Solana 中的纪元奖励分配记录，包括区块奖励和质押奖励。
 - **RecentBlockhashes**：包含活动的最近区块哈希。
 - **SlotHashes**：包含最近插槽哈希的历史记录。
-- **SlotHistory**：保存在 Solana 中最近时期可用的插槽数组，并在处理新插槽时更新。
-- **StakeHistory**：按每个时期基础维护整个网络的质押激活和停用记录，每个时期开始时更新。
+- **SlotHistory**：保存在 Solana 中最近纪元可用的插槽数组，并在处理新插槽时更新。
+- **StakeHistory**：按每个纪元基础维护整个网络的质押激活和停用记录，每个纪元开始时更新。
 - **Instructions**：用于访问当前交易中作为一部分的序列化指令。
 - **LastRestartSlot**：包含上次重启（Solana 上次重启的时间）的插槽号，如果从未发生过则为零。如果 Solana 区块链崩溃并重新启动，应用程序可以使用此信息确定是否应等待事情稳定下来。
 
 ## 区分 Solana 插槽和区块
 
-插槽是一个时间窗口（约 400 毫秒），指定的领导者可以在其中生成一个区块。一个插槽包含一个区块（与以太坊上的相同类型的区块，即交易列表）。但是，如果区块领导者在该插槽中未能生成区块，则该插槽可能不包含区块。它们的关系如下图所示：
+插槽（slot）是一个时间窗口（约 400 毫秒），指定的领导者可以在其中生成一个区块。一个插槽包含一个区块（与以太坊上的相同类型的区块，即交易列表）。但是，如果区块领导者在该插槽中未能生成区块，则该插槽可能不包含区块。它们的关系如下图所示：
 
 ![solana 插槽和区块](https://static.wixstatic.com/media/935a00_fe2b8cf87b1849959603a835b8bcecc1~mv2.jpg/v1/fill/w_740,h_320,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_fe2b8cf87b1849959603a835b8bcecc1~mv2.jpg)
 
@@ -81,11 +81,11 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 现在，在本地 Solana 节点上运行测试并检查日志：
 
-![Solana 时期](https://static.wixstatic.com/media/935a00_1383139e135d4e39b3092482a762dfc4~mv2.png/v1/fill/w_740,h_46,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_1383139e135d4e39b3092482a762dfc4~mv2.png)
+![Solana 纪元](https://static.wixstatic.com/media/935a00_1383139e135d4e39b3092482a762dfc4~mv2.png/v1/fill/w_740,h_46,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_1383139e135d4e39b3092482a762dfc4~mv2.png)
 
 ### EpochSchedule sysvar
 
-在 Solana 中，一个时期是大约两天的时间段。SOL 只能在时期开始时抵押或赎回。如果在时期结束之前抵押（或赎回）SOL，则等待时期结束时，SOL 将被标记为“激活”或“停用”。
+在 Solana 中，一个纪元是大约两天的时间段。SOL 只能在纪元开始时抵押或赎回。如果在纪元结束之前抵押（或赎回）SOL，则等待纪元结束时，SOL 将被标记为“激活”或“停用”。
 
 Solana 在其[委托 SOL](https://solana.com/id/staking#overview/delegation-timing-considerations) 的描述中更详细地描述了这一点。
 
@@ -114,14 +114,14 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 从日志中，我们可以观察到 EpochSchedule sysvar 包含以下字段：
 
-- **slots_per_epoch**（黄色突出显示）保存每个时期中的插槽数，这里是 432,000 个插槽。
-- **leader_schedule_slot_offset**（红色突出显示）确定下一个时期的领导者计划的时间（我们之前在第 11 天谈到过）。它也设置为 432,000。
-- **warmup**（紫色突出显示）是一个布尔值，指示 Solana 是否处于热身阶段。在此阶段，时期开始较小，然后逐渐增加大小。这有助于网络在重置后或在早期运行期间平稳启动。
-- **first_normal_epoch**（橙色突出显示）标识可以具有其插槽计数的第一个时期，而 first_normal_slot（蓝色突出显示）是开始此时期的插槽。在这种情况下，两者都是 0。
+- **slots_per_epoch**（黄色突出显示）保存每个纪元中的插槽数，这里是 432,000 个插槽。
+- **leader_schedule_slot_offset**（红色突出显示）确定下一个纪元的领导者计划的时间（我们之前在第 11 天谈到过）。它也设置为 432,000。
+- **warmup**（紫色突出显示）是一个布尔值，指示 Solana 是否处于热身阶段。在此阶段，纪元开始较小，然后逐渐增加大小。这有助于网络在重置后或在早期运行期间平稳启动。
+- **first_normal_epoch**（橙色突出显示）标识可以具有其插槽计数的第一个纪元，而 first_normal_slot（蓝色突出显示）是开始此纪元的插槽。在这种情况下，两者都是 0。
 
 我们看到`first_normal_epoch`和`first_normal_slot`为 0 是因为测试验证器尚未运行两天。如果我们在主网上运行此命令（在撰写本文时），我们预计`first_normal_epoch`为 576，`first_normal_slot`为 248,832,000。
 
-![Solana 最近时期](https://static.wixstatic.com/media/935a00_97b5517e14cb4e7ea783b18a25ed7e4d~mv2.png/v1/fill/w_740,h_401,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_97b5517e14cb4e7ea783b18a25ed7e4d~mv2.png)
+![Solana 最近纪元](https://static.wixstatic.com/media/935a00_97b5517e14cb4e7ea783b18a25ed7e4d~mv2.png/v1/fill/w_740,h_401,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_97b5517e14cb4e7ea783b18a25ed7e4d~mv2.png)
 
 ### Rent sysvar
 
@@ -163,15 +163,16 @@ Solana 中的 Rent sysvar 具有三个关键字段：
 
 “租金”概念将在后续教程中进行全面解释。
 
-## 在 Anchor 中使用 Sysvar 公共地址访问 Solana Sysvars
+## 在 Anchor 中使用 Sysvar 公钥地址访问 Solana Sysvars
 
-对于不支持 get 方法的 sysvars，我们可以使用它们的公共地址访问它们。任何此类例外情况将被指定。
+对于不支持 get 方法的 sysvars，我们可以使用它们的公钥地址访问它们。任何此类例外情况将被指定。
 
 ### StakeHistory sysvar
 
-回想一下，我们先前提到该 sysvar 按每个时期基础记录整个网络的质押激活和停用。但是，由于我们运行的是本地验证器节点，因此此 sysvar 将返回空数据。
+回想一下，我们先前提到该 sysvar 按每个纪元基础记录整个网络的质押激活和停用。但是，由于我们运行的是本地验证器节点，因此此 sysvar 将返回空数据。
 
-我们将使用其公共地址**SysvarStakeHistory1111111111111111111111111**访问此 sysvar。
+我们将使用其公钥地址访问此 sysvar
+**SysvarStakeHistory1111111111111111111111111**。
 
 首先，我们将在项目中的`Initialize`帐户结构中进行修改，如下所示：
 
