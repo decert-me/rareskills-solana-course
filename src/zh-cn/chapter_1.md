@@ -138,9 +138,7 @@ ls .anchor/program-logs/
 
 或者，你可以通过打开第三个 shell 并运行以下命令来查看日志
 
-```
-# shell 3
-
+```shell
 solana logs
 ```
 
