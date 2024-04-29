@@ -61,9 +61,7 @@ anchor build
 
 ## 配置 Solana 在本地主机上运行
 
-```
-# shell 1
-
+```shell
 solana config set --url localhost
 ```
 
@@ -71,9 +69,7 @@ solana config set --url localhost
 
 在新的 shell 中运行以下命令，不要在 Anchor 项目中运行。但不要关闭你运行`anchor build`的 shell。这在你的机器上运行一个本地（测试）Solana 节点实例：
 
-```
-# shell 2
-
+```shell
 solana-test-validator
 ```
 
@@ -81,9 +77,7 @@ solana-test-validator
 
 返回到具有 Anchor 项目的 shell，并运行以下命令：
 
-```
-# shell 1
-
+```shell
 anchor keys sync
 ```
 
@@ -91,9 +85,7 @@ anchor keys sync
 
 在 Anchor 项目中运行此命令
 
-```
-# shell 1
-
+```shell
 anchor test --skip-local-validator
 ```
 
@@ -156,7 +148,7 @@ solana logs
 
 ## 问题与答案
 
-### 为什么 declare_id!和 msg!后面有感叹号？
+### 为什么 declare_id! 和 msg! 后面有感叹号？
 
 在 Rust 中，感叹号表示这些是宏。我们将在以后的教程中重新讨论宏。
 
@@ -168,7 +160,7 @@ solana logs
 
 **练习：** *尝试将* *`programs/day_1/src/lib.rs`* *中的* *`initialize`* *和* *`tests/day_1.ts`* *中的* *`initialize`* *更名为* *`initialize2`* *，然后再次运行测试。请查看下面用橙色圈圈标记的更改。*
 
-![更改 initialize()函数名称](https://static.wixstatic.com/media/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png/v1/fill/w_740,h_201,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png)
+![更改 initialize() 函数名称](https://static.wixstatic.com/media/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png/v1/fill/w_740,h_201,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_cd564f43dbd94c15b15249e9083fa91b~mv2.png)
 
 ### 为什么我们使用--skip-local-validator 运行测试？
 
