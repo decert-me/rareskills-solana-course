@@ -121,7 +121,7 @@ it("Is initialized!", async () => {
 
 ### 数组
 
-接下来，我们添加一个函数（和测试）来演示传递一个数字数组。在 Rust 中，“vector”或`Vec`是 Solidity 中称为““array”的东西。
+接下来，我们添加一个函数（和测试）来演示传递一个数字数组。在 Rust 中，“vector”或`Vec`是 Solidity 中称为“array”的东西。
 
 ```rust
 pub fn initialize(ctx: Context<Initialize>,
@@ -222,9 +222,9 @@ let xSafe: u64 = y.checked_add(z).unwrap(); // will panic if overflow happens
 
 ### 确定 Solana 中交易的计算成本
 
-与以太坊相比，Solana 确实使用起来便宜，但这并不意味着你在以太坊开发中的优化技能是无用的。让我们测量一下我们的数学函数需要多少计算单元。
+与以太坊相比，Solana 确实使用起来更便宜，但这并不意味着在以太坊开发中的优化技能是无用的。让我们测试一下这些数学函数需要多少计算单元。
 
-Solana 日志终端还显示了使用了多少计算单元。我们提供了检查和未检查的减法的基准如下。
+Solana 日志终端还显示了使用了多少计算单元。我们提供了检查和未检查的减法的基准测试，结果如下。
 
 禁用溢出保护时消耗 824 个计算单元：
 
