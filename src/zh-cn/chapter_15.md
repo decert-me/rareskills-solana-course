@@ -1,6 +1,6 @@
 # Solana 计算单元和交易费用简介
 
-更新日期：Feb 29
+更新日期：2 月 29 日
 
 ![img](https://static.wixstatic.com/media/935a00_16bc80fd8b6d4b4eb9a0b49fd5ed0cb0~mv2.jpeg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_16bc80fd8b6d4b4eb9a0b49fd5ed0cb0~mv2.jpeg)
 
@@ -30,7 +30,7 @@
 
 除了计算单元，Solana 交易的[签名者数量](https://www.rareskills.io/post/msg-sender-solana)也会影响计算单元成本。根据 Solana [文档](https://docs.solana.com/developing/intro/transaction_fees#transaction-fee-calculation)：
 
-*"因此，目前，交易费仅由交易中需要验证的签名数量确定。交易中签名的唯一限制是交易本身的最大大小。交易中的每个签名（64 字节）必须引用一个唯一的公钥（32 字节），因此单个交易最多可以包含多达 12 个签名（不确定为什么要这样做）"*
+*"因此，目前，交易费仅由交易中需要验证的签名数量确定。交易（最大 1232 字节）中签名数量的唯一限制是交易本身的最大大小。交易中的每个签名（64 字节）必须引用一个唯一的公钥（32 字节），因此单个交易最多可以包含多达 12 个签名（不确定为什么要这样做）"*
 
 我们可以通过这个小例子看到这一点。从一个空的 Solana 程序开始，如下所示：
 
@@ -219,15 +219,15 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 }
 ```
 
-注意随着整数类型的减少，计算单元成本的降低。这是预期的，因为较大的类型在内存中占用的空间比较小的类型多，而不管所表示的值如何。
+注意随着整数类型的减少，计算单元成本的降低。这是预期内的，因为较大的类型在内存中占用的空间比较小的类型多，而不管所表示的值如何。
 
-在链上使用 `find_program_address` 生成程序派生账户（PDA）可能会使用更多的计算单元，因为此方法会迭代调用 `create_program_address` 直到找到不在 ed25519 曲线上的 PDA。为了减少计算成本，尽可能在链下使用 `find_program_address`() 并在可能时将结果的增量 seed 传递给程序。关于这一点的更多讨论将在后面的部分中进行，因为这超出了本节的范围。
+在链上使用 `find_program_address` 生成程序派生账户（PDA）可能会使用更多的计算单元，因为此方法会迭代调用 `create_program_address` 直到找到不在 ed25519 曲线上的 PDA。为了减少计算成本，尽可能在链下使用 `find_program_address`() 并在可能时将得到的 bump seed 传递给程序。关于这一点的更多讨论将在后面的部分中进行，因为这超出了本节的范围。
 
 这不是一个详尽的列表，而是一些要点，以便了解什么使一个程序比另一个更具计算密集性。
 
 ## 什么是 eBPF？
 
-Solana 的字节码主要源自 BPF。 “eBPF” 简单地表示 “扩展 BPF”。本节在 Linux 上下文中解释了 BPF。
+Solana 的字节码主要源自 BPF。 “eBPF” 简单地表示 “extended（扩展的）BPF”。本节在 Linux 上下文中解释了 BPF。
 
 正如你所期望的那样，Solana 虚拟机不理解 Rust 或 C。用这些语言编写的程序被编译成 eBPF（扩展伯克利数据包过滤器）。
 
