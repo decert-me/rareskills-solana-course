@@ -12,7 +12,7 @@
 
 以下结构体应该很容易理解。有趣的是当我们创建在特定结构体上操作的函数时。我们使用 `impl` 来实现这一点：
 
-```
+```rust
 struct Person {
     name: String,
     age: u8,
@@ -27,7 +27,7 @@ struct Person {
 
 让我们看一个下面的示例：
 
-```
+```rust
 struct Person {
     age: u8,
     name: String,
@@ -50,7 +50,7 @@ impl Person {
 		fn age_in_one_year(&self) -> u8 {
 			return &self.age + 1;
 		}
-} 
+}
 
 fn main() {
     // Usage: Create a new `Person` instance with a name and age
@@ -65,7 +65,7 @@ fn main() {
 
 用法：
 
-```
+```rust
 // Usage: Create a new `Person` instance with a name and age
 let person = Person::new(String::from("Jesserc"), 19);
 
@@ -84,7 +84,7 @@ Rust 特质是在不同 impl 之间实现共享行为的一种方式。
 
 如下所示：
 
-```
+```rust
 // Traits are defined with the `trait` keyword followed by their name
 trait Speed {
     fn get_speed_kph(&self) -> f64;
@@ -150,15 +150,15 @@ fn main() {
 
 首先创建一个新的 Rust 项目：
 
-```
-cargo new macro-demo --lib 
+```shell
+cargo new macro-demo --lib
 cd macro-demo
 touch src/main.rs
 ```
 
 将以下内容添加到 Cargo.toml 文件中：
 
-```
+```toml
 [lib]
 proc-macro = true
 
@@ -171,7 +171,7 @@ quote = "1.0.8"
 
 将以下代码粘贴到 src/main.rs 中。请务必阅读注释：
 
-```
+```rust
 // src/main.rs
 // Import the macro_demo crate and bring all items into scope with the `*` wildcard
 // (basically everything in this crate, including our macro in `src/lib.rs`
@@ -211,7 +211,7 @@ fn main() {
 
 用以下代码替换 src/lib.rs（请务必阅读注释）：
 
-```
+```rust
 // src/lib.rs
 // Importing necessary external crates
 extern crate proc_macro;
@@ -268,7 +268,7 @@ pub fn foo_bar_attribute(_metadata: TokenStream, _input: TokenStream) -> TokenSt
 
 我们得到以下输出：
 
-```
+```shell
 struct is MyStruct { foo: 10, bar: 20 }
 double foo: 20
 ```
@@ -279,7 +279,7 @@ double foo: 20
 
 用以下内容替换 src/lib.rs：
 
-```
+```rust
 // src/lib.rs
 // Importing necessary external crates
 extern crate proc_macro;
@@ -303,7 +303,7 @@ pub fn destroy_attribute(_metadata: TokenStream, _input: TokenStream) -> TokenSt
 
 用以下内容替换 src/main.rs：
 
-```
+```rust
 use macro_demo::*;
 
 #[destroy_attribute]
@@ -333,7 +333,7 @@ fn main() {
 
 例如，如果我们尝试执行以下操作：
 
-```
+```rust
 struct Foo {
 	bar: i32,
 }
@@ -350,7 +350,7 @@ pub fn main() {
 
 如果我们改为执行以下操作：
 
-```
+```rust
 #[derive(Debug)]
 struct Foo {
 	bar: i32,
@@ -364,7 +364,7 @@ pub fn main() {
 
 我们期望它打印：
 
-```
+```shell
 Foo { bar: 3 }
 ```
 

@@ -26,12 +26,12 @@
 
 考虑以下 Rust 代码：
 
-```
+```rust
 pub fn main() {
 	let a: u32 = 2;
 	let b: u32 = 3;
 	println!("{}", add(a, b)); // a and b a are copied to the add function
-	
+
 	let s1 = String::from("hello");
 	let s2 = String::from(" world");
 
@@ -48,7 +48,7 @@ pub fn main() {
 
 然而，在字符串的情况下，*我们并不总是提前知道要复制多少数据*。如果字符串长度为 1GB，程序将明显滞后。
 
-Rust 希望我们明确表达我们希望如何处理大数据。它不会像动态语言那样在幕后复制它。
+Rust 希望我们明确表达希望如何处理大数据。它不会像动态语言那样在后台复制它。
 
 因此，当我们做一些简单的事情，比如*将字符串分配给一个新变量*时，Rust 将执行许多人发现意外的操作，我们将在下一节中看到。
 
@@ -58,7 +58,7 @@ Rust 希望我们明确表达我们希望如何处理大数据。它不会像动
 
 以下代码将无法编译。注释中有解释：
 
-```
+```rust
 // Example of changing ownership on a non-copy datatype (string)
 let s1 = String::from("abc");
 
@@ -78,12 +78,12 @@ println!("{}", s2);
 
 在下面的代码中，请注意重要的`&`前置`s1`：
 
-```
+```rust
 pub fn main() {
 	let s1 = String::from("abc");
-	
+
 	let s2 = &s1; // s2 can now view `String::from("abc")` but not own it
-	
+
 	println!("{}", s1); // This compiles, s1 still holds its original string value.
 	println!("{}", s2); // This compiles, s2 holds a reference to the string value in s1.
 }
@@ -99,7 +99,7 @@ pub fn main() {
 
 要了解如何克隆一个值，请考虑以下示例：
 
-```
+```rust
 fn main() {
     let mut message = String::from("hello");
     println!("{}", message);
@@ -112,7 +112,7 @@ fn main() {
 
 然而，如果我们添加另一个变量`y`来查看`message`，则代码将不再编译：
 
-```
+```rust
 // Does not compile
 fn main() {
     let mut message = String::from("hello");
@@ -128,7 +128,7 @@ Rust 不接受上面的代码，因为在查看`message`时无法重新分配该
 
 如果我们希望`y`能够复制`message`的值而不会干扰后续的`message`，我们可以选择克隆它：
 
-```
+```rust
 fn main() {
     let mut message = String::from("hello");
     println!("{:?}", message);
@@ -151,7 +151,7 @@ hello
 
 如果我们用一个复制类型（如整数）替换我们的字符串（这是一个非复制类型），我们将不会遇到上述任何问题。Rust 将愉快地复制复制类型，因为开销微不足道。
 
-```
+```rust
 let s1 = 3;
 
 let s2 = s1;
@@ -166,7 +166,7 @@ println!("{}", s2);
 
 以下代码将无法编译：
 
-```
+```rust
 pub fn main() {
 	let counter = 0;
 	counter = counter + 1;
@@ -181,7 +181,7 @@ pub fn main() {
 
 幸运的是，如果你忘记包含`mut`关键字，编译器通常会明确指出错误。以下代码插入了`mut`关键字，使代码能够编译：
 
-```
+```rust
 pub fn main() {
 	let mut counter = 0;
 	counter = counter + 1;
@@ -196,7 +196,7 @@ pub fn main() {
 
 下面的示例结构体可以是`i32`或`bool`。
 
-```
+```rust
 // derive the debug trait so we can print the struct to the console
 #[derive(Debug)]
 struct MyValues<T> {
@@ -206,7 +206,7 @@ struct MyValues<T> {
 pub fn main() {
     let first_struct: MyValues<i32> = MyValues { foo: 1 }; // foo has type i32
     let second_struct: MyValues<bool> = MyValues { foo: false }; // foo has type bool
-    
+
     println!("{:?}", first_struct);
     println!("{:?}", second_struct);
 }
@@ -216,7 +216,7 @@ pub fn main() {
 
 如果我们的结构体有多个字段，用于参数化类型的语法如下：
 
-```
+```rust
 struct MyValues<T, U> {
     foo: T,
 	bar: U,
@@ -229,7 +229,7 @@ struct MyValues<T, U> {
 
 为了展示选项和枚举的重要性，让我们考虑以下示例：
 
-```
+```rust
 fn main() {
 	let v = Vec::from([1,2,3,4,5]);
 
@@ -250,11 +250,11 @@ fn main() {
 
 为了处理这种情况，Rust 返回一个选项。选项是一个枚举，可以包含预期值，也可以包含指示“没有内容”的特殊值。
 
-要将选项转换为底层类型，我们使用`unwrap()`。如果我们收到“没有内容”，`unwrap()`将导致恐慌，因此我们应该仅在我们希望发生恐慌的情况下使用它，或者我们确信不会得到空值。
+要将选项转换为底层类型，我们使用`unwrap()`。如果我们收到“没有内容”，`unwrap()`将导致 panic，因此我们应该仅在希望发生 panic 的情况下使用它，或者我们确信不会得到空值。
 
 为了使代码按预期工作，我们可以执行以下操作：
 
-```
+```rust
 fn main() {
 	let v = Vec::from([1,2,3,4,5]);
 
@@ -275,7 +275,7 @@ fn main() {
 
 要将整数的“视图”转换为常规整数，我们需要使用“解引用”操作。这是当我们在值前面加上`*`运算符时发生的。
 
-```
+```rust
 fn main() {
 	let v = Vec::from([1,2,3,4,5]);
 
@@ -291,20 +291,20 @@ fn main() {
 
 ## Rust 中的 Result 与 Option
 
-当我们可能收到“空”内容时，我们使用选项。当我们可能收到错误时，我们使用`Result`（与`Result` Anchor 程序一直返回的相同`Result`）。
+当可能收到“空”内容时，我们使用 option。当我们可能收到错误时，我们使用`Result`（与`Result` Anchor 程序一直返回的相同`Result`）。
 
 ### Result 枚举
 
 Rust 中的`Result<T, E>`枚举用于表示函数的操作可能成功并返回类型 T 的值（一种通用类型），或失败并返回类型 E（通用错误类型）的错误。它旨在处理可能导致成功结果或错误条件的操作。
 
-```
+```rust
 enum Result<T, E> {
     Ok(T),
     Err(E),
 }
 ```
 
-在 Rust 中，`?`运算符用于`Result<T, E>`枚举，而`unwrap()`用于`Result<T, E>`和`Option<T>`枚举。 
+在 Rust 中，`?`运算符用于`Result<T, E>`枚举，而`unwrap()`用于`Result<T, E>`和`Option<T>`枚举。
 
 ## `?`运算符
 
@@ -314,7 +314,7 @@ enum Result<T, E> {
 
 现在，请考虑以下代码：
 
-```
+```rust
 pub fn encode_and_decode(_ctx: Context<Initialize>) -> Result<()> {
     // Create a new instance of the `Person` struct
     let init_person: Person = Person {

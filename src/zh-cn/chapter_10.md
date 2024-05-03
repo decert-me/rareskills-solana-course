@@ -17,7 +17,7 @@
 
 自第 1 天开始定义的所有函数都是公共函数：
 
-```
+```rust
 pub fn my_public_function(ctx: Context<Initialize>) -> Result<()> {
     // Function logic...
 
@@ -39,7 +39,7 @@ Solana 程序调用自己的公共函数通常是不方便的。如果 Solana �
 
 虽然你不能在带有`#[program]`宏的模块内部声明没有`pub`的函数，但可以在文件内声明函数。考虑以下代码：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("F26bvRaY1ut3TD1NhrXMsKHpssxF2PAUQ7SjZtnrLkaM");
@@ -77,7 +77,7 @@ Rust 使用模块来组织代码。有关这些模块内部和外部函数的可
 
 可以通过在程序模块内定义函数并确保它在自己的模块以及导入或使用它的其他模块中可访问来实现这一点。让我们看看如何做到这一点：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX");
@@ -124,7 +124,7 @@ pub struct Initialize {}
 
 在特定模块内定义函数并确保它们不会在该范围之外暴露是实现私有可见性的一种方式：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX");
@@ -155,7 +155,7 @@ pub struct Initialize {}
 
 我们成功在 initialize 函数中调用了`private_function`，因为 initialize 函数在`func_visibility`模块内。让我们尝试从模块外部调用`private_function`：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX");
@@ -212,9 +212,9 @@ pub struct Initialize {}
 
 让我们在**src**文件夹中创建另一个名为**calculate.rs**的文件，并将提供的代码复制到其中。
 
-```
+```rust
 pub fn add(x: u64, y: u64) -> u64 {
-	// Return the sum of x and y 
+	// Return the sum of x and y
     x + y
 }
 ```
@@ -223,7 +223,7 @@ pub fn add(x: u64, y: u64) -> u64 {
 
 然后将其添加到 lib.rs 中。
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 // Import `calculate` module or crate
@@ -248,13 +248,13 @@ pub mod func_visibility {
 pub struct Initialize {}
 ```
 
-在上面的程序中，我们导入了之前创建的 calculate 模块，并声明了一个名为`add_two_numbers`的函数，该函数将两个数字相加并记录结果。`add_two_numbers`函数调用 calculate 模块中的 add 函数，将`x`和`y`作为参数传递，然后将返回值存储在 result 变量中。msg!宏记录了相加的两个数字和结果。
+在上面的程序中，我们导入了之前创建的 calculate 模块，并声明了一个名为`add_two_numbers`的函数，该函数将两个数字相加并记录结果。`add_two_numbers`函数调用 calculate 模块中的 add 函数，将`x`和`y`作为参数传递，然后将返回值存储在 result 变量中。msg! 宏记录了相加的两个数字和结果。
 
 ### 模块不必是单独的文件
 
 以下示例在 lib.rs 中声明了一个模块，而不是在 calculate.rs 中。
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX");
@@ -286,7 +286,7 @@ pub struct Initialize {}
 
 这个程序与前面的示例相同，唯一的区别是 add 函数存在于 lib.rs 文件中并在 calculate 模块内。此外，向函数添加 pub 关键字至关重要，因为它使函数可以公开访问。以下代码将无法编译：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX");
@@ -324,7 +324,7 @@ pub struct Initialize {}
 
 - **公共/外部函数**：这些函数在程序内部和外部都可以访问。在 Solana 中，所有声明的函数默认都是公共的。`#[program]`块中的所有内容都必须声明为`pub`。
 - **内部函数**：这些函数在程序内部以及继承它的程序中可以访问。在嵌套的 pub mod 块内部的函数不包括在构建的程序中，但它们仍然可以在父模块内或外部访问。
-- **私有函数**：这些函数不是公开可访问的，不能从其模块之外调用。在 Rust/Solana 中实现私有可见性涉及在特定模块内定义一个带有`pub`(in crate::<module>)关键字的函数，这使得该函数仅在定义的模块内可见。
+- **私有函数**：这些函数不是公开可访问的，不能从其模块之外调用。在 Rust/Solana 中实现私有可见性涉及在特定模块内定义一个带有`pub`(in crate::<module>) 关键字的函数，这使得该函数仅在定义的模块内可见。
 
 Solidity 通过类实现合约继承，而 Rust，Solana 中使用的语言，没有这个特性。尽管如此，你仍然可以使用 Rust 模块来组织代码。
 

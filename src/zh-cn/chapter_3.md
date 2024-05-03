@@ -6,17 +6,17 @@ IDL（接口定义语言）是一个 JSON 文件，描述了如何与 Solana 程
 
 关于名为“initialize”的函数没有什么特别之处——这是 Anchor 选择的名称。在本教程中，我们将学习 TypeScript 单元测试如何“找到”适当的函数。
 
-让我们创建一个名为`anchor-function-tutorial`的新项目，并将 initialize 函数中的名称更改为`boaty_mc_boatface`，保持其他内容不变。
+让我们创建一个名为`anchor-function-tutorial`的新项目，并将 initialize 函数中的名称更改为 `boaty_mc_boatface`，保持其他内容不变。
 
-```
+```rust
 pub fn boaty_mc_boatface(ctx: Context<Initialize>) -> Result<()> {
     Ok(())
 }
 ```
 
-现在让我们将测试更改为以下内容
+现在让我们将测试更改为以下内容：
 
-```
+```js
 it("Call boaty mcboatface", async () => {
   // Add your test here.
   const tx = await program.methods.boatyMcBoatface().rpc();
@@ -36,7 +36,7 @@ it("Call boaty mcboatface", async () => {
 
 让我们打开它。
 
-```
+```json
 {
   "version": "0.1.0",
   "name": "anchor_function_tutorial",
@@ -66,23 +66,23 @@ it("Call boaty mcboatface", async () => {
 
 现在让我们开始创建一个 Solana 程序，其中包含用于基本加法和减法的函数，这些函数会打印结果。Solana 函数无法像 Solidity 那样返回值，所以我们必须打印它们。（Solana 有其他传递值的方式，我们稍后会讨论）。让我们创建两个类似的函数：
 
-```
+```rust
 pub fn add(ctx: Context<Initialize>, a: u64, b: u64) -> Result<()> {
   let sum = a + b;
-  msg!("Sum is {}", sum);  
+  msg!("Sum is {}", sum);
 	Ok(())
 }
 
 pub fn sub(ctx: Context<Initialize>, a: u64, b: u64) -> Result<()> {
   let difference = a - b;
-  msg!("Difference is {}", difference);  
+  msg!("Difference is {}", difference);
 	Ok(())
 }
 ```
 
 并将我们的单元测试更改为以下内容：
 
-```
+```js
 it("Should add", async () => {
   const tx = await program.methods.add(new anchor.BN(1), new anchor.BN(2)).rpc();
   console.log("Your transaction signature", tx);
@@ -98,12 +98,12 @@ it("Should sub", async () => {
 
 **练习：** 为`mul`、`div`和`mod`实现类似的函数，并编写单元测试来触发每个函数。
 
-### `Initialize`结构体是什么？
+### `Initialize` 结构体是什么？
 
 现在这里还有另一个诡计。我们保持`Initialize`结构体不变，并在函数之间重复使用它。同样，名称并不重要。让我们将结构体名称更改为`Empty`，然后重新运行测试。
 
-```
-//...
+```rust
+  // ...
   // Change struct name here
 	pub fn add(ctx: Context<Empty>, a: u64, b: u64) -> Result<()> {
 	    let sum = a + b;
@@ -137,7 +137,7 @@ pub struct Empty {}
 
 现在让我们看看当结构体不为空时会发生什么。复制下面的代码，并替换 [`lib.rs`](http://lib.rs/) 的内容。
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("8PSAL9t1RMb7BcewhsSFrRQDq61Y7YXC5kHUxMk5b39Z");
@@ -160,7 +160,7 @@ pub struct NonEmptyAccountExample<'info> {
 
 现在运行`anchor build` - 让我们看看新的 IDL 返回了什么。
 
-```
+```js
 {
   "version": "0.1.0",
   "name": "anchor_function_tutorial",
@@ -188,7 +188,7 @@ pub struct NonEmptyAccountExample<'info> {
 }
 ```
 
-请注意，“accounts”不再为空，并且填充了来自结构体的字段：“signer”和“anotherSigner”（请注意，another_signer 从蛇形命名转换为驼峰命名）。IDL 已经更新以匹配我们刚刚更改的结构体，特别是我们添加的账户数量。
+请注意，“accounts”不再为空，并且填充了来自结构体的字段：“signer”和“anotherSigner”（请注意，another_signer 从蛇形命名转换为驼峰命名）。IDL 已经更新以匹配刚刚更改的结构体，特别是我们添加的账户数量。
 
 我们将在即将推出的教程中更深入地探讨“Signer”，但目前你可以将其视为类似于以太坊中的`tx.origin`。
 
@@ -196,7 +196,7 @@ pub struct NonEmptyAccountExample<'info> {
 
 为了总结我们迄今学到的一切，让我们构建另一个具有不同函数和账户结构的程序。
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("8PSAL9t1RMb7BcewhsSFrRQDq61Y7YXC5kHUxMk5b39Z");

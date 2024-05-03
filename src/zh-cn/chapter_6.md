@@ -4,7 +4,7 @@
 
 ![Rust 基本语法](https://static.wixstatic.com/media/935a00_f5ff83c14f7a4ff6a5e22d2ff73bc4e7~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_f5ff83c14f7a4ff6a5e22d2ff73bc4e7~mv2.jpg)
 
-本教程介绍了 Solidity 中最常用的语法，并演示了 Rust 中的等效语法。
+本教程介绍了 Solidity 中最常用的语法，并演示了 Rust 中的类似语法。
 
 如果你想要了解 [Rust vs Solidity](https://www.rareskills.io/post/solidity-vs-rust) 的差异，请参阅链接的教程。本教程假定你已经了解 Solidity，如果你对 Solidity 不熟悉，请参阅我们的免费 [Solidity 教程](https://www.rareskills.io/learn-solidity)。
 
@@ -23,7 +23,7 @@
 
 在 Solidity 中：
 
-```
+```js
 function ageChecker(uint256 age)
 	public pure returns (string memory) {
 
@@ -37,7 +37,7 @@ function ageChecker(uint256 age)
 
 在 Solana 中，在 [lib.rs](http://lib.rs/) 中添加一个名为 `age_checker` 的新函数：
 
-```
+```rust
 pub fn age_checker(ctx: Context<Initialize>,
                    age: u64) -> Result<()> {
     if age >= 18 {
@@ -53,7 +53,7 @@ pub fn age_checker(ctx: Context<Initialize>,
 
 为了测试，在 ./tests/tryrust.ts 中添加另一个 it 块：
 
-```
+```js
 it("Age checker", async () => {
     // Add your test here.
     const tx = await program.methods.ageChecker(new anchor.BN(35)).rpc();
@@ -69,7 +69,7 @@ it("Age checker", async () => {
 
 在 Solidity 中将 if-else 语句赋给变量：
 
-```
+```js
 function ageChecker(uint256 age) public pure returns (bool a) {
 		a = age % 2 == 0 ? true : false;
 }
@@ -77,10 +77,10 @@ function ageChecker(uint256 age) public pure returns (bool a) {
 
 在 Solana 中，我们基本上只是将 if-else 语句赋给一个变量。下面的 Solana 程序与上面的相同：
 
-```
+```rust
 pub fn age_checker(ctx: Context<Initialize>,
                    age: u64) -> Result<()> {
-		
+
 	let result = if age >= 18 {"You are 18 years old or above"} else { "You are below 18 years old" };
     msg!("{:?}", result);
     Ok(())
@@ -97,7 +97,7 @@ pub fn age_checker(ctx: Context<Initialize>,
 
 Rust 还有一个更强大的控制流构造叫做 [**match**](https://doc.rust-lang.org/book/ch06-02-match.html)**。** 让我们看一个使用 match 的示例：
 
-```
+```rust
 pub fn age_checker(ctx: Context<Initialize>,
                    age: u64) -> Result<()> {
 	match age {
@@ -110,14 +110,14 @@ pub fn age_checker(ctx: Context<Initialize>,
             msg!("The age is either 2 or 3");
                 },
         4..=6 => {
-            // Code block executed if age is in the 
+            // Code block executed if age is in the
 		    // range 4 to 6 (inclusive)
             msg!("The age is between 4 and 6");
                 },
         _ => {
             // Code block executed for any other age
             msg!("The age is something else");
-                    }
+            }
         }
 	Ok(())
 }
@@ -127,7 +127,7 @@ pub fn age_checker(ctx: Context<Initialize>,
 
 正如我们所知，for 循环允许循环遍历范围、集合和其他可迭代对象，Solidity 中的写法如下：
 
-```
+```js
 function loopOverSmth() public {
     for (uint256 i=0; i < 10; i++) {
         // do something...
@@ -137,19 +137,19 @@ function loopOverSmth() public {
 
 这是 Solana（Rust）中的等效写法：
 
-```
+```rust
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
     for i in 0..10 {
         // do something...
     }
-        
+
     Ok(())
 }
 ```
 
 是的，就是这么简单，但是如何使用自定义步长迭代范围呢？以下是 Solidity 中预期的行为：
 
-```
+```js
 function loopOverSmth() public {
 		for (uint256 i=0; i < 10; i+=2) {
 				// do something...
@@ -161,14 +161,14 @@ function loopOverSmth() public {
 
 这是在 Solana 中使用 `step_by` 的等效写法：
 
-```
+```rust
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
     for i in (0..10).step_by(2) {
         // do something...
-            
+
         msg!("{}", i);
-    }     
-        
+    }
+
     Ok(())
 }
 ```
@@ -177,15 +177,15 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 ![rust for 循环](https://static.wixstatic.com/media/935a00_5d9b55d26fa54d65b36a721256eb6d8f~mv2.png/v1/fill/w_740,h_220,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_5d9b55d26fa54d65b36a721256eb6d8f~mv2.png)
 
-## 数组和向量
+## 数组和 Vector
 
-Rust 在数组支持方面与 Solidity 不同。虽然 Solidity 对固定数组和动态数组都有原生支持，但 Rust 只对固定数组有内置支持。如果你想要一个动态长度的列表，请使用向量。
+Rust 在数组支持方面与 Solidity 不同。虽然 Solidity 对固定数组和动态数组都有原生支持，但 Rust 只对固定数组有内置支持。如果你想要一个动态长度的列表，请使用 Vector。
 
 现在，让我们看一些示例，演示如何声明和初始化固定数组和动态数组。
 
 **固定数组**
 
-```
+```rust
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
     // Declare an array of u32 with a fixed size of 5
     let my_array: [u32; 5] = [10, 20, 30, 40, 50];
@@ -202,7 +202,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
     // Rest of your program's logic
 
-    Ok(())        
+    Ok(())
 }
 ```
 
@@ -210,7 +210,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 在 Solana 中模拟动态数组的方法涉及使用 Rust 标准库中的 Vec（向量）。以下是一个示例：
 
-```
+```rust
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
     // Declare a dynamic array-like structure using Vec
     let mut dynamic_array: Vec<u32> = Vec::new();
@@ -231,7 +231,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 }
 ```
 
-`dynamic_array` 变量必须声明为可变的（`mut`），以允许进行变异（推入、弹出、在索引处覆盖等）。
+`dynamic_array` 变量必须声明为可变的（`mut`），以允许变量可以变化（推入、弹出、在索引处覆盖等）。
 
 运行测试后，程序应该记录如下：
 
@@ -241,9 +241,9 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 与 Solidity 不同，Solana 缺乏内置的映射数据结构。但是，我们可以通过使用 Rust 标准库中的 [HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) 类型来在 Solana 中复制键值映射功能。**与 EVM 链不同，我们在这里演示的映射是在内存中，而不是在存储中。EVM 链没有内存中的哈希映射。** 我们将在稍后的教程中演示 Solana 存储中的映射。
 
-让我们看看如何使用 HashMap 在 Solana 中创建映射。将提供的代码片段复制并粘贴到 [lib.rs](http://lib.rs/) 文件中，并记得用你自己的程序 ID 替换：
+让我们看看如何使用 HashMap 在 Solana 中创建映射。将提供的代码片段复制并粘贴到 [lib.rs](http://lib.rs/) 文件中，并记得用自己的程序 ID 替换：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("53hgft52DHUKMPHGu1kusuwxFGk2T8qngwSw2SyGRNrX");
@@ -273,7 +273,7 @@ my_map 变量也被声明为可变的，以便我们可以编辑它（即添加/
 
 由于 initialize 函数接收两个参数，测试也需要更新：
 
-```
+```js
 it("Is initialized!", async () => {
     // Add your test here.
     const tx = await program.methods.initialize("name", "Bob").rpc();
@@ -291,9 +291,9 @@ it("Is initialized!", async () => {
 
 在 Solidity 中：
 
-```
+```js
 contract SolidityStructs {
-    
+
     // Defining a struct in Solidity
     struct Person {
         string my_name;
@@ -311,9 +311,9 @@ contract SolidityStructs {
 }
 ```
 
-在 Solana 中的 1-1 对应：
+在 Solana 中的一一对应：
 
-```
+```rust
 pub fn initialize(_ctx: Context<Initialize>, name: String, age: u64) -> Result<()> {
     // Defining a struct in Solana
     struct Person {
@@ -349,7 +349,7 @@ pub fn initialize(_ctx: Context<Initialize>, name: String, age: u64) -> Result<(
 
 在 Rust 中声明常量变量很简单。不使用 let 关键字，而是使用 const 关键字。这些可以在 #[program] 块之外声明。
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("EiR8gcMCX11tYMRfoZ2vyheZsZ2NvdUTvYrRAUvTtYnL");
@@ -375,7 +375,7 @@ pub struct Initialize {}
 
 在 Solana 中，我们大多数时候可以假设无符号整数是 u64 类型，但在测量列表长度时有一个例外：它将是 usize 类型。你需要像下面的 Rust 代码演示的那样对变量进行转换：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("EiR8gcMCX11tYMRfoZ2vyheZsZ2NvdUTvYrRAUvTtYnL");
@@ -388,7 +388,7 @@ pub mod usize_example {
 
        let mut dynamic_array: Vec<u32> = Vec::from([1,2,3,4,5,6]);
        let len = dynamic_array.len(); // this has type usize
-       
+
        let another_var: u64 = 5; // this has type u64
 
        let len_plus_another_var = len as u64 + another_var;
@@ -407,7 +407,7 @@ pub struct Initialize {}
 
 Rust 没有 try catch。失败预期返回错误（就像我们在 Solana 的教程中所做的那样）或对于不可恢复的错误会 panic。
 
-**练习：** 编写一个接受 u64 向量、循环遍历它并将所有偶数推入另一个向量，然后打印新向量的 Solana / Rust 程序。
+**练习：** 编写一个接受 u64 向量、循环遍历它并将所有偶数写入到另一个向量，然后打印新向量的 Solana / Rust 程序。
 
 ## 通过 RareSkills 了解更多
 
