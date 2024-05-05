@@ -2,9 +2,9 @@
 
 ![solana anchor deploy](https://static.wixstatic.com/media/935a00_6f744496166444cbbd0621def8ead449~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_6f744496166444cbbd0621def8ead449~mv2.jpg)
 
-在本教程中，我们将深入了解 anchor 背后的情况，看看 Solana 程序是如何部署的。
+在本教程中，我们将深入了解 anchor 背后的秘密，看看 Solana 程序是如何部署的。
 
-让我们看一下当运行 `anchor init deploy_tutorial` 时，anchor 创建的测试文件：
+当运行 `anchor init deploy_tutorial` 时，anchor 创建的测试文件：
 
 ```js
 describe("deploy_tutorial", () => {
@@ -21,7 +21,7 @@ describe("deploy_tutorial", () => {
 });
 ```
 
-它生成的入门程序应该很熟悉：
+它生成的启动程序应该很熟悉：
 
 ```rust
 use anchor_lang::prelude::*;
@@ -49,7 +49,7 @@ pub struct Initialize {}
 const program = anchor.workspace.DeployTutorial as Program<DeployTutorial>;
 ```
 
-但这是没有意义的，因为我们期望的那是一个异步函数。
+但这没有意义，因为我们期望的那是一个异步函数。
 
 Anchor 在后台默默地部署程序。
 
@@ -57,7 +57,7 @@ Anchor 在后台默默地部署程序。
 
 对于那些来自其他面向对象语言的人来说，这可能看起来很不寻常。Rust 没有对象或类。
 
-在以太坊智能合约中，构造函数可以配置存储或设置字节码和不可变变量。
+在以太坊智能合约中，构造函数可以配置存储、设置字节码和不可变变量。
 
 那么“部署步骤”究竟在哪里？
 
@@ -87,15 +87,15 @@ anchor deploy
 
 对以太坊开发人员来说，这可能会让人震惊，因为以太坊合约默认是不可变的。
 
-如果作者可以随意更改程序，那程序还有什么意义呢？Solana 程序可以是不可变的。假设作者将首先部署可变版本，随着时间的推移且没有发现错误，然后将其重新部署为不可变版本。
+如果作者可以随意更改程序，那程序还有什么意义呢？Solana 程序也可以是不可更改的。假设作者首先部署可变版本，随着时间的推移且没有发现错误，然后将其重新部署为不可更改的版本。
 
-从功能上讲，这与管理员控制的代理没有什么不同，其中所有者后来放弃所有权给零地址。但可以说，Solana 模型要干净得多，因为以太坊代理可能出现很多问题。
+从功能上讲，这与管理员控制的代理没有什么不同，代理的所有者后来放弃了对零地址的所有权。但可以说，Solana 模式要干净得多，因为以太坊代理可能会出现很多问题。
 
 另一个含义：**Solana 没有 delegatecall，因为它不需要。**
 
 Solidity 合约中使用 delegatecall 的主要目的是通过向新实现合约发出 delegatecall 来升级代理合约的功能。然而，由于 Solana 中的程序字节码可以升级，所以不需要对实现合约进行 delegatecall。
 
-另一个推论：**Solana 没有像 Solidity 解释的不可变变量（只能在构造函数中设置的变量）。**
+另一个推论：**Solana 没有像 Solidity 那样的不可变变量（只能在构造函数中设置的变量）。**
 
 ## 运行测试而不重新部署程序
 
@@ -126,7 +126,7 @@ describe("deployed", () => {
 });
 ```
 
-在运行测试之前，我们建议清除 Solana 日志终端并重新启动 solana-test-validator。
+在运行测试之前，我们建议清除 Solana 日志终端并重新启动 `solana-test-validator`。
 
 现在，使用以下命令运行测试：
 
@@ -146,7 +146,7 @@ anchor test --skip-local-validator --skip-deploy
 2. anchor deploy
 3. anchor test --skip-local-validator --skip-deploy
 4. 检查日志以查看消息记录
-5. 重复 1 - 4，但更改 msg! 中的字符串
+5. 重复 1 - 4，但要更改 msg! 中的字符串
 6. 验证程序 ID 未更改
 
 你应该观察到消息字符串有改动，但程序 ID 保持不变。
