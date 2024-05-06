@@ -1,6 +1,6 @@
 # 在 Solana 中创建“映射”和“嵌套映射”
 
-更新日期：Mar 1
+更新日期：3 月 1 日
 
 ![在 Solana 中的映射和嵌套映射](https://static.wixstatic.com/media/935a00_fcc8fb7861f344a6b54b33647dc34ef2~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_fcc8fb7861f344a6b54b33647dc34ef2~mv2.jpg)
 
@@ -80,7 +80,7 @@ myMap[key] = val
 
 ### seeds = [&key.to_le_bytes().as_ref()]
 
-`seeds` 中的项应为字节。然而，我们传入的是一个 `u64`，而不是字节类型。为了将其转换为字节，我们使用 `to_le_bytes()`。这里的“le”表示“ [小端](https://www.freecodecamp.org/news/what-is-endianness-big-endian-vs-little-endian/) ”。种子不一定要编码为小端字节，我们只是为了这个示例选择了这种方式。大端也可以，只要保持一致。要转换为大端，我们将使用 `to_be_bytes()`。
+`seeds` 中的项应为字节。然而，我们传入的是一个 `u64`，而不是字节类型。为了将其转换为字节，我们使用 `to_le_bytes()`。这里的“le”表示“ [little endian（小端）](https://www.freecodecamp.org/news/what-is-endianness-big-endian-vs-little-endian/) ”。seeds 不一定要编码为小端字节，我们只是为了这个示例选择了这种方式。大端也可以，只要保持一致。要转换为大端，我们将使用 `to_be_bytes()`。
 
 ### #[instruction(key: u64)]
 
@@ -141,7 +141,7 @@ pub struct Set<'info> {
 
 ## 设置和读取映射：Typescript
 
-因为我们在客户端（Typescript）中派生出存储值的账户地址，我们可以像处理 `seeds` 数组为空的账户一样从中读取和写入。读取 Solana 账户数据 的语法和写入的语法与之前的教程相同：
+因为我们在客户端（Typescript）中派生出存储值的账户地址，我们可以像处理 `seeds` 数组为空的账户一样从中读取和写入。读取 Solana 账户数据的语法和写入的语法与之前的教程相同：
 
 ```
 import * as anchor from "@coral-xyz/anchor";
@@ -187,7 +187,7 @@ describe("example_map", () => {
 
 Solidity 的“嵌套映射”不是“真正”的嵌套映射：你不能提供一个键并获得一个映射返回：你必须提供所有键并获得最终结果。
 
-如果你使用种子来模拟类似于 Solidity 的嵌套映射，你将面临相同的限制。你必须提供所有种子 —— Solana 不会接受只有一个种子。
+如果你使用 seeds 来模拟类似于 Solidity 的嵌套映射，你将面临相同的限制。你必须提供所有 seeds —— Solana 不会接受只有一个 seed。
 
 ## 初始化嵌套映射：Rust
 
