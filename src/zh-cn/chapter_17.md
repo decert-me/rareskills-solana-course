@@ -73,11 +73,11 @@ pub struct MyStorage {
 
 我们现在解释`ctx.accounts.my_storage.x = new_x`的工作原理：
 
-- `ctx`中的`accounts`字段（顶部蓝色框）为我们提供了访问`Set`结构中所有键的权限。这不是在 Rust 中列出结构键的方式。`accounts`能够引用`Set`结构中的键，是由于`#[derive(Accounts)]`宏（底部蓝色框）的神奇插入。
-- 账户`my_storage`（橙色框）被设置为可变（绿色框），因为我们打算更改其中的值`x`（红色框）。
+- ctx 中的 accounts 字段（顶部蓝色框）为我们提供了访问 Set 结构中所有键的权限。这不是在 Rust 中列出结构键的方式。accounts 能够引用 Set 结构中的键，是由于 #[derive(Accounts)] 宏（底部蓝色框）的神奇插入。
+- 账户 my_storage（橙色框）被设置为可变（绿色框），因为我们打算更改其中的值 x（红色框）。
 - 键`my_storage`（橙色框）通过将`MyStorage`作为泛型参数传递给`Account`，为我们提供了对`MyStorage`账户（黄色框）的引用。我们使用键`my_storage`和存储结构`MyStorage`的事实仅是为了可读性，它们不需要彼此是驼峰式变体。将它们“联系在一起”的方式用黄色框和黄色箭头进行了说明。
 
-实质上，当调用`set()`时，调用者（Typescript 客户端）将`myStorage`账户传递给`set()`。在这个账户内部是存储的地址。在幕后，`set`将加载存储，写入`x`的新值，序列化结构，然后将其存储回去。
+实质上，当调用 set()时，调用者（Typescript 客户端）将 myStorage 账户传递给 set()。在这个账户内部是存储的地址。在幕后，set 将加载存储，写入 x 的新值，序列化结构，然后将其存储回去。
 
 ## `Context`结构 Set
 
