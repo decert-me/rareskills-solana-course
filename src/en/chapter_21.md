@@ -94,7 +94,7 @@ The `#[account]` struct tells Anchor how to deserialize an account holding data.
 ```
 #[account]
 pub struct Counter {
-	counter: u64
+    counter: u64
 }
 ```
 
