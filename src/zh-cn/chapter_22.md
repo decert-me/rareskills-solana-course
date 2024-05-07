@@ -2,7 +2,7 @@
 
 ![Solana 中的 view、pure、payable、fallback 和 receive](https://static.wixstatic.com/media/935a00_ef441e08a8eb49a8876f000a4d2dff1a~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_ef441e08a8eb49a8876f000a4d2dff1a~mv2.jpg)
 
-## Solana 没有回退或接收函数
+## Solana 没有回退或 receive 函数
 
 Solana 交易必须预先指定作为交易一部分将修改或读取的账户。如果“回退”函数访问不确定的账户，整个交易将失败。这将使用户需要预料回退函数将访问的账户。因此，简单地禁止这类函数会更简单。
 
@@ -37,13 +37,13 @@ Solidity 中的“view”函数通过两种机制创建一个保证状态不会�
 
 ## Rust 中没有自定义修饰符
 
-像`onlyOwner`或`nonReentrant`这样的自定义修饰符是 Solidity 的构造，而不是 Rust 中可用的功能。
+像`onlyOwner`或`nonReentrant`这样的自定义修饰符是 Solidity 的创造物，而不是 Rust 中可用的功能。
 
 ## Rust 或 Anchor 中没有自定义单位
 
 因为 Solidity 与 Ethereum 紧密相关，它具有方便的关键字，如`ethers`或`wei`来衡量以太坊。不足为奇的是，在 Rust 中未定义`LAMPORTS_PER_SOL`，但有些令人惊讶的是，在 Anchor Rust 框架中也未定义。然而，在 Solana web3 js 库中是可用的。
 
-类似地，Solidity 中有`days`作为 84,600 秒的便捷别名，但在 Rust/Anchor 中并不存在这样的等效。
+类似地，Solidity 中有`days`作为 84,600 秒的便捷别名，但在 Rust/Anchor 中没有相对应的。
 
 ## Solana 中不存在“可支付”函数。程序从用户那里转移 SOL，用户不会向程序转移 SOL
 
