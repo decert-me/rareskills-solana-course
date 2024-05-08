@@ -342,7 +342,7 @@ pub struct Player {
 }
 ```
 
-请注意，我们使用签名者的地址（&(signer.as_ref().key().to_bytes())）来派生存储其积分的账户地址。这类似于 Solana 中的 Solidity [映射](https://www.rareskills.io/post/solana-solidity-mapping)，其中 [Solana“msg.sender / tx.origin”](https://www.rareskills.io/post/msg-sender-solana) 是键。
+请注意，我们使用签名者的地址（&(signer.as_ref().key().to_bytes())）来派生存储其积分的账户地址。这类似于 Solana 中的 Solidity [映射](https://www.rareskills.io/post/solana-solidity-mapping)，其中 [Solana "msg.sender / tx.origin"](https://www.rareskills.io/post/msg-sender-solana) 是键。
 
 在`initialize`函数中，程序将初始积分设置为`10`，并将授权者设置为`signer`。用户无法控制这些初始值。
 
