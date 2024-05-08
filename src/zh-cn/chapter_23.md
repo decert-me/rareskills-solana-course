@@ -2,11 +2,11 @@
 
 ![img](https://static.wixstatic.com/media/935a00_b3715afc88894b44aaf8cb8cfc8c4587~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_b3715afc88894b44aaf8cb8cfc8c4587~mv2.jpg)
 
-本教程将介绍 Solana Anchor 程序如何在交易中转移 SOL 的机制。
+本教程将介绍 Solana Anchor 程序如何将 SOL 作为交易的一部分进行转移的机制。
 
-**与以太坊不同，以太坊钱包在交易中指定 msg.value 并将 ETH“推送”到合约，而 Solana 程序则是从钱包“拉取” Solana。**
+**与以太坊不同，以太坊钱包在交易中指定 msg.value 并将 ETH “推送”到合约，而 Solana 程序则是从钱包“拉取” Solana。**
 
-因此，Solana 中没有“可支付”函数或“msg.value”。
+因此，Solana 中没有“payable”函数或“msg.value”。
 
 下面我们创建了一个名为 `sol_splitter` 的新 Anchor 项目，并放置了 Rust 代码以将 SOL 从发送方转移到接收方。
 
@@ -66,9 +66,9 @@ pub struct SendSol<'info> {
 
 ## 介绍 CPI：跨程序调用
 
-在以太坊中，通过在 `msg.value` 字段中指定一个值来转移 ETH。在 Solana 中，一个名为 `system program` 的内置程序将 SOL 从一个账户转移到另一个账户。这就是为什么在我们初始化账户时一直出现它，并且必须支付费用来初始化这些账户。
+在以太坊中，通过在 `msg.value` 字段中指定一个值来转移 ETH。在 Solana 中，一个名为 `system program` 的内置程序将 SOL 从一个账户转移到另一个账户。这就是为什么在我们初始化账户时一直有它的身影，并且必须支付费用来初始化这些账户。
 
-你可以粗略地将系统程序视为以太坊中的预编译。想象一下，它的行为有点像内置在协议中的 ERC-20 代币，用作本地货币。它有一个名为 `transfer` 的公共函数。
+你可以粗略地将系统程序视为以太坊中的预编译。想象一下，它的行为有点像内置在协议中的 ERC-20 代币，用作原生货币。它有一个名为 `transfer` 的公共函数。
 
 ## CPI 交易的上下文
 
