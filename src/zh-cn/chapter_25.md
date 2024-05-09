@@ -79,7 +79,7 @@ describe("keypair_vs_pda", () => {
 
 ## 程序派生地址
 
-如果账户的地址是从程序的地址派生而来的，即在 `findProgramAddressSync(`seeds`, program.programId)` 中的 `programId`，那么该账户就是程序派生地址（PDA）。它也是 `seeds` 的一个函数。
+如果账户的地址是从程序的地址派生而来的，即在 `findProgramAddressSync(seeds, program.programId)` 中的 `programId`，那么该账户就是程序派生地址（PDA）。它也是 `seeds` 的一个函数。
 
 具体来说，我们知道它是一个 PDA，因为 `seeds` 和 `bump` 在 `init` 宏中存在。
 
@@ -170,7 +170,7 @@ describe("keypair_vs_pda", () => {
 
 我们希望注意以下几点：
 
-- 我们添加了一个实用函数 `airdropSol` 来向我们创建的新密钥对 `newKeypair` 进行 `airdrop` SOL。没有 SOL，它将无法支付交易费用。此外，因为这是将用于存储数据的相同账户，它需要一个 SOL 余额以免受 [租金豁免](https://www.rareskills.io/post/solana-account-rent)。当进行 SOL 空投时，需要额外的 `confirmTransaction` 程序，因为运行时似乎存在关于何时实际进行 SOL 空投和何时确认交易的竞争条件。
+- 我们添加了一个实用函数 `airdropSol` 来向我们创建的新密钥对 `newKeypair` 进行 `airdrop` SOL。没有 SOL，它将无法支付交易费用。此外，因为这也是将用于存储数据的账户，它需要一个 SOL 余额以免受[租金豁免](https://www.rareskills.io/post/solana-account-rent)。当进行 SOL 空投时，需要额外的 `confirmTransaction` 程序，因为运行时似乎存在关于何时实际进行 SOL 空投和何时确认交易的竞争条件。
 - 我们将 `signers` 从默认值更改为 `newKeypair`。创建密钥对账户时，你无法创建你没有私钥的账户。
 
 ## 没有私钥的密钥对账户无法进行 `initialize`
@@ -207,7 +207,7 @@ Solana 运行时不会允许你这样做。如果一个程序的 PDAs 突然出�
 
 似乎持有私钥的人将能够从账户中花费 SOL，并可能将其降至租金豁免阈值以下。但是，当账户由程序初始化时，Solana 运行时会阻止这种情况发生。
 
-为了看到这一点，请考虑以下单元测试：
+为了证实这一点，请考虑以下单元测试：
 
 - 在 Typescript 中创建一个密钥对账户
 - 向密钥对账户进行 SOL 空投
@@ -353,7 +353,7 @@ describe("keypair_vs_pda", () => {
 
 ![账户拥有权](https://static.wixstatic.com/media/935a00_210bf2a0dc0d49e48fc9d07c4b04b4f2~mv2.png/v1/fill/w_740,h_190,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_210bf2a0dc0d49e48fc9d07c4b04b4f2~mv2.png)
 
-初始化后，密钥对账户的所有者从 `111...111` 更改为部署的程序。我们尚未深入讨论账户所有权或系统程序（全为 1 的地址）在我们的 [Solana 教程](https://www.rareskills.io/solana-tutorial) 中。但是，这应该让你了解“初始化”正在做什么以及为什么私钥的所有者不再能够将 SOL 转移出账户。
+初始化后，密钥对账户的所有者从 `111...111` 更改为部署的程序。我们尚未在我们的 [Solana 教程](https://www.rareskills.io/solana-tutorial) 中深入讨论账户所有权或系统程序（全为 1 的地址）。但是，这应该让你了解“初始化”正在做什么以及为什么私钥的所有者不再能够将 SOL 转移出账户。
 
 ## 我应该使用 PDAs 还是密钥对账户？
 
@@ -361,7 +361,7 @@ describe("keypair_vs_pda", () => {
 
 唯一显著的区别（这不会影响大多数应用程序）是 PDAs 只能以 10,240 字节的大小进行初始化，但密钥对账户可以初始化到完整的 10 MB 大小。但是，PDA 可以调整大小以达到 10 MB 的限制。
 
-大多数应用程序使用 PDAs，因为它们可以通过 `seeds` 参数以编程方式寻址，但要访问密钥对账户，你必须事先知道地址。我们包括密钥对账户的讨论，因为在线教程中有几个示例使用它们，所以我们希望你有一些背景知识。然而，在实践中，PDAs 是存储数据的首选方式。
+大多数应用程序使用 PDAs，因为它们可以通过 `seeds` 参数以编程方式寻址，但要访问密钥对账户，你必须事先知道地址。我们囊括密钥对账户的讨论，因为在线教程中有几个示例使用它们，所以我们希望你有一些背景知识。然而，在实践中，PDAs 是存储数据的首选方式。
 
 ## 通过 RareSkills 了解更多
 
