@@ -379,7 +379,7 @@ pub struct Pda {}
 代码中还值得注意的一些内容：
 
 - 我们硬编码了谁可以从 PDA 提取的约束，使用约束 `#[account(mut, address = Pubkey::from_str("5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj").unwrap())]`。这检查该账户的地址是否与字符串中的地址匹配。为了使此代码工作，我们还需要导入 `use std::str::FromStr;`。要测试此代码，请将字符串中的地址更改为你的 `solana address`。
-- 使用 Anchor 0.29，我们可以使用语法 `ctx.accounts.pda.sub_lamports(amount)?;` 和 `ctx.accounts.signer.add_lamports(amount)?;`。对于 Anchor 的早期版本，请使用 [**ctx.accounts.pda.to**](http://ctx.accounts.pda.to/)**_account_info().try_borrow_mut_lamports()? -= amount;** **和** [ctx.accounts.signer.to](http://ctx.accounts.signer.to/)_account_info().try_borrow_mut_lamports()? += amount;。
+- 使用 Anchor 0.29，我们可以使用语法 `ctx.accounts.pda.sub_lamports(amount)?;` 和 `ctx.accounts.signer.add_lamports(amount)?;`。对于 Anchor 的早期版本，请使用 `ctx.accounts.pda.to_account_info().try_borrow_mut_lamports()? -= amount;` **和** `ctx.accounts.signer.to_account_info().try_borrow_mut_lamports()? += amount;`。
 - 你不需要拥有你要转移 lamports 的账户。
 
 以下是相应的 Typescript 代码：

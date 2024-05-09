@@ -79,7 +79,7 @@ All of this should be familiar so far, except that we explicitly called our acco
 
 ## Program Derived Address
 
-An account is a Program Derived Address (PDA) if the address of the account is derived from the address of the program, i.e. the `programId` in `findProgramAddressSync(`seeds`, program.programId)`. It is also a function of the `seeds`.
+An account is a Program Derived Address (PDA) if the address of the account is derived from the address of the program, i.e. the `programId` in `findProgramAddressSync(seeds, program.programId)`. It is also a function of the `seeds`.
 
 Specifically, we know it is a PDA because the `seeds` and `bump` are present in the `init` macro.
 
