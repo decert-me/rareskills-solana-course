@@ -1,4 +1,4 @@
-# 面向 Solidity 开发人员的基本 Rust
+# 面向 Solidity 开发人员的基本 Rust 知识
 
 更新日期：Feb 29
 
@@ -6,18 +6,18 @@
 
 本教程介绍了 Solidity 中最常用的语法，并演示了 Rust 中的类似语法。
 
-如果你想要了解 [Rust vs Solidity](https://www.rareskills.io/post/solidity-vs-rust) 的差异，请参阅链接的教程。本教程假定你已经了解 Solidity，如果你对 Solidity 不熟悉，请参阅我们的免费 [Solidity 教程](https://www.rareskills.io/learn-solidity)。
+如果你想要了解 [Rust vs Solidity](https://www.rareskills.io/post/solidity-vs-rust) 的区别，请参考链接的教程。本教程假定你已经了解 Solidity，如果你对 Solidity 不熟悉，请参阅我们提供的免费 [Solidity 教程](https://www.rareskills.io/learn-solidity)。
 
-创建一个名为 `tryrust` 的新 Solana Anchor 项目，并设置环境。
+创建一个新的 Solana Anchor 项目，名为 `tryrust` ，并设置环境。
 
 ## 条件语句
 
-我们可以说在 Solidity 中有两种开发人员可以根据特定条件控制执行流程的方式：
+在 Solidity 中有两种开发人员可以根据特定条件控制执行流程的方式：
 
 - If-Else 语句
 - 三元运算符
 
-现在让我们看看在 Solidity 中的上述内容，以及它们在 Solana 中的翻译。
+现在让我们看看在 Solidity 中的如何表示上述内容，以及它们在 Solana 中的语法。
 
 **If-Else 语句**
 
@@ -35,7 +35,7 @@ function ageChecker(uint256 age)
 }
 ```
 
-在 Solana 中，在 [lib.rs](http://lib.rs/) 中添加一个名为 `age_checker` 的新函数：
+在 Solana 项目中，在 [lib.rs](http://lib.rs/) 中添加一个名为 `age_checker` 的新函数：
 
 ```rust
 pub fn age_checker(ctx: Context<Initialize>,
@@ -51,7 +51,7 @@ pub fn age_checker(ctx: Context<Initialize>,
 
 请注意，条件 `age >= 18` 不需要括号 — if 语句中的括号是可选的。
 
-为了测试，在 ./tests/tryrust.ts 中添加另一个 it 块：
+为了测试，在 ./tests/tryrust.ts 中添加另一个 it 代码块：
 
 ```js
 it("Age checker", async () => {
@@ -95,7 +95,7 @@ pub fn age_checker(ctx: Context<Initialize>,
 
 ![rust 测试控制台布尔值](https://static.wixstatic.com/media/935a00_c089b9aaebc54a5e93b398f1f34ae4cb~mv2.png/v1/fill/w_740,h_158,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c089b9aaebc54a5e93b398f1f34ae4cb~mv2.png)
 
-Rust 还有一个更强大的控制流构造叫做 [**match**](https://doc.rust-lang.org/book/ch06-02-match.html)**。** 让我们看一个使用 match 的示例：
+Rust 还有一个更强大的控制流运算符叫做 [**match**](https://doc.rust-lang.org/book/ch06-02-match.html)。让我们看一个 match 示例：
 
 ```rust
 pub fn age_checker(ctx: Context<Initialize>,
@@ -231,7 +231,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 }
 ```
 
-`dynamic_array` 变量必须声明为可变的（`mut`），以允许变量可以变化（推入、弹出、在索引处覆盖等）。
+`dynamic_array` 变量必须声明为可变的（`mut`），以允许变量可以变化（push、pop、在索引处覆盖等）。
 
 运行测试后，程序应该记录如下：
 
@@ -241,7 +241,7 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
 
 与 Solidity 不同，Solana 缺乏内置的映射数据结构。但是，我们可以通过使用 Rust 标准库中的 [HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) 类型来在 Solana 中复制键值映射功能。**与 EVM 链不同，我们在这里演示的映射是在内存中，而不是在存储中。EVM 链没有内存中的哈希映射。** 我们将在稍后的教程中演示 Solana 存储中的映射。
 
-让我们看看如何使用 HashMap 在 Solana 中创建映射。将提供的代码片段复制并粘贴到 [lib.rs](http://lib.rs/) 文件中，并记得用自己的程序 ID 替换：
+让我们看看如何使用 HashMap 在 Solana 中创建映射。将提供的代码片段复制并粘贴到 [lib.rs](http://lib.rs/) 文件中，并替换程序 ID：
 
 ```rust
 use anchor_lang::prelude::*;
@@ -269,7 +269,7 @@ pub mod tryrust {
 }
 ```
 
-my_map 变量也被声明为可变的，以便我们可以编辑它（即添加/删除键 → 值对）。还注意到我们如何导入 HashMap 库吗？
+my_map 变量也被声明为可变的，以便我们可以编辑它（即添加/删除键值对）。还注意到我们是如何导入 HashMap 库的吗？
 
 由于 initialize 函数接收两个参数，测试也需要更新：
 
@@ -343,7 +343,7 @@ pub fn initialize(_ctx: Context<Initialize>, name: String, age: u64) -> Result<(
 
 ![rust 结构体](https://static.wixstatic.com/media/935a00_98c76b05ce414702b110ebdb09aa42e3~mv2.png/v1/fill/w_740,h_201,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_98c76b05ce414702b110ebdb09aa42e3~mv2.png)
 
-在提供的代码片段中，Solidity 实现将结构体的实例存储在存储中，而 Solana 实现中，一切都发生在 initialize 函数中，没有任何东西存储在链上。存储将在以后的教程中讨论。
+在提供的代码片段中，Solidity 将结构体的实例存储在存储中，而 Solana 实现中，一切都发生在 initialize 函数中，没有任何东西存储在链上。存储将在以后的教程中讨论。
 
 ## Rust 中的常量
 
