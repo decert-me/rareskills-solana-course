@@ -379,7 +379,7 @@ In this case, the program owns the PDA, and therefore can directly deduct lampor
 Some other items in the code worth calling attention to:
 
 - We hardcoded who can withdraw from the PDA using the constraint `#[account(mut, address = Pubkey::from_str("5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj").unwrap())].` This checks that the address for that account matches the one in the string. For this code to work, we also needed to import `use std::str::FromStr;`. To test this code, change the address in the string to yours from `solana address`.
-- With Anchor 0.29, we can use the syntax `ctx.accounts.pda.sub_lamports(amount)?;` and `ctx.accounts.signer.add_lamports(amount)?;`. For earlier versions of Anchor, use [**ctx.accounts.pda.to**](http://ctx.accounts.pda.to/)**_account_info().try_borrow_mut_lamports()? -= amount;** **and** [ctx.accounts.signer.to](http://ctx.accounts.signer.to/)_account_info().try_borrow_mut_lamports()? += amount;.
+- With Anchor 0.29, we can use the syntax `ctx.accounts.pda.sub_lamports(amount)?;` and `ctx.accounts.signer.add_lamports(amount)?;`. For earlier versions of Anchor, use `ctx.accounts.pda.to_account_info().try_borrow_mut_lamports()? -= amount;` **and** `ctx.accounts.signer.to_account_info().try_borrow_mut_lamports()? += amount;`.
 - You don’t need to own the account you are transferring lamports to.
 
 Here is the accompanying Typescript code:
