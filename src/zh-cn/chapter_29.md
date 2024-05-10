@@ -1,70 +1,73 @@
-# Solana 中的所有者与权限
+# Solana 中的 Owner 和 Authority
 
-![solana 所有者与权限](https://static.wixstatic.com/media/935a00_8e90b3254a804e6c8c2db21b5d5eb1c2~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_8e90b3254a804e6c8c2db21b5d5eb1c2~mv2.jpg)
+![solana owner vs authority](https://static.wixstatic.com/media/935a00_8e90b3254a804e6c8c2db21b5d5eb1c2~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_8e90b3254a804e6c8c2db21b5d5eb1c2~mv2.jpg)
 
-Solana 的新手经常对“所有者”和“权限”之间的区别感到困惑。本文试图尽可能简洁地澄清这种混淆。
+Solana 的新手经常对“owner（所有者）”和“authority（权限）”之间的区别感到困惑。本文试图尽可能简洁地澄清这种混淆。
 
-## 所有者与权限
+## Owner vs Authority
 
 只有程序才能向账户写入数据 — 具体来说，只能写入它们拥有的账户。程序不能向任意账户写入数据。
 
-当然，程序不能自发地向账户写入数据。它们需要从钱包接收指令才能这样做。然而，通常情况下，程序只会接受来自特权钱包的写入指令：*权限*。
+当然，程序不能自发地向账户写入数据。它们需要从钱包接收指令才能这样做。然而，通常情况下，程序只会接受来自特定钱包的写入指令：*authority*。
+
+账户的 owner 是一个程序。authority 是一个钱包。authority 向程序发送交易，而该程序可以向账户写入数据。
 
 账户在 Solana 中都具有以下字段，这些字段大多是不言自明的：
 
-- 公钥
-- lamport 余额
-- 所有者
-- 可执行性（布尔标志）
-- rent_epoch（对于免租账户可以忽略）
-- 数据
+- Public Key
+- lamport balance
+- owner
+- executable (a boolean flag)
+- rent_epoch (can be ignored for rent-exempt accounts)
+- data
 
-我们可以通过在终端中运行 `solana account <我们的钱包地址>` 来查看这些字段（在后台运行 Solana 验证器）：
 
-![系统程序作为所有者](https://static.wixstatic.com/media/935a00_c3fb0f0ed572444bb560f20bfd0b209f~mv2.png/v1/fill/w_740,h_153,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c3fb0f0ed572444bb560f20bfd0b209f~mv2.png)
+我们可以通过在终端中运行 `solana account <钱包地址>` 来查看这些字段（在后台运行 Solana 验证器）：
 
-注意一个有趣的事实：**我们不是我们钱包的所有者！** 地址 111…111 是**系统程序**的所有者。
+![system program as owner](https://static.wixstatic.com/media/935a00_c3fb0f0ed572444bb560f20bfd0b209f~mv2.png/v1/fill/w_740,h_153,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_c3fb0f0ed572444bb560f20bfd0b209f~mv2.png)
+
+注意一个有趣的事实：**我们不是我们钱包的 owner！** 地址 111…111 是**系统程序**的 owner。
 
 为什么系统程序拥有钱包，而不是钱包拥有自己？
 
-**只有账户的所有者才能修改其中的数据。**
+**只有账户的 owner 才能修改其中的数据。**
 
 这意味着我们无法直接修改我们的余额。只有系统程序才能这样做。要从我们的账户中转移 SOL，我们向系统程序发送一个已签名的交易。系统程序会验证我们拥有账户的私钥，然后代表我们修改余额。
 
-这是你在 Solana 中经常看到的模式：只有账户的所有者才能修改账户中的数据。如果程序看到来自预定地址的有效签名：一个权限，程序将修改账户中的数据。
+这是你在 Solana 中经常看到的模式：只有账户的 owner 才能修改账户中的数据。如果程序看到来自预定地址的有效签名：authority，程序将修改账户中的数据。
 
-**权限是程序看到有效签名时将接受指令的地址。权限不能直接修改账户。它需要通过拥有要修改的账户的程序来操作。**
+**authority 是程序看到有效签名时将接受指令的地址。authority 不能直接修改账户。它需要通过拥有要修改的账户的程序来操作。**
 
-![权限所有者账户流程图](https://static.wixstatic.com/media/935a00_30af1af38d204a449fc06dfe5cb28990~mv2.jpg/v1/fill/w_740,h_249,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_30af1af38d204a449fc06dfe5cb28990~mv2.jpg)
+![system program as owner](https://static.wixstatic.com/media/935a00_30af1af38d204a449fc06dfe5cb28990~mv2.jpg/v1/fill/w_740,h_249,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_30af1af38d204a449fc06dfe5cb28990~mv2.jpg)
 
-然而，所有者始终是一个程序，如果交易的签名有效，该程序将代表其他人修改账户。
+然而，owner 始终是一个程序，如果交易的签名有效，该程序将代表其他人修改账户。
 
 例如，在我们的[使用不同签名者修改账户的教程](https://www.rareskills.io/post/anchor-signer)中，我们看到了这一点。
 
 **练习：** 创建一个初始化存储账户的程序。你可能需要程序和存储账户的地址。考虑将以下代码添加到测试中：
 
 ```
-console.log(`程序：${program.programId.toBase58()}`);
-console.log(`存储账户：${myStorage.toBase58()}`);
+console.log(`program: ${program.programId.toBase58()}`);
+console.log(`storage account: ${myStorage.toBase58()}`);
 ```
 
-然后在初始化的账户上运行 `solana account <存储账户>`。你应该看到所有者是程序。
+然后在初始化的账户上运行 `solana account <storage account>`。你应该看到 owner 是程序。
 
 这是运行练习的屏幕截图：
 
-![将程序地址与账户所有者关联](https://static.wixstatic.com/media/935a00_9f1ac64a1b74409b82c8c6c61d7d122b~mv2.png/v1/fill/w_740,h_285,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_9f1ac64a1b74409b82c8c6c61d7d122b~mv2.png)
+![relating program address to owner of account](https://static.wixstatic.com/media/935a00_9f1ac64a1b74409b82c8c6c61d7d122b~mv2.png/v1/fill/w_740,h_285,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_9f1ac64a1b74409b82c8c6c61d7d122b~mv2.png)
 
-当我们查看存储账户的元数据时，我们看到程序是所有者。
+当我们查看存储账户的元数据时，我们看到程序是 owner。
 
 **因为程序拥有存储账户，所以它能够向其写入数据。** 用户无法直接向存储账户写入数据，他们需要签署交易并要求程序写入数据。
 
-## Solana 中的所有者与 Solidity 中的所有者非常不同
+## Solana 中的 owner 与 Solidity 中的 owner 非常不同
 
-在 Solidity 中，我们通常将所有者称为具有智能合约管理权限的特殊地址。“所有者”不是以太坊运行时级别存在的概念，而是应用于 Solidity 合约的设计模式。Solana 中的所有者更为基础。在以太坊中，智能合约只能写入自己的存储槽。想象一下，如果我们有一种机制允许以太坊智能合约能够写入其他一些存储槽。在 Solana 术语中，它将成为这些存储槽的*所有者*。
+在 Solidity 中，我们通常将 owner 称为具有智能合约管理权限的特殊地址。“owner”不是以太坊运行时级别存在的概念，而是应用于 Solidity 合约的设计模式。Solana 中的 owner 更为基础。在以太坊中，智能合约只能写入自己的存储槽。想象一下，如果我们有一种机制允许以太坊智能合约能够写入其他一些存储槽。在 Solana 术语中，它将成为这些存储槽的 *owner*。
 
-## 权限可以表示部署合约的人和可以为特定账户发送写入交易的人
+## authority 可以表示部署合约的账户和可以为特定账户发送写入交易的账户
 
-*权限*可以是程序级别的构造。在我们的 [Anchor 签名者教程](https://www.rareskills.io/post/anchor-signer)中，我们创建了一个程序，Alice 可以从她的账户中扣除积分并转移给其他人。为了确保只有 Alice 可以为该账户发送扣除交易，我们将她的地址存储在账户中：
+*authority* 可以是程序级别的构造。在我们的 [Anchor 签名者教程](https://www.rareskills.io/post/anchor-signer)中，我们创建了一个程序，Alice 可以从她的账户中扣除积分并转移给其他人。为了确保只有 Alice 可以为该账户发送扣除交易，我们将她的地址存储在账户中：
 
 ```
 #[account]
@@ -76,11 +79,11 @@ pub struct Player {
 
 Solana 使用类似的机制来记住谁部署了一个程序。在我们的 [Anchor 部署教程](https://www.rareskills.io/post/solana-anchor-deploy)中，我们注意到部署程序的钱包也能够升级它。
 
-“升级”程序就是向其写入新数据 — 即新的字节码。只有程序的所有者才能向其写入数据（我们很快将看到，这个程序是`BPFLoaderUpgradeable`）。
+“升级”程序就是向其写入新数据 — 即新的字节码。只有程序的 owner 才能向其写入数据（我们很快将看到，这个程序是`BPFLoaderUpgradeable`）。
 
-那么，Solana 如何知道如何授予部署某个程序的钱包升级权限呢？
+那么，Solana 如何知道如何授予部署某个程序的钱包升级 authority 呢？
 
-## 从命令行查看程序的权限
+## 从命令行查看程序的 authority
 
 在部署程序之前，让我们通过在终端中运行 `solana address` 来查看 anchor 正在使用的钱包：
 
@@ -105,9 +108,9 @@ anchor test --skip-local-validator
 
 ![打印程序元数据](https://static.wixstatic.com/media/935a00_d164ca02317949f1b748bbdeef4a3a9a~mv2.png/v1/fill/w_740,h_173,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_d164ca02317949f1b748bbdeef4a3a9a~mv2.png)
 
-**请注意，权限字段不存在，因为“权限”不是 Solana 账户持有的字段。** 如果你向本文顶部滚动，你会看到控制台中的密钥与我们在本文顶部列出的字段匹配。
+**请注意，authority 字段不存在，因为“authority”不是 Solana 账户持有的字段。** 如果你向本文顶部滚动，你会看到控制台中的密钥与我们在本文顶部列出的字段匹配。
 
-在这里，“所有者”是 BPFLoaderUpgradeable111…111，这是所有 Solana 程序的所有者。
+在这里，“owner”是 BPFLoaderUpgradeable111…111，这是所有 Solana 程序的 owner 。
 
 现在让我们运行 `solana program show 6Ye7CgrwJxH3b4EeWKh54NM8e6ZekPcqREgkrn7Yy3Tg`，其中 `6Ye7...y3TG` 是我们程序的地址：
 
@@ -119,13 +122,13 @@ anchor test --skip-local-validator
 
 但这引出了一个重要问题…
 
-## Solana 将“权限”存储在哪里，目前是我们的钱包？
+## Solana 将“authority”存储在哪里，目前是我们的钱包？
 
-它不是账户中的字段，因此必须存储在某个 Solana 账户的`data`字段中。“权限”存储在存储程序字节码的`ProgramData`地址中：
+它不是账户中的字段，因此必须存储在某个 Solana 账户的`data`字段中。“authority” 存储在存储程序字节码的`ProgramData`地址中：
 
 ![ProgramData 地址](https://static.wixstatic.com/media/935a00_2e253c4d60e74867a2241b1bee25d42a~mv2.png/v1/fill/w_740,h_139,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_2e253c4d60e74867a2241b1bee25d42a~mv2.png)
 
-## 我们钱包的十六进制编码（权限）
+## 我们钱包的十六进制编码（authority）
 
 在继续之前，将有助于将`ProgramData Address`的 base58 编码转换为十六进制表示。完成此转换的代码提供在文章末尾，但现在请读者接受我们 Solana 钱包地址 `5jmigjgt77kAfKsHri3MHpMMFPo6UuiAMF19VdDfrrTj` 的十六进制表示为：
 
@@ -133,7 +136,7 @@ anchor test --skip-local-validator
 4663b48dfe92ac464658e512f74a8ee0ffa99fffe89fb90e8d0101a0c3c7767a
 ```
 
-## 查看存储程序字节码的账户中的数据
+## 查看存储可执行文件的 ProgramData Address 中的数据
 
 我们可以使用 `solana account` 查看`ProgramData Address`账户，但我们还将将其发送到临时文件以避免向终端转储过多数据。
 
@@ -143,7 +146,7 @@ solana account FkYygT7X7qjifdxfBVWXTHpj87THJGmtmKUyU4SamfQm > tempfile
 head -n 10 tempfile
 ```
 
-上述命令的输出显示我们的钱包（十六进制）嵌入到`data`中。请注意，黄色下划线的十六进制代码与我们的钱包的十六进制编码（权限）匹配：
+上述命令的输出显示我们的钱包（十六进制）嵌入到`data`中。请注意，黄色下划线的十六进制代码与我们的钱包的十六进制编码（authority）匹配：
 
 ![我们地址的十六进制编码](https://static.wixstatic.com/media/935a00_20455248359040bea0b891312710c3e9~mv2.png/v1/fill/w_740,h_170,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_20455248359040bea0b891312710c3e9~mv2.png)
 
@@ -155,11 +158,11 @@ head -n 10 tempfile
 
 ## 总结
 
-只有程序的所有者才能更改其数据。Solana 程序的所有者是`BPFLoaderUpgradeable`系统程序，因此默认情况下，部署程序的钱包无法更改存储在账户中的数据（字节码）。
+只有程序的 owner 才能更改其数据。Solana 程序的 owner 是`BPFLoaderUpgradeable`系统程序，因此默认情况下，部署程序的钱包无法更改存储在账户中的数据（字节码）。
 
-为了使程序升级，Solana 运行时将部署者的钱包嵌入到程序的字节码中。它将此字段称为“权限”。
+为了使程序升级，Solana 运行时将部署者的钱包嵌入到程序的字节码中。它将此字段称为“authority”。
 
-当部署的钱包尝试升级字节码时，Solana 运行时将检查事务签名者是否是权限。如果事务签名者与权限匹配，则`BPFLoaderUpgradeable`将代表权限更新程序的字节码。
+当部署的钱包尝试升级字节码时，Solana 运行时将检查事务签名者是否是 authority。如果事务签名者与 authority 匹配，则`BPFLoaderUpgradeable`将代表 authority 更新程序的字节码。
 
 ## 附录：将 base58 转换为十六进制
 
