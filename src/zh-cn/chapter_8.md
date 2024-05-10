@@ -8,23 +8,23 @@
 
 例如，Python 的`print`函数可以接受任意数量的参数：
 
-```
+```python
 print(1)
 print(1, 2)
 print(1, 2, 3)
 ```
 
-!表示这个“函数”是一个函数式宏。
+`!` 表示这个“函数”是一个函数式宏。
 
-Rust 函数式宏通过!符号来识别，例如在 Solana 中的`println!(...)`或`msg!(...)`。
+Rust 函数式宏通过`!`符号来识别，例如在 Solana 中的`println!(...)`或`msg!(...)`。
 
 在 Rust 中，用于打印内容的常规函数（而不是函数式宏）是`std::io::stdout().write`，它只接受一个单字节字符串作为参数。
 
-*如果你想运行以下代码，* [*Rust Playground*](https://play.rust-lang.org/) *是一个方便的工具，如果你不想设置开发环境。*
+如果你想运行以下代码，[*Rust Playground*](https://play.rust-lang.org/) 是一个方便的工具，不需要设置开发环境了。
 
-让我们使用以下示例（取自[这里](https://riptutorial.com/rust/example/1415/console-output-without-macros) ）：
+让我们使用以下示例（来自[这里](https://riptutorial.com/rust/example/1415/console-output-without-macros) ）：
 
-```
+```rust
 use std::io::Write;
 
 fn main() {
@@ -36,7 +36,7 @@ fn main() {
 
 如果你尝试在 Python 中执行我们上面的操作，代码将无法编译，因为`write`只接受一个参数：
 
-```
+```rust
 // this does not compile
 use std::io::Write;
 
@@ -49,9 +49,9 @@ fn main() {
 
 因此，如果你希望打印任意数量的参数，*你需要编写一个自定义打印函数来处理每种情况下的每个参数数量 —— 这是极其低效的！*
 
-这样的代码将如下所示（这是极不推荐的！）：
+这样的代码如下所示（这是极不推荐的！）：
 
-```
+```rust
 use std::io::Write;
 
 // print one argument
@@ -92,7 +92,7 @@ fn main() {
 
 ### 扩展宏
 
-要查看 Rust 编译器如何扩展`println!`宏的示例，请查看[cargo expand](https://github.com/dtolnay/cargo-expand) github 仓库。结果非常冗长，因此我们不会在这里展示。
+要查看 Rust 编译器如何扩展`println!`宏的示例，可以使用[cargo expand](https://github.com/dtolnay/cargo-expand) 。结果非常冗长，因此我们不在这里展示了。
 
 ## 将宏视为黑盒是可以接受的
 

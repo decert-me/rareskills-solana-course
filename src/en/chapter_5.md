@@ -4,7 +4,7 @@
 
 In this tutorial we will peek behind the scenes of anchor to see how a Solana program gets deployed.
 
-Let’s look at the test file anchor creates for us when we run `anchor init` `deploy_tutorial`:
+Let’s look at the test file anchor creates for us when we run `anchor init deploy_tutorial`:
 
 ```
 describe("deploy_tutorial", () => {
@@ -85,13 +85,13 @@ The program id has not changed, **the program got overwritten.**
 
 ## **Solana programs are mutable by default**
 
-This might come as a shock to Ethereum developers where immutability is assumed. 
+This might come as a shock to Ethereum developers where immutability is assumed.
 
 What is the point of a program if the author can just change it? It is possible to make a Solana program immutable. The assumption is that the author will deploy the mutable version first, and after time goes by and no bugs are discovered, then they will redeploy it as immutable.
 
 Functionally, this is no different than an administrator controlled proxy where the owner later forfeits ownership to the zero address. But arguably, the Solana model is a lot cleaner because a lot can go wrong with Ethereum proxies.
 
-Another implication: **Solana does not have delegatecall, because it doesn’t need it.** 
+Another implication: **Solana does not have delegatecall, because it doesn’t need it.**
 
 The primary use of delegatecall in Solidity contracts is to be able to upgrade the functionality of a proxy contract by issuing delegatecalls to a new implementation contract. However, since the bytecode of a program in Solana can be upgraded, there is no need for delegatecalling to implementation contracts.
 

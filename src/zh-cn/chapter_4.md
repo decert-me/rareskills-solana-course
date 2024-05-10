@@ -4,9 +4,9 @@
 
 ![#[error_code] 和 require!() 宏](https://static.wixstatic.com/media/935a00_0571a0bf95424f12a489014605ba3cc4~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_0571a0bf95424f12a489014605ba3cc4~mv2.jpg)
 
-在以太坊中，我们经常看到一个 require 语句限制函数参数可以具有的值。考虑以下示例：
+在以太坊中，我们经常看到一个 require 语句限制函数参数的值。示例如下：
 
-```
+```js
 function foobar(uint256 x) public {
 	require(x < 100, "I'm not happy with the number you picked");
   // rest of the function logic
@@ -17,11 +17,11 @@ function foobar(uint256 x) public {
 
 在 Solana 中，或者更具体地说，在 Anchor 框架中，我们该如何做到这一点呢？
 
-Anchor 为 Solidity 的自定义错误和 require 语句提供了等价物。他们对此的[文档](https://www.anchor-lang.com/docs/errors)非常好，但我们也将解释如何在函数参数不符合我们期望时停止交易。
+Anchor 提供了 与 Solidity 的自定义错误和 require 类似的语法。可以查看相关[文档](https://www.anchor-lang.com/docs/errors)，我们也将解释如何在函数参数不符合预期时停止交易。
 
 下面的 Solana 程序有一个名为 `limit_range` 的函数，只接受 10 到 100 的值：
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("8o3ehd3XnyDocd9hG1uz5trbmSRB7gaLaE9BCXDpEnMY");
@@ -54,9 +54,9 @@ pub enum MyError {
 }
 ```
 
-以下代码单元测试了上面的程序：
+以下为测试代码：
 
-```
+```js
 import * as anchor from "@coral-xyz/anchor";
 import { Program, AnchorError } from "@coral-xyz/anchor"
 import { Day4 } from "../target/types/day4";
@@ -99,10 +99,11 @@ describe("day4", () => {
 
 **练习：**
 
-1. 你注意到错误编号的模式了吗？如果更改 Enum MyError 中错误的顺序，错误代码会发生什么变化？
+1. 你注意到错误编号有什么规律吗？如果更改枚举 MyError 中错误的顺序，错误代码会发生什么变化？
+
 2. 使用以下代码块将新的函数和错误添加到现有代码中：
 
-```
+```rust
 #[program]
 pub mod day_4 {
     use super::*;
@@ -137,7 +138,7 @@ pub enum MyError {
 
 并添加以下测试：
 
-```
+```js
 it("Error test", async () => {
     // Add your test here.
     try {
@@ -160,9 +161,9 @@ it("Error test", async () => {
 
 ## 使用 require 语句
 
-有一个 `require!` 宏，概念上与 Solidity 中的 `require` 相同，我们可以使用它来简化我们的代码。从使用需要三行的 `if` 检查切换到 `require!` 调用，我们的早期代码转换为以下内容：
+有一个 `require!` 宏，概念上与 Solidity 中的 `require` 相同，我们可以使用它来简化代码。从使用需要三行的 `if` 代码切换到 `require!` 调用，将之前的代码转换为以下内容：
 
-```
+```rust
 pub fn limit_range(ctx: Context<LimitRange>, a: u64) -> Result<()> {
 	  require!(a >= 10, Day4Error::AisTooSmall);
 		require!(a <= 100, Day4Error::AisTooBig);
@@ -172,9 +173,9 @@ pub fn limit_range(ctx: Context<LimitRange>, a: u64) -> Result<()> {
 }
 ```
 
-在以太坊中，如果函数回滚，即使回滚发生在日志之后，也不会记录任何内容。例如，在下面的合约中调用 `tryToLog` 将不会记录任何内容，因为函数回滚：
+在以太坊中，如果函数回滚，即使回滚发生在日志之后，也不会记录任何内容。例如，在下面的合约中调用 `tryToLog` 将不会记录任何内容，因为函数回滚了：
 
-```
+```js
 contract DoesNotLog {
 	event SomeEvent(uint256);
 
@@ -187,7 +188,7 @@ contract DoesNotLog {
 
 **练习：** 如果在 Solana 程序函数中的返回错误语句之前放置一个 msg! 宏会发生什么？如果将 `return err!` 替换为 `Ok(())` 会发生什么？下面有一个使用 `msg!` 记录一些内容然后返回错误的函数。看看 `msg!` 宏的内容是否被记录。
 
-```
+```rust
 pub fn func(ctx: Context<ReturnError>) -> Result<()> {
 		msg!("Will this print?");
 		return err!(Day4Error::AlwaysErrors);
@@ -205,7 +206,7 @@ pub enum Day4Error {
 
 **在底层，require! 宏与返回错误没有任何不同，它只是语法糖。**
 
-预期结果是当你返回 `Ok(())` 时，“Will this print?” 将被打印，当你返回错误时将不会打印。
+预期结果是当返回 `Ok(())` 时，“Will this print?”将被打印，当你返回错误时将不会打印。
 
 ## Solana 和 Solidity 在错误处理方面的区别
 
@@ -215,17 +216,17 @@ pub enum Day4Error {
 
 在 Anchor 中，错误是带有 `#[error_code]` 属性的枚举。
 
-请注意，Solana 中的所有函数都具有 `Result<()>` 的返回类型。[Result](https://doc.rust-lang.org/std/result/) 是一种类型，可以是 Ok(()) 或错误。
+请注意，Solana 中的所有函数的返回类型都是 `Result<()>` 。[Result](https://doc.rust-lang.org/std/result/) 是一种类型，可以是 `Ok(())` 或错误。
 
 ## 问题与答案
 
 ### 为什么 `Ok(())` 末尾没有分号？
 
-如果添加分号，你的代码将无法编译。如果 Rust 中的最终语句没有分号，则该行上的值将被返回。
+如果添加分号，代码将无法编译。如果 Rust 中的最终语句没有分号，则该行的代码将作为返回值。
 
 ### 为什么 `Ok(())` 有额外的括号？
 
-在 Rust 中，() 表示“unit”，你可以将其视为 C 中的 void 或 Haskell 中的 Nothing。这里，Ok 是一个包含单元类型的枚举。这就是 get 返回的内容。在 Rust 中，不返回任何东西的函数隐式返回单元类型。没有分号的 Ok(()) 在语法上等同于 return Ok(());。请注意末尾的分号。
+在 Rust 中，() 表示“unit”，你可以将其视为 C 中的 void 或 Haskell 中的 Nothing。这里，Ok 是一个包含单元类型的枚举。这就是 get 返回的内容。在 Rust 中，不返回任何东西的函数隐式返回单元类型。没有分号的 `Ok(())` 在语法上等同于 `return Ok(());`。请注意末尾的分号。
 
 ### 为什么上面的 `if 语句` 缺少括号？
 
