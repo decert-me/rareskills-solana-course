@@ -2,7 +2,7 @@
 
 ![Solana close acocunt](https://static.wixstatic.com/media/935a00_74aadefdf66141ac8156b6fb8a78cbfd~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_74aadefdf66141ac8156b6fb8a78cbfd~mv2.jpg)
 
-在 Solana 的 Anchor 框架中，`close` 是 `init`（在 Anchor 中初始化账户）的相反操作 — 它将 lamport 余额减少到零，将 lamports 发送到目标地址，并将账户的所有者更改为系统程序。
+在 Solana 的 Anchor 框架中，`close` 是 `init`（[在 Anchor 中初始化账户](https://www.rareskills.io/post/solana-initialize-account)）的相反操作 — 它将 lamport 余额减少到零，将 lamports 发送到目标地址，并将账户的所有者更改为系统程序。
 
 以下是在 Rust 中使用 `close` 指令的示例：
 
@@ -92,13 +92,13 @@ describe("close_program", () => {
 
 ## close 在底层执行了什么操作？
 
-如果我们查看 Anchor 中 close 命令的[源代码](https://github.com/coral-xyz/anchor/blob/v0.29.0/lang/src/common.rs) ，我们可以看到它执行了我们上面描述的操作：
+如果我们查看 Anchor 中 [close 命令的源代码](https://github.com/coral-xyz/anchor/blob/v0.29.0/lang/src/common.rs) ，我们可以看到它执行了我们上面描述的操作：
 
 ![Anchor close source code](https://static.wixstatic.com/media/935a00_dfd66357bad44b758fce6240bebae673~mv2.png/v1/fill/w_740,h_354,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_dfd66357bad44b758fce6240bebae673~mv2.png)
 
 ## 许多 Anchorlang 示例已过时
 
-在 Anchor 的 0.25 版本中，关闭序列不同。
+在 Anchor 的 0.25 版本中，关闭次序不同。
 
 与当前实现类似，它首先将所有 lamports 发送到目标地址。
 
@@ -140,7 +140,7 @@ solana program close <address> --bypass warning
 
 ![solana close program cli](https://static.wixstatic.com/media/935a00_6656a12dd8ab418eb568038dc955fbeb~mv2.png/v1/fill/w_740,h_235,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/935a00_6656a12dd8ab418eb568038dc955fbeb~mv2.png)
 
-以下是上述截图中的命令序列：
+以下是上述截图中的一系列命令：
 
 1. 首先部署程序
 2. 我们关闭程序时没有使用 --bypass warning 标志，工具会警告我们无法再次部署程序
