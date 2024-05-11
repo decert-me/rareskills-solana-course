@@ -1,18 +1,18 @@
-# 在 Anchor 中的`#[Derive(Accounts)]`：不同类型的账户
+# 在 Anchor 中的 #[derive(Accounts)]：不同类型的账户
 
 `#[Derive(Accounts)]`在 Solana Anchor 中是一个类似属性的宏，用于结构体，该结构体保存函数在执行期间将访问的所有账户的引用。
 
-## 在 Solana 中，事务将访问的每个账户必须事先指定
+## 在 Solana 中，交易将访问的每个账户必须事先指定
 
-Solana 之所以如此快，一个原因是它可以并行执行事务。也就是说，如果 Alice 和 Bob 都想执行一个事务，Solana 将尝试同时处理他们的事务。但是，如果他们的事务通过访问相同的存储而发生冲突，则会出现问题。例如，假设 Alice 和 Bob 都试图写入同一个账户。显然，他们的事务无法并行运行。
+Solana 之所以如此快，一个原因是它可以并行执行交易。也就是说，如果 Alice 和 Bob 都想执行一个交易，Solana 将尝试同时处理他们的交易。但是，如果他们的交易通过访问相同的存储而发生冲突，则会出现问题。例如，假设 Alice 和 Bob 都试图写入同一个账户。显然，他们的交易无法并行运行。
 
-为了让 Solana 知道 Alice 和 Bob 的事务不能并行化，Alice 和 Bob 都必须事先指定他们的事务将更新的所有账户。
+为了让 Solana 知道 Alice 和 Bob 的交易不能并行化，Alice 和 Bob 都必须事先指定他们的交易将更新的所有账户。
 
-由于 Alice 和 Bob 都指定了一个（存储）账户，Solana 运行时可以推断出两个事务存在冲突。必须选择一个（可能是支付了更高优先级费用的那个），另一个将失败。
+由于 Alice 和 Bob 都指定了一个（存储）账户，Solana 运行时可以推断出两个交易存在冲突。必须选择一个（可能是支付了更高优先级费用的那个），另一个将失败。
 
-这就是为什么每个函数都有自己单独的`#[Derive(Accounts)]`结构体。结构体中的每个字段都是程序在执行期间打算（但不是必须）访问的账户。
+这就是为什么每个函数都有自己单独的`#[derive(Accounts)]`结构体。结构体中的每个字段都是程序在执行期间打算（但不是必须）访问的账户。
 
-一些以太坊开发人员可能会注意到这一要求与 [EIP 2930 访问列表事务](https://www.rareskills.io/post/eip-2930-optional-access-list-ethereum)的相似之处。
+一些以太坊开发人员可能会注意到这一要求与 [EIP 2930 访问列表交易](https://www.rareskills.io/post/eip-2930-optional-access-list-ethereum)的相似之处。
 
 账户类型中你将最常使用的有：账户（Account）、未经检查的账户（Unchecked Account）、系统程序（System Program）和签名者（Signer）。
 
@@ -44,7 +44,7 @@ Solana 之所以如此快，一个原因是它可以并行执行事务。也就�
 
 `账户（Account）`类型将检查加载的账户的所有者是否实际上由程序拥有。如果所有者不匹配，则不会加载。这是一个重要的安全措施，以防止意外读取程序未创建的数据。
 
-在以下示例中，我们创建了一个密钥对账户，并尝试将其传递给`foo`。因为该账户不是由程序拥有，所以事务失败了。
+在以下示例中，我们创建了一个密钥对账户，并尝试将其传递给`foo`。因为该账户不是由程序拥有，所以交易失败了。
 
 Rust：
 
@@ -130,11 +130,11 @@ it("Wrong owner with Account", async () => {
 
 有关`账户（Account）`类型的更多信息，请参阅文档：[https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html](https://docs.rs/anchor-lang/latest/anchor_lang/accounts/account/struct.Account.html)
 
-## 未经检查的账户或账户信息（UncheckedAccount or AccountInfo）
+## UncheckedAccount（未经检查的账户） 或 AccountInfo（账户信息）
 
-`未经检查的账户（UncheckedAccount）`是`账户信息（AccountInfo）`的别名。它不检查所有权，因此必须小心，因为它将接受任意账户。
+`UncheckedAccount`是`AccountInfo`的别名。它不检查所有权，因此必须小心，因为它将接受任意账户。
 
-以下是使用`未经检查的账户（UncheckedAccount）`读取其不拥有的账户数据的示例。
+以下是使用`UncheckedAccount`读取其不拥有的账户数据的示例。
 
 ```
 use anchor_lang::prelude::*;
@@ -212,11 +212,11 @@ describe("account_types", () => {
 
 ## 签名者（Signer）
 
-此类型将检查`签名者（Signer）`账户是否签署了交易；它检查签名是否与账户的公钥匹配。
+此类型将检查`Signer`账户是否签署了交易；它检查签名是否与账户的公钥匹配。
 
 因为签名者也是一个账户，你可以读取签名者的余额或存储在账户中的数据（如果有的话），尽管其主要目的是验证签名。
 
-根据文档（[https://docs.rs/anchor-lang/latest/anchor_lang/accounts/signer/struct.Signer.html](https://docs.rs/anchor-lang/latest/anchor_lang/accounts/signer/struct.Signer.html)），`签名者（Signer）`是一种验证账户是否签署了交易的类型。不会执行其他所有权或类型检查。如果使用了这个类型，就不应尝试访问底层账户数据。
+根据文档（[https://docs.rs/anchor-lang/latest/anchor_lang/accounts/signer/struct.Signer.html](https://docs.rs/anchor-lang/latest/anchor_lang/accounts/signer/struct.Signer.html)），`Signer`是一种验证账户是否签署了交易的类型。不会执行其他所有权或类型检查。如果使用了这个类型，就不应尝试访问底层账户数据。
 
 Rust 示例：
 
