@@ -1,11 +1,10 @@
-# 在链上读取另一个锚定程序的账户数据
+# 在链上读取另一个 Anchor 程序的账户数据
 
 在 Solidity 中，读取另一个合约的存储需要调用一个`view`函数或者存储变量是公共的。在 Solana 中，一个链下客户端可以直接读取一个存储账户。本教程展示了一个在链上的 Solana 程序如何读取它不拥有的账户中的数据。
 
 我们将设置两个程序：`data_holder`和`data_reader`.`data_holder`将初始化并拥有一个包含`data_reader`将要读取的数据的 PDA。
 
-设置存储数据的`data_holder`程序：Shell 1
----------------------------------------------------------
+## 设置存储数据的`data_holder`程序：Shell 1
 
 以下代码是一个初始化带有`u64`字段`x`的账户`Storage`并在初始化时将值 9 存储在其中的基本 Solana 程序：
 
@@ -91,7 +90,7 @@ let data_struct: Storage =
 
 在这里传递类型`Storage`（我们上面定义的相同结构体）告诉 Solana 如何（尝试）反序列化数据。
 
-现在让我们在一个新文件夹`anchor new data_reader`中创建一个单独的锚项目。
+现在让我们在一个新文件夹中创建一个单独的 Anchor 项目 `anchor new data_reader`。
 
 以下是完整的 Rust 代码：
 ```
@@ -198,7 +197,7 @@ describe("data-reader", () => {
 
 ![图 4：更改 solana 中 data_reader 名称时的错误输出](https://static.wixstatic.com/media/706568_ef3a6822311d4958bdbd08d6866a05db~mv2.png)
 
-由 Anchor 计算的账户鉴别器是结构体名称的前八个字节的 sha256。**账户鉴别器不依赖于结构体中的变量。**
+由 Anchor 计算的账户鉴别器是结构体名称 sha256 后的前八个字节的 。**账户鉴别器不依赖于结构体中的变量。**
 
 当 Anchor 读取账户时，它会检查前八个字节（账户鉴别器），看看它们是否与本地用于反序列化数据的结构体定义的账户鉴别器匹配。如果它们不匹配，Anchor 将不会反序列化数据。
 
@@ -287,11 +286,11 @@ let data_struct: Storage =
 
 Anchor 不检查变量的名称或其长度。
 
-在幕后，Anchor 不存储任何元数据来解释账户中的数据。它只是存储的变量的字节端对端。
+在幕后，Anchor 不存储任何元数据来解释账户中的数据。它只是端到端存储的变量字节。
 
 ## 不是所有的数据账户都遵循 Anchor 的约定
 
-Solana 不要求使用账户区分器。使用原始 Rust 编写的 Solana 程序（没有使用 Anchor 框架）可能会以一种与 Anchor 的序列化方法不直接兼容的方式存储它们的数据，而 `AccountDeserialize::try_deserialize` 实现了这种方法。要反序列化非 Anchor 数据，开发人员必须事先了解所使用的序列化方法 — Solana 生态系统中没有强制执行的通用约定。
+Solana 不要求使用账户鉴别器。使用原始 Rust 编写的 Solana 程序（没有使用 Anchor 框架）可能会以一种与 Anchor 的序列化方法不直接兼容的方式存储它们的数据，而 `AccountDeserialize::try_deserialize` 实现了这种方法。要反序列化非 Anchor 数据，开发人员必须事先了解所使用的序列化方法 — Solana 生态系统中没有强制执行的通用约定。
 
 ## 从任意账户读取数据时要小心
 
