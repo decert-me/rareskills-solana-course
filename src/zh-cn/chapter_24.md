@@ -2,7 +2,7 @@
 
 更新日期：3 月 11 日
 
-![锚点签名者](https://static.wixstatic.com/media/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg)
+![Anchor Signer](https://static.wixstatic.com/media/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg/v1/fill/w_740,h_416,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/935a00_8a5622df6d344ca3bd3d548454a703fe~mv2.jpg)
 
 到目前为止，在我们的 [Solana 教程](https://www.rareskills.io/solana-tutorial)中，我们只初始化并向账户写入了一个账户。
 
