@@ -32,3 +32,4 @@
 - [Day29](./chapter_29.md)
 - [Day30](./chapter_30.md)
 - [Day31](./chapter_31.md)
+- [Day32](./chapter_32.md)

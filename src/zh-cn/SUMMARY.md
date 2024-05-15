@@ -32,3 +32,4 @@
 - [第 29 天](./chapter_29.md)
 - [第 30 天](./chapter_30.md)
 - [第 31 天](./chapter_31.md)
+- [第 32 天](./chapter_32.md)

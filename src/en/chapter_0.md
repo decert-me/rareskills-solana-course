@@ -202,3 +202,5 @@ Accounts are one of the most complicated topics in Solana development because th
 #### Day 30 [Deleting Accounts and Closing Programs](./chapter_30.md)
 
 #### Day 31 [Account types in #[derive(Accounts)]](./chapter_31.md)
+
+#### Day 32 [Reading Another Anchor Program’s Account Data On Chain](./chapter_32.md)
