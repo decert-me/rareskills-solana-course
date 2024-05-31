@@ -252,7 +252,7 @@ describe("read", () => {
 
 接下来，我们想尝试在 Solana web3 js 中找到该方法。最好使用具有自动完成功能的 IDE，这样你可以尝试找到该函数，就像以下视频演示的那样：
 
-<video src="https://video.wixstatic.com/video/935a00_06ca67880d9f4b1b8415cd580faf0ea6/480p/mp4/file.mp4" preload="auto" controls="" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); box-sizing: inherit; width: 740px; height: 416px;"></video>
+<video src="https://video.wixstatic.com/video/935a00_06ca67880d9f4b1b8415cd580faf0ea6/480p/mp4/file.mp4" preload="auto" controls=""></video>
 
 下面是再次运行测试的预期输出：
 
