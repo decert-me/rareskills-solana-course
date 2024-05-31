@@ -17,13 +17,13 @@ Rather than jump into explaining all the differences, this tutorial attempts to 
 
 
 
-<img src="/src/assets/1.svg" alt="Alt text" width="100" height="100">
+<img src="/src/assets/1.svg" alt="Alt text" width="100" height="100" />
 
 “I know how to do X in Ethereum, how do I do X in Solana?
 
 And under certain circumstances,
 
-<img src="/src/assets/1.svg" alt="Alt text" width="100" height="100">
+<img src="/src/assets/1.svg" alt="Alt text" width="100" height="100" />
 
 “I cannot do X in Solana, why is that?”
 
