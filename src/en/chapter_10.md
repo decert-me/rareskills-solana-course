@@ -324,7 +324,7 @@ In Solidity, we think a lot about function visibility because it’s very critic
 
 - **Public / External Functions**: These are functions accessible both within and outside the program. In Solana, all functions declared are, by default, public. Everything in the `#[program]` block must be declared `pub`.
 - **Internal Functions**: These are functions accessible within the program itself and programs that inherit it. Functions inside a nested pub mod block are not included in the built program, but still, they can be accessed within or outside the parent module.
-- **Private Functions**: These are functions that are not publicly accessible and cannot be invoked from outside their module. Achieving private visibility in Rust/Solana involves defining a function within a specific module with the `pub`(in crate::<module>) keyword, which makes the function visible within just the module it was defined in.
+- **Private Functions**: These are functions that are not publicly accessible and cannot be invoked from outside their module. Achieving private visibility in Rust/Solana involves defining a function within a specific module with the `pub(in crate::<module>)` keyword, which makes the function visible within just the module it was defined in.
 
 Solidity achieves contract inheritance through classes, a feature that Rust, the language used in Solana, does not have. Nevertheless, you can still organize your code using Rust modules.
 
