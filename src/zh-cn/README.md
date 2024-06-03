@@ -1,5 +1,5 @@
-<img src="./assets/0-1.svg" alt="" width="337" height="63" />
-<img src="./assets/solana.svg" alt="Solana" width="337" height="45" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-1.svg" alt="" width="337" height="63" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/solana.svg" alt="Solana" width="337" height="45" />
 
 # 由 Rareskills 提供的 Solana 课程
 
@@ -18,15 +18,15 @@
 
 与其直接解释所有的不同之处，本教程试图将关键信息压缩到以下范式中：
 
-<img src="./assets/0-2.svg" alt="" width="10" height="120" />
-<img src="./assets/0-3.svg" alt="" width="100" height="120" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-2.svg" alt="" width="10" height="120" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-3.svg" alt="" width="100" height="120" />
 
 “我知道如何在以太坊中做 X，我如何在 Solana 中做 X？
 
 并在某些情况下，
 
-<img src="./assets/0-4.svg" alt="" width="10" height="120" />
-<img src="./assets/0-3.svg" alt="" width="100" height="120" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-4.svg" alt="" width="10" height="120" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-3.svg" alt="" width="100" height="120" />
 
 “我无法在 Solana 中做 X，为什么？”
 
@@ -42,13 +42,13 @@
 
 Solana 的架构确实有很大不同，但它基本上与以太坊做的事情相同：
 
-<img src="./assets/0-2.svg" alt="" width="10" height="120" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-2.svg" alt="" width="10" height="120" />
 <img src="https://static.wixstatic.com/media/a133f4_870a6a75603e40a7b8aaa7f73dc313bc~mv2.png/v1/fill/w_152,h_120,al_c,q_95,enc_auto/a133f4_870a6a75603e40a7b8aaa7f73dc313bc~mv2.png" alt="区块链节点图标" width="152" height="120" />
 
 它是一个分布式状态机，根据签名交易进行状态转换，执行的成本是用生态系统的原生代币支付（以太坊为 ETH，Solana 为 SOL）。  
 
 
-<img src="./assets/0-2.svg" alt="" width="10" height="120" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-2.svg" alt="" width="10" height="120" />
 <img src="https://static.wixstatic.com/media/a133f4_af6a587fc43444a08974ca01cf7ca265~mv2.png/v1/fill/w_152,h_120,al_c,q_95,enc_auto/solethbooth.png" alt="solana 和 以太坊 logo" width="152" height="120" />
 
 我们的目标是利用你对 EVM 的知识，作为你 Solana 开发之旅的跳板。
@@ -110,7 +110,7 @@ Rust 是一种庞大的语言，其语法足以超过大多数其他流行语言
 我们要感谢 [Faybian Byrd](https://www.linkedin.com/in/faybianbyrd/)、Devtooligan、Abhi Gulati，他们仔细审查并提供了对这项工作的反馈。
 
 
-<img src="./assets/0-5.svg" alt="" width="550" height="36" />
+<img src="https://raw.githubusercontent.com/0xdwong/rareskills-solana-course/ec6b8f84291cd5ebd0877babbecf2b17e5530da5/src/assets/0-5.svg" alt="" width="550" height="36" />
 
 ## Solana 课程
 
