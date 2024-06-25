@@ -1,6 +1,6 @@
 # 摘要
 
-- [序言](./chapter_0.md)
+- [序言](./README.md)
 - [第 1 天](./chapter_1.md)
 - [第 2 天](./chapter_2.md)
 - [第 3 天](./chapter_3.md)
@@ -33,3 +33,4 @@
 - [第 30 天](./chapter_30.md)
 - [第 31 天](./chapter_31.md)
 - [第 32 天](./chapter_32.md)
+- [第 33 天](./chapter_33.md)

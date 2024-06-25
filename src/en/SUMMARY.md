@@ -1,6 +1,6 @@
 # Summary
 
-- [tutorial](./chapter_0.md)
+- [tutorial](./README.md)
 - [Day1](./chapter_1.md)
 - [Day2](./chapter_2.md)
 - [Day3](./chapter_3.md)
@@ -33,3 +33,4 @@
 - [Day30](./chapter_30.md)
 - [Day31](./chapter_31.md)
 - [Day32](./chapter_32.md)
+- [Day33](./chapter_33.md)
