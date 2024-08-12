@@ -1,12 +1,12 @@
 # 60 Days of Solana Course By Rareskills 
 
-本课程由 [RareSkills](https://www.rareskills.io/) 编写，DeCert.me 翻译为中文版，英文原版在[这里](https://www.rareskills.io/solana-tutorial)
+本课程由 [RareSkills](https://www.rareskills.io/) 编写，[DeCert.me](https://decert.me) 翻译为中文版，英文原版在[这里](https://www.rareskills.io/solana-tutorial)
 
 本课程旨在帮助具有以太坊或 EVM 开发的初学者或中级背景的工程师快速掌握 Solana 程序开发
 
 ## 如何阅读本书
 
-在线阅读：前往 [DeCert.me](https://decert.me/tutorial/rareskills-solana-course)
+在线阅读：前往 [DeCert.me: 60天 Solana 课程](https://decert.me/tutorial/rareskills-solana-course)
 
 本书使用 mdBook 编写，可以按照以下步骤本地运行或部署在服务器上：
 
@@ -95,4 +95,4 @@ Fork 本项目到自己的仓库。找到对应章节的文件并在源文件上
 | Avatar | name | Socials|
 | -------------------------------------------------------- | ---- | ----|
 | ![](https://learnblockchain.cn/image/avatar/4845_big.jpg) | dwong | https://twitter.com/0xdwong |
-| ![](https://ipfs.learnblockchain.cn/avatar/dephy-logo.png) | shooter | DePHY：https://dephy.io  https://twitter.com/liushooter       |
+| ![](https://ipfs.learnblockchain.cn/avatar/dephy-logo.png) | [shooter](https://twitter.com/liushooter) | DePHY：https://dephy.io       |
