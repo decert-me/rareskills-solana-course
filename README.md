@@ -52,5 +52,5 @@ Fork 本项目到自己的仓库。找到对应章节的文件并在源文件上
 
 | Avatar | name | Socials|
 | -------------------------------------------------------- | ---- | ----|
-| ![](https://learnblockchain.cn/image/avatar/4845_big.jpg?L7qvwtlb) | [dwong](https://learnblockchain.cn/people/4845) | https://twitter.com/0xdwong |
-| ![](https://ipfs.learnblockchain.cn/avatar/dephy.png) | shooter | DePHY：https://dephy.io  https://twitter.com/liushooter       |
+| ![](https://learnblockchain.cn/image/avatar/4845_big.jpg?L7qvwtlb) | dwong | https://twitter.com/0xdwong |
+| ![](https://ipfs.learnblockchain.cn/avatar/dephy-logo.png) | shooter | DePHY：https://dephy.io  https://twitter.com/liushooter       |
