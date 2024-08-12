@@ -48,4 +48,8 @@ Fork 本项目到自己的仓库。找到对应章节的文件并在源文件上
 ![截屏2024-04-25 11 26 48](https://github.com/decert-me/rareskills-solana-course/assets/121151857/cbf19d17-de61-4af6-aec0-359d969230a1)
 ![截屏2024-04-25 11 26 56](https://github.com/decert-me/rareskills-solana-course/assets/121151857/480f69eb-657d-4c9a-b1fc-ab5b8a4fb899)
 
+## 贡献者
 
+| Avatar | name | Socials|
+| -------------------------------------------------------- | ---- | ----|
+| ![](https://learnblockchain.cn/image/avatar/4845_big.jpg?L7qvwtlb) | [dwong](https://learnblockchain.cn/people/4845) | https://twitter.com/0xdwong |
