@@ -1,7 +1,7 @@
 <img src="https://raw.githubusercontent.com/decert-me/rareskills-solana-course/268c72d70e5d30312e244dbd3c67895e1864c3d7/src/assets/0-1.svg" alt="" width="337" height="63" />
 <img src="https://raw.githubusercontent.com/decert-me/rareskills-solana-course/268c72d70e5d30312e244dbd3c67895e1864c3d7/src/assets/solana.svg" alt="Solana" width="337" height="45" />
 
-# 由 Rareskills 提供的 Solana 课程（[Decert.me](https://decert.me/) 翻译成中文）
+# 由 Rareskills 提供的 Solana 课程（[DeCert.me](https://decert.me/) 翻译成中文）
 
 本 Solana 课程旨在帮助具有以太坊或 EVM 开发的初学者或中级背景的工程师快速掌握 Solana 程序开发。
 
