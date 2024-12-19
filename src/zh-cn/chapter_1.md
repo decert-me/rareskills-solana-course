@@ -32,7 +32,7 @@ corepack enable # corepack 随 node js 一起安装
 
 ```
 # 安装 solana
-sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
 ```
 
 ## 安装 Anchor
